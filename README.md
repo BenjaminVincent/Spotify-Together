@@ -1,7 +1,7 @@
 
 # Spotify Listen together
 
-This is a project used for learning the spotify api to produce an application that allows users to listen to music together online.
+Listen together is a project that allows people to listen to music together!
 
 # Contributers
 - Benjamin Vincent (BenjaminVincent)

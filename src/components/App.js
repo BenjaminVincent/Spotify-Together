@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import * as $ from "jquery";
-import './styles/App.css';
-import Player from './components/Player';
-import hash from './hash';
-import { authEndpoint, clientId, deviceId, redirectUri, scopes } from "./authConfig";
+import '../styles/App.css';
+import Player from './Player';
+import hash from '../helpers/hash';
+import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 
 class App extends Component {
 
