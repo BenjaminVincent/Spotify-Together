@@ -9,6 +9,9 @@ Listen together is a project that allows people to listen to music together!
 - Spotify API
 - jQuery
 
+## Currently Study
+Chrome api tabCapture: [source](https://developer.chrome.com/extensions/samples#search:tabcapture)
+
 ## Contributers
 - Benjamin Vincent (BenjaminVincent)
 - Nick Mateyko (nmateyko)
