@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as $ from "jquery";
 import '../styles/App.css';
 import Player from './Player';
+import AudioPlayer from './AudioPlayer'
 import hash from '../helpers/hash';
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 
@@ -148,6 +149,7 @@ class App extends Component {
             >
               {this.state.is_playing ? "Pause" : "Play"}
             </button>
+            <AudioPlayer/>
           </div>
           )}
         </header>

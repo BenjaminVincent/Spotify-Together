@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Player.css";
 
 
-const Player = props => {
+const Player = (props) => {
   console.log("Player props:", props);
   const backgroundStyles = {
     backgroundImage:`url(${
