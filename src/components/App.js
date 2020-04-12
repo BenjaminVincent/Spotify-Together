@@ -85,7 +85,7 @@ class App extends Component {
 
   pauseCurrent(token) {
     $.ajax({
-      url: `https://api.spotify.com/v1/me/player/pause?device_id=8e2d1e21e8244efd176bf74657727641429db8e5`,
+      url: `https://api.spotify.com/v1/me/player/pause?device_id=${this.state.deviceId}`,
       type: "PUT",
       beforeSend: xhr => {
         xhr.setRequestHeader("Authorization", "Bearer " + token);
