@@ -3,7 +3,6 @@ import "../styles/Player.css";
 
 
 const Player = (props) => {
-  console.log("Player props:", props);
   const backgroundStyles = {
     backgroundImage:`url(${
       props.item.album.images[0].url
@@ -12,7 +11,6 @@ const Player = (props) => {
   const progressBarStyles = {
     width: (props.position_ms * 100 / props.item.duration_ms) + '%'
   };
-  console.log("progressbarStyles:", progressBarStyles);
   return (
     <div className="App">
       <div className="main-wrapper">

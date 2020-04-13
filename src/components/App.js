@@ -50,9 +50,7 @@ class App extends Component {
         xhr.setRequestHeader("Authorization", "Bearer " + token);
       },
       success: (data) => {
-        console.log("devices", data);
         const activeDevice = this.filterDevices(data);
-        console.log("activeDevice:", activeDevice[0].id);
         this.setState({
           deviceId: activeDevice[0].id,
         });
