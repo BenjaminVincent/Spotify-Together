@@ -6,17 +6,40 @@ import Peer from 'peerjs';
 
 const AudioPlayer = (props) => {
 
-    let peer = new Peer('q0fe2aar1fa00000');
-    let peer2 = new Peer('ywlkmi6fo8000000');
-    peer.on('open', (id) => console.log('My peer ID is: ' + id));
+    let lastPeerId = null;
+    let peer = null;
+    let peerId = null;
+    let conn = null;
 
+    peer = new Peer(null, {
+        debug: 2,
+    });
 
-    console.log("peer id:", peer.id);
+    peer.on('open', (id) => {
+        if (peer.id === null) {
+            console.log('Received null id from peer open');
+            peer.id = lastPeerId;
+        } else {
+            lastPeerId = peer.id;
+        }
 
-    let conn = peer.connect('dest-peer-id');
+        console.log('ID: ' + peer.id);
+    });
 
-    peer.on('connection', (conn) => console.log("connected!?", conn));
-    
+    peer.on('connection', function (c) {
+        // Allow only a single connection
+        if (conn) {
+            c.on('open', function() {
+                c.send("Already connected to another client");
+                setTimeout(function() { c.close(); }, 500);
+            });
+            return;
+        }
+
+        conn = c;
+        console.log("Connected to: " + conn.peer);
+    });
+
     return (
         <div>
             Audio
