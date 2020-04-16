@@ -5,7 +5,7 @@ import React from 'react';
 const Listener = (props) => {
     return (
         <div>
-            Listener
+            Listener Component
         </div>
     )
 }

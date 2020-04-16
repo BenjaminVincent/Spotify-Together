@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import * as $ from "jquery";
 import '../styles/App.css';
 import Player from './Player';
-import AudioPlayer from './AudioPlayer'
+import Listener from './Listener';
+import Home from './Home';
+import Host from './Host';
 import hash from '../helpers/hash';
+import {BrowserRouter, Route, Link } from 'react-router-dom'; 
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 
 class App extends Component {
@@ -121,17 +124,15 @@ class App extends Component {
 
   render() {
     return (
+      <BrowserRouter>
       <div className="App">
         <header className="App-header">
           {!this.state.token && (
-            <a
-              className="btn btn--loginApp-link"
-              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-                "%20"
-              )}&response_type=token&show_dialog=true`}
-            >
-              Login to Spotify
-            </a>
+            <div>
+            <Route exact path='/' component={Home}/>
+            <Route exact path='/Listener' component={Listener}/>
+            <Route exact path='/Host' component={Host}/>
+            </div>
           )}
           {this.state.token && (
             <div>
@@ -147,11 +148,11 @@ class App extends Component {
             >
               {this.state.is_playing ? "Pause" : "Play"}
             </button>
-            <AudioPlayer/>
           </div>
           )}
         </header>
       </div>
+      </BrowserRouter>
     );
   }
 }
