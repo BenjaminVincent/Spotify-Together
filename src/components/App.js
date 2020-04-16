@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import * as $ from "jquery";
 import '../styles/App.css';
-import Player from './Player';
 import Listener from './Listener';
 import Home from './Home';
 import Host from './Host';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route, Link } from 'react-router-dom'; 
-import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 
 class App extends Component {
 
@@ -136,7 +134,7 @@ class App extends Component {
           )}
           {this.state.token && (
             <div>
-            <Player
+            <Host
               item={this.state.item ? this.state.item : ""}
               is_playing={this.state.is_playing}
               position_ms={this.state.progress_ms}
