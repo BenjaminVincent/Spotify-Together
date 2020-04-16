@@ -1,8 +1,6 @@
-import React from 'react';
-import {BrowserRouter, Route, Link } from 'react-router-dom';
+import React, {} from 'react';
+import { Link } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
-import Listener from './Listener';
-import Host from './Host';
 
 {/* <Link to='/listener' className="btn btn--loginApp-link"></Link> */}
 
@@ -24,3 +22,4 @@ const Home = (props) => {
 }
 
 export default Home;
+

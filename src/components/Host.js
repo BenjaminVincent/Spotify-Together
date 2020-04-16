@@ -3,8 +3,9 @@ import "../styles/Player.css";
 
 
 const Host = (props) => {
+  console.log("host props:", props);
   const backgroundStyles = {
-    backgroundImage:`url(${
+    backgroundImage: `url(${
       props.item.album.images[0].url
     })`,
   };

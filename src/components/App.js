@@ -68,6 +68,7 @@ class App extends Component {
         xhr.setRequestHeader("Authorization", "Bearer " + token);
       },
       success: (data) => {
+        console.log("getState:", this.state);
         this.setState({
           item: data.item,
           progress_ms: data.progress_ms,
@@ -125,21 +126,19 @@ class App extends Component {
       <BrowserRouter>
       <div className="App">
         <header className="App-header">
-          {!this.state.token && (
             <div>
             <Route exact path='/' component={Home}/>
-            <Route exact path='/Listener' component={Listener}/>
-            <Route exact path='/Host' component={Host}/>
+            <Route exact path='/listener' component={Listener}/>
+            <Route exact path='/host' component={Host}/>
             </div>
-          )}
           {this.state.token && (
             <div>
             <Host
-              item={this.state.item ? this.state.item : ""}
-              is_playing={this.state.is_playing}
-              position_ms={this.state.progress_ms}
-              deviceId={this.state.deviceId}
-            />
+            item={this.state.item ? this.state.item : ""}
+            is_playing={this.state.is_playing}
+            position_ms={this.state.progress_ms}
+            deviceId={this.state.deviceId}
+            />              
             <button type="button" className="btn btn--pause-play"
               is_playing={this.state.is_playing}
               onClick={this.handlePausePlay}
@@ -155,3 +154,5 @@ class App extends Component {
   }
 }
 export default App;
+
+
