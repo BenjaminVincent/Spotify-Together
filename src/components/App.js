@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as $ from "jquery";
+import Peer from 'peerjs';
 import '../styles/App.css';
 import Listener from './Listener';
 import Home from './Home';
@@ -24,6 +25,7 @@ class App extends Component {
     is_playing: false,
     progress_ms: 0,
     deviceId: "",
+    sessionId: "",
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };
@@ -37,6 +39,24 @@ class App extends Component {
       this.getDevices(_token);
       this.getCurrentlyPlaying(_token);
     }
+
+    // console.log("Host props:", props);
+    let lastPeerId = null;
+    let peer = null; // own peer object
+    let conn = null;
+    // initialize new peer
+    peer = new Peer(null, {
+      debug: 2,
+    });
+
+    // useEffect(() => {
+      peer.on('open', (id) => {
+        console.log('ID: ' + id);
+        this.setState({
+          sessionId: id,
+        })
+      });
+    // })
   }
 
   filterDevices = (devices) => devices.devices.filter(device => device.is_active);
@@ -68,7 +88,6 @@ class App extends Component {
         xhr.setRequestHeader("Authorization", "Bearer " + token);
       },
       success: (data) => {
-        console.log("getState:", this.state);
         this.setState({
           item: data.item,
           progress_ms: data.progress_ms,
@@ -121,6 +140,7 @@ class App extends Component {
     });
   }
 
+
   render() {
     return (
       <BrowserRouter>
@@ -138,6 +158,7 @@ class App extends Component {
             is_playing={this.state.is_playing}
             position_ms={this.state.progress_ms}
             deviceId={this.state.deviceId}
+            sessionId={this.state.sessionId}
             />              
             <button type="button" className="btn btn--pause-play"
               is_playing={this.state.is_playing}
@@ -154,5 +175,3 @@ class App extends Component {
   }
 }
 export default App;
-
-

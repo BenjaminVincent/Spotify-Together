@@ -7,7 +7,7 @@ import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConf
 const Home = (props) => {
     return (
         <div>
-            Home page <br/> <br/>
+            Home <br/> <br/>
             <Link to='/listener' className="btn btn--loginApp-link">Listen</Link>
             <a
             className="btn btn--loginApp-link"

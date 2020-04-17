@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Peer from 'peerjs';
 import "../styles/Player.css";
 
 
 const Host = (props) => {
-  console.log("host props:", props);
+
+  // init state
+  const [sessionId, setSessionId] = useState('');
+  console.log("made it to Host");
+
   const backgroundStyles = {
     backgroundImage: `url(${
       props.item.album.images[0].url
@@ -13,6 +18,8 @@ const Host = (props) => {
     width: (props.position_ms * 100 / props.item.duration_ms) + '%'
   };
   return (
+    <div>
+      Session id: {props.sessionId}
     <div className="App">
       <div className="main-wrapper">
         <div className="now-playing__img">
@@ -32,6 +39,7 @@ const Host = (props) => {
         <div className="background" style={backgroundStyles} />{" "}
 
       </div>
+    </div>
     </div>
   );
 }
