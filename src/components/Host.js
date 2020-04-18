@@ -4,11 +4,7 @@ import "../styles/Player.css";
 
 
 const Host = (props) => {
-
-  // init state
-  const [sessionId, setSessionId] = useState('');
-  console.log("made it to Host");
-
+  // console.log("Peer host obj:", props.host);
   const backgroundStyles = {
     backgroundImage: `url(${
       props.item.album.images[0].url
@@ -19,7 +15,7 @@ const Host = (props) => {
   };
   return (
     <div>
-      Session id: {props.sessionId}
+      Session id: {props.sessionIdHost}
     <div className="App">
       <div className="main-wrapper">
         <div className="now-playing__img">

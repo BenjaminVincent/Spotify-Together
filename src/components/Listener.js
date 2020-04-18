@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Peer from 'peerjs';
 
 
 const Listener = (props) => {
@@ -8,7 +8,7 @@ const Listener = (props) => {
             Listener Component <br/>
             <input type="text" placeholder="paste id here" autoFocus="true"></input>
             <br/>
-            <button type="button">submit</button>
+            <button type="button">join</button>
         </div>
     )
 }

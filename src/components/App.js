@@ -8,6 +8,8 @@ import Host from './Host';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route, Link } from 'react-router-dom'; 
 
+
+
 class App extends Component {
 
   constructor() {
@@ -25,10 +27,35 @@ class App extends Component {
     is_playing: false,
     progress_ms: 0,
     deviceId: "",
-    sessionId: "",
+    sessionIdHost: null,
+    sessionIdListener: null,
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };
+
+
+  componentWillMount() {
+    var lastPeerId = null;
+    var peer = null; // Own peer object
+    var peerId = null;
+    var conn = null;  
+    peer = new Peer(null, {
+      debug: 2
+  });
+
+  peer.on('open', function (id) {
+      // Workaround for peer.reconnect deleting previous id
+      if (peer.id === null) {
+          console.log('Received null id from peer open');
+          peer.id = lastPeerId;
+      } else {
+          lastPeerId = peer.id;
+      }
+
+      console.log('ID: ' + peer.id);
+  });
+  }
+
 
   componentDidMount() {
     let _token = hash.access_token;
@@ -39,24 +66,26 @@ class App extends Component {
       this.getDevices(_token);
       this.getCurrentlyPlaying(_token);
     }
+    // let lastPeerId = null;
+    // let peerHost = null;
+    // let connHost = null;
+    // let peerListener = null;
+    // let connListener = null;
 
-    // console.log("Host props:", props);
-    let lastPeerId = null;
-    let peer = null; // own peer object
-    let conn = null;
-    // initialize new peer
-    peer = new Peer(null, {
-      debug: 2,
-    });
 
-    // useEffect(() => {
-      peer.on('open', (id) => {
-        console.log('ID: ' + id);
-        this.setState({
-          sessionId: id,
-        })
-      });
-    // })
+    
+    // peerListener.on('open', (id) => {
+    //   console.log('ID: ' + id);
+    //   console.log("peerListener Obj:", peerListener);
+    //   this.setState({
+    //     sessionIdListener: id,
+    //   });
+    // });
+    //   // This should be done in respective component
+    //   peer.on('connection', function (c) {
+    //     conn = c;
+    //     console.log("Connected to: " + conn.peer);
+    // });
   }
 
   filterDevices = (devices) => devices.devices.filter(device => device.is_active);
@@ -158,7 +187,7 @@ class App extends Component {
             is_playing={this.state.is_playing}
             position_ms={this.state.progress_ms}
             deviceId={this.state.deviceId}
-            sessionId={this.state.sessionId}
+            sessionIdHost={this.state.sessionIdHost ? this.state.sessionIdHost : "generating"}
             />              
             <button type="button" className="btn btn--pause-play"
               is_playing={this.state.is_playing}
