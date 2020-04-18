@@ -29,32 +29,25 @@ class App extends Component {
     deviceId: "",
     sessionIdHost: null,
     sessionIdListener: null,
+    peer: new Peer(null, { debug: 2, }),
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };
 
 
   componentWillMount() {
-    var lastPeerId = null;
-    var peer = null; // Own peer object
-    var peerId = null;
-    var conn = null;  
-    peer = new Peer(null, {
-      debug: 2
-  });
-
-  peer.on('open', function (id) {
-      // Workaround for peer.reconnect deleting previous id
-      if (peer.id === null) {
-          console.log('Received null id from peer open');
-          peer.id = lastPeerId;
-      } else {
-          lastPeerId = peer.id;
-      }
-
-      console.log('ID: ' + peer.id);
-  });
+    this.state.peer.on('open', (id) => {
+      console.log("peer ID: ", id);
+      this.setState({
+        sessionIdHost: id,
+      });
+    });
   }
+
+  componentWillUnmount() {
+    console.log("destroyed");
+    this.state.peer.destroy();
+  };
 
 
   componentDidMount() {
@@ -66,26 +59,6 @@ class App extends Component {
       this.getDevices(_token);
       this.getCurrentlyPlaying(_token);
     }
-    // let lastPeerId = null;
-    // let peerHost = null;
-    // let connHost = null;
-    // let peerListener = null;
-    // let connListener = null;
-
-
-    
-    // peerListener.on('open', (id) => {
-    //   console.log('ID: ' + id);
-    //   console.log("peerListener Obj:", peerListener);
-    //   this.setState({
-    //     sessionIdListener: id,
-    //   });
-    // });
-    //   // This should be done in respective component
-    //   peer.on('connection', function (c) {
-    //     conn = c;
-    //     console.log("Connected to: " + conn.peer);
-    // });
   }
 
   filterDevices = (devices) => devices.devices.filter(device => device.is_active);
