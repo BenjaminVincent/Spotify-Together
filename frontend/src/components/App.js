@@ -11,8 +11,8 @@ import {BrowserRouter, Route, Link } from 'react-router-dom';
 
 class App extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       token: null,
     item: {
@@ -26,6 +26,7 @@ class App extends Component {
     is_playing: false,
     progress_ms: 0,
     deviceId: "",
+    apiResponse: "",
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };
@@ -39,11 +40,23 @@ class App extends Component {
       this.getDevices(_token);
       this.getCurrentlyPlaying(_token);
     }
+    this.callAPI();
   }
 
   filterDevices = (devices) => devices.devices.filter(device => device.is_active);
   
+  callAPI() {
+    fetch('http://localhost:8080/testAPI')
+      .then(res => res.text())
+      .then(res => this.setState({
+        apiResponse: res,
+      }))
+      .catch(err => err);
+  }
 
+//   componentWillMount() {
+//     this.callAPI();
+// }
 
   getDevices(token) {
     $.ajax({
@@ -127,7 +140,10 @@ class App extends Component {
     return (
       <BrowserRouter>
       <div className="App">
+        {console.log("api res:", this.state.apiResponse)}
+      <p>{this.state.apiResponse}</p>
         <header className="App-header">
+        
             <div>
             <Route exact path='/' component={Home}/>
             <Route exact path='/listener' component={Listener}/>
