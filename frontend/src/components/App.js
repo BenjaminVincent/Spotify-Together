@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as $ from "jquery";
-import Peer from 'peerjs';
 import '../styles/App.css';
 import Listener from './Listener';
 import Home from './Home';
@@ -27,28 +26,9 @@ class App extends Component {
     is_playing: false,
     progress_ms: 0,
     deviceId: "",
-    sessionIdHost: null,
-    sessionIdListener: null,
-    peer: new Peer(null, { debug: 2, }),
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };
-
-
-  componentWillMount() {
-    this.state.peer.on('open', (id) => {
-      console.log("peer ID: ", id);
-      this.setState({
-        sessionIdHost: id,
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    console.log("destroyed");
-    this.state.peer.destroy();
-  };
-
 
   componentDidMount() {
     let _token = hash.access_token;
@@ -160,7 +140,6 @@ class App extends Component {
             is_playing={this.state.is_playing}
             position_ms={this.state.progress_ms}
             deviceId={this.state.deviceId}
-            sessionIdHost={this.state.sessionIdHost ? this.state.sessionIdHost : "generating"}
             />              
             <button type="button" className="btn btn--pause-play"
               is_playing={this.state.is_playing}

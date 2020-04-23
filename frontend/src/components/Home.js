@@ -2,8 +2,6 @@ import React, {} from 'react';
 import { Link } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 
-{/* <Link to='/listener' className="btn btn--loginApp-link"></Link> */}
-
 const Home = (props) => {
     return (
         <div>

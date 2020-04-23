@@ -1,10 +1,50 @@
 import React, { useState, useEffect } from "react";
-import Peer from 'peerjs';
 import "../styles/Player.css";
+import io from 'socket.io-client';
 
 
 const Host = (props) => {
-  // console.log("Peer host obj:", props.host);
+
+  let isInitiator;
+
+  let room = window.location.hash.substring(1);
+  if (!room) {
+    room = window.location.hash = randomToken();
+  }
+  let socket = io.connect();
+
+  if (room !== "") {
+    console.log('Message from client: Asking to join room ' + room);
+    socket.emit('create or join', room);
+  }
+
+  socket.on('created', (room, clientId) => {
+    isInitiator = true;
+  });
+
+  socket.on('full', (room) => {
+    console.log('Message from client: Room ' + room + ' is full :^(');
+  });
+
+  socket.on('ipaddr', (ipaddr) => {
+    console.log('Message from client: Server IP address is ' + ipaddr);
+  });
+
+  socket.on('joined', (room, clientId) => {
+    isInitiator = false;
+  });
+
+  socket.on('log', (array) => {
+    console.log.apply(console, array);
+  });
+
+  function randomToken() {
+    return Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////
+
   const backgroundStyles = {
     backgroundImage: `url(${
       props.item.album.images[0].url
@@ -15,7 +55,7 @@ const Host = (props) => {
   };
   return (
     <div>
-      Session id: {props.sessionIdHost}
+      Session id: {room}
     <div className="App">
       <div className="main-wrapper">
         <div className="now-playing__img">
