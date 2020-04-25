@@ -1,8 +1,15 @@
-import React, {} from 'react';
+import React, { useState } from 'react';
 import "../styles/Player.css";
 
 
 const Host = (props) => {
+
+  const [roomID, setRoomID] = useState('');
+
+  function randomToken() {
+    return Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+  }
+
 
   const backgroundStyles = {
     backgroundImage: `url(${
@@ -14,7 +21,7 @@ const Host = (props) => {
   };
   return (
     <div>
-      Session id: idk haha lol
+      Room: haha lol xD
     <div className="App">
       <div className="main-wrapper">
         <div className="now-playing__img">

@@ -37,15 +37,20 @@ app.use(function(req, res, next) {
 
 // Socket IO setup (All socket management is made in this function)
 io.on('connection', (socket)=> {
-  console.log("a user has connected");
+  console.log('a user has connected');
+
+  socket.on('join', ({ name, room }, callback) => {
+    console.log(name, room);
+
+  });
 
   socket.on('disconnect', () => {
-    console.log("a user has left");
+    console.log('a user has left');
   });
 });
 
 server.listen(8081, () => {
-  console.log("server listening on port: 8081");
+  console.log('server listening on port: 8081');
 });
 
 // error handler

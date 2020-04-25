@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as $ from "jquery";
 import '../styles/App.css';
 import Listener from './Listener';
+import Chat from './Chat';
 import Home from './Home';
 import Host from './Host';
 import hash from '../helpers/hash';
@@ -145,6 +146,7 @@ class App extends Component {
           {/* {this.state.apiResponse} */}
           <div>
             <Route exact path='/' component={Home}/>
+            <Route exact path='/chat' component={Chat}/>
             <Route exact path='/listener' component={Listener}/>
             <Route exact path='/host' component={Host}/>
           </div>
