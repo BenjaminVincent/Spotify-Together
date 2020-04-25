@@ -8,7 +8,7 @@ const Home = (props) => {
 
     return (
         <div>
-            Home <br/> <br/>
+            Spotify Listen Together <br/> <br/>
             <Link to='/listener' className="btn btn--loginApp-link">Listen</Link>
             <a
             className="btn btn--loginApp-link"

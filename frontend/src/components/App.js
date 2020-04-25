@@ -141,9 +141,7 @@ class App extends Component {
     return (
       <BrowserRouter>
       <div className="App">
-      
         <header className="App-header">
-          {/* {this.state.apiResponse} */}
           <div>
             <Route exact path='/' component={Home}/>
             <Route exact path='/chat' component={Chat}/>
