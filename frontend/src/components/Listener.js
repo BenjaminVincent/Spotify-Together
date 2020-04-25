@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import "../styles/Listener.css";
 
 const Listener = (props) => {
+    const [name, setName] = useState('');
+    const [room, setRoom] = useState('');
+
     return (
         <div>
-            Listener Component <br/>
-            <input type="text" placeholder="paste id here" autoFocus="true"></input>
-            <br/>
-            <button type="button">join</button>
+        <div className="heading">Join a session</div>
+            <div>
+                <div><input placeholder="Name" className="joinInput" type="text" onChange={(event) => setName(event.target.value)}/></div>
+                <div><input placeholder="Room" className="joinInput"type="text" onChange={(event) => setRoom(event.target.value)}/></div>
+                <div>
+                    <Link onClick={(event) => (!name || !room) ? event.preventDefault() : null} to='/'>
+                        <button className="btn bton--loginApp-link" type="submit">Sign in</button>
+                    </Link>
+                </div>
+            </div>
         </div>
     )
 }
