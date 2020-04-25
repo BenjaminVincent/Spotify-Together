@@ -34,12 +34,18 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+
+// Socket IO setup (All socket management is made in this function)
 io.on('connection', (socket)=> {
   console.log("a user has connected");
+
+  socket.on('disconnect', () => {
+    console.log("a user has left");
+  });
 });
 
-server.listen(80, () => {
-  console.log("server listening on port: 80");
+server.listen(8081, () => {
+  console.log("server listening on port: 8081");
 });
 
 // error handler
