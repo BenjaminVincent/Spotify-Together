@@ -140,15 +140,14 @@ class App extends Component {
     return (
       <BrowserRouter>
       <div className="App">
-        {console.log("api res:", this.state.apiResponse)}
-      <p>{this.state.apiResponse}</p>
+      
         <header className="App-header">
-        
-            <div>
+          {this.state.apiResponse}
+          <div>
             <Route exact path='/' component={Home}/>
             <Route exact path='/listener' component={Listener}/>
             <Route exact path='/host' component={Host}/>
-            </div>
+          </div>
           {this.state.token && (
             <div>
             <Host
