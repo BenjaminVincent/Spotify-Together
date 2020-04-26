@@ -9,7 +9,7 @@ const Home = (props) => {
     return (
         <div>
             Spotify Listen Together <br/> <br/>
-            <Link to='/listener' className="btn btn--loginApp-link">Listen</Link>
+            <Link to='/join' className="btn btn--loginApp-link">join</Link>
             <a
             className="btn btn--loginApp-link"
             href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import * as $ from "jquery";
 import '../styles/App.css';
-import Listener from './Listener';
+import Join from './Join';
 import Chat from './Chat';
 import Home from './Home';
 import Host from './Host';
+import Player from './Player';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route, Link } from 'react-router-dom'; 
 
@@ -61,7 +62,7 @@ class App extends Component {
 
   getDevices(token) {
     $.ajax({
-      url: "https://api.spotify.com/v1/me/player/devices",
+      url: 'https://api.spotify.com/v1/me/player/devices',
       type: "GET",
       beforeSend: xhr => {
         xhr.setRequestHeader("Authorization", "Bearer " + token);
@@ -145,7 +146,7 @@ class App extends Component {
           <div>
             <Route exact path='/' component={Home}/>
             <Route exact path='/chat' component={Chat}/>
-            <Route exact path='/listener' component={Listener}/>
+            <Route exact path='/join' component={Join}/>
             <Route exact path='/host' component={Host}/>
           </div>
           {this.state.token && (
