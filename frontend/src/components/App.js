@@ -151,7 +151,7 @@ class App extends Component {
           </div>
           {this.state.token && (
             <div>
-            <Host
+            <Player
             item={this.state.item ? this.state.item : ""}
             is_playing={this.state.is_playing}
             position_ms={this.state.progress_ms}
