@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 import "../styles/Player.css";
 
 
@@ -24,9 +25,13 @@ const Host = (props) => {
                   setRoomID(randomToken())
                   }}/></div><br/>
           <div>
-          <Link onClick={(event) => !name ? event.preventDefault() : null} to={`/chat?name=${name}&room=${roomID}`}>
+          <a
+            onClick={(event) => !name ? event.preventDefault() : null} 
+            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+            "%20"
+            )}&response_type=token&show_dialog=true`}>
                         <button className="btn bton--loginApp-link" type="submit">join</button>
-          </Link>
+          </a>
           </div>
       </div>
   </div>

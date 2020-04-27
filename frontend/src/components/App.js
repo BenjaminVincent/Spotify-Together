@@ -137,6 +137,7 @@ class App extends Component {
     });
   }
 
+  // Move Player out
 
   render() {
     return (
