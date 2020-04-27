@@ -7,7 +7,8 @@ import Home from './Home';
 import Host from './Host';
 import Player from './Player';
 import hash from '../helpers/hash';
-import {BrowserRouter, Route, Link } from 'react-router-dom'; 
+import {BrowserRouter, Route, Link } from 'react-router-dom';
+import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 
 
 
@@ -35,6 +36,7 @@ class App extends Component {
 
   componentDidMount() {
     let _token = hash.access_token;
+    console.log('_token', _token);
     if (_token) {
       this.setState({
         token: _token
@@ -42,19 +44,18 @@ class App extends Component {
       this.getDevices(_token);
       this.getCurrentlyPlaying(_token);
     }
-    this.callAPI();
   }
 
   filterDevices = (devices) => devices.devices.filter(device => device.is_active);
   
-  callAPI() {
-    fetch('http://localhost:8080/testAPI')
-      .then(res => res.text())
-      .then(res => this.setState({
-        apiResponse: res,
-      }))
-      .catch(err => err);
-  }
+  // callAPI() {
+  //   fetch('http://localhost:8080/testAPI')
+  //     .then(res => res.text())
+  //     .then(res => this.setState({
+  //       apiResponse: res,
+  //     }))
+  //     .catch(err => err);
+  // }
 
 //   componentWillMount() {
 //     this.callAPI();
@@ -142,30 +143,38 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-      <div className="App">   
+      
+      <div className="App"> 
+
         <header className="App-header">
-          <div>
-            <Route exact path='/' component={Home}/>
-            <Route exact path='/chat' component={Chat}/>
-            <Route exact path='/join' component={Join}/>
-            <Route exact path='/host' component={Host}/>
-          </div>
-          {this.state.token && (
-            <div>
-            <Player
-            item={this.state.item ? this.state.item : ""}
-            is_playing={this.state.is_playing}
-            position_ms={this.state.progress_ms}
-            deviceId={this.state.deviceId}
-            />              
-            <button type="button" className="btn btn--pause-play"
-              is_playing={this.state.is_playing}
-              onClick={this.handlePausePlay}
-            >
-              {this.state.is_playing ? "Pause" : "Play"}
-            </button>
-          </div>
-          )}
+          {this.state.token ?
+           <div>
+           <Route exact path='/' component={Home}/>
+           <Route exact path='/chat' component={Chat}/>
+           <Route exact path='/join' component={Join}/>
+           <Route 
+             exact path='/host' 
+             component={() => 
+               <Host 
+                 token={this.state.token}
+                 item={this.state.item ? this.state.item : ""}
+                 is_playing={this.state.is_playing}
+                 // position_ms={this.state.progress_ms}
+                 deviceId={this.state.deviceId}
+                 />}
+             />
+         </div>
+
+         :
+<a
+href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+"%20"
+)}&response_type=token&show_dialog=true`}>
+            <button className="btn bton--loginApp-link" type="submit">authenticate</button>
+</a>  
+        
+        }
+         
         </header>
       </div>
       </BrowserRouter>
@@ -173,3 +182,23 @@ class App extends Component {
   }
 }
 export default App;
+
+
+// {this.state.token && (
+//   <div>
+//   <Player
+  // item={this.state.item ? this.state.item : ""}
+  // is_playing={this.state.is_playing}
+  // position_ms={this.state.progress_ms}
+  // deviceId={this.state.deviceId}
+//   />              
+//   <button type="button" className="btn btn--pause-play"
+//     is_playing={this.state.is_playing}
+//     onClick={this.handlePausePlay}
+//   >
+//     {this.state.is_playing ? "Pause" : "Play"}
+//   </button>
+// </div>
+// )}
+
+

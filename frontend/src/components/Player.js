@@ -11,12 +11,12 @@ const Player = (props) => {
       props.item.album.images[0].url
     })`,
   };
-  const progressBarStyles = {
-    width: (props.position_ms * 100 / props.item.duration_ms) + '%'
-  };
+  // const progressBarStyles = {
+  //   width: (props.position_ms * 100 / props.item.duration_ms) + '%'
+  // };
   return (
     <div>
-      Room: haha lol xD
+      Room: {props.roomID}
     <div className="App">
       <div className="main-wrapper">
         <div className="now-playing__img">
@@ -30,7 +30,7 @@ const Player = (props) => {
            Album: {props.item.album.name}
           </div>
           <div className="progress">
-            <div className="progress__bar" style={progressBarStyles} />
+            {/* <div className="progress__bar" style={progressBarStyles} /> */}
           </div>
         </div>
         <div className="background" style={backgroundStyles} />{" "}
