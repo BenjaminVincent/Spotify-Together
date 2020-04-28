@@ -22,12 +22,13 @@ const Host = (props) => {
 
   return (
      <div className="joinOuterContainer">
-      {token && create === true ? 
+      {token && create ? 
         <div>
-          Name: {name}
+          <div>Host: {name}</div>
+          <div>Room: {roomID} </div>
           <Player
             roomID={roomID}
-            item={item ? item : ""}
+            item={item}
             is_playing={is_playing}
             // position_ms={progress_ms}
             deviceId={deviceId}
@@ -52,9 +53,13 @@ const Host = (props) => {
             setRoomID(randomToken())
             }}/></div><br/>
     <div>
-    <Link onClick={(event) => !name ? event.preventDefault() : null} to={`/host?name=${name}&room=${roomID}`}>
-      <button className="btn bton--loginApp-link" type="submit" onClick={() => setCreate(true)}>join</button>
-      </Link>
+    <Link to={`/host?name=${name}&room=${roomID}`}>
+      <button 
+        className="btn bton--loginApp-link" 
+        type="submit" 
+        onClick={(event) => !name ? event.preventDefault() : setCreate(true)}
+      >join</button>
+    </Link>
     </div>
 </div>
 </div>

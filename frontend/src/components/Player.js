@@ -4,8 +4,6 @@ import "../styles/Player.css";
 
 const Player = (props) => {
 
-  const [roomID, setRoomID] = useState('');
-
   const backgroundStyles = {
     backgroundImage: `url(${
       props.item.album.images[0].url
@@ -16,7 +14,6 @@ const Player = (props) => {
   // };
   return (
     <div>
-      Room: {props.roomID}
     <div className="App">
       <div className="main-wrapper">
         <div className="now-playing__img">
