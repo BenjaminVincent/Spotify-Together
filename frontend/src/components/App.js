@@ -138,8 +138,6 @@ class App extends Component {
     });
   }
 
-  // Move Player out
-
   render() {
     return (
       <BrowserRouter>
@@ -148,31 +146,31 @@ class App extends Component {
 
         <header className="App-header">
           {this.state.token ?
-           <div>
-           <Route exact path='/' component={Home}/>
-           <Route exact path='/chat' component={Chat}/>
-           <Route exact path='/join' component={Join}/>
-           <Route 
-             exact path='/host' 
-             component={() => 
-               <Host 
-                 token={this.state.token}
-                 item={this.state.item ? this.state.item : ""}
-                 is_playing={this.state.is_playing}
-                 // position_ms={this.state.progress_ms}
-                 deviceId={this.state.deviceId}
-                 />}
-             />
-         </div>
-
+            <div>
+              <Route exact path='/' component={Home}/>
+              <Route exact path='/chat' component={Chat}/>
+              <Route exact path='/join' component={Join}/>
+              <Route 
+                exact path='/host' 
+                component={() => 
+                  <Host 
+                    token={this.state.token}
+                    item={this.state.item ? this.state.item : ""}
+                    is_playing={this.state.is_playing}
+                    position_ms={this.state.progress_ms}
+                    deviceId={this.state.deviceId}
+                    handlePausePlay={this.handlePausePlay}
+                    getCurrentlyPlaying={this.getCurrentlyPlaying}
+                    />}
+                />
+              </div>
          :
-<a
-href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-"%20"
-)}&response_type=token&show_dialog=true`}>
-            <button className="btn bton--loginApp-link" type="submit">authenticate</button>
-</a>  
-        
+          <a
+            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+            "%20"
+            )}&response_type=token&show_dialog=true`}>
+                        <button className="btn bton--loginApp-link" type="submit">authenticate</button>
+            </a>  
         }
          
         </header>

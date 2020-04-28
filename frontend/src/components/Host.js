@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 import "../styles/Player.css";
+import '../styles/App.css';
 import Player from './Player';
 
 
@@ -9,55 +10,73 @@ import Player from './Player';
 
 
 const Host = (props) => {
-  console.log('host props:', props);
 
-  const { token, item, is_playing, position_ms, deviceId } = props;
-  const [name, setName] = useState('');
-  const [roomID, setRoomID] = useState('');
-  const [create, setCreate] = useState(false);
+  const { 
+    token, 
+    item, 
+    is_playing, 
+    progress_ms, 
+    deviceId, 
+    handlePausePlay,
+    getCurrentlyPlaying,
+  } = props;
 
-  function randomToken() {
+  const generateID = () => {
     return Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+    
   }
+
+  const [name, setName] = useState('');
+  const [roomID, setRoomID] = useState(generateID);
+  const [create, setCreate] = useState();
+
+
 
   return (
      <div className="joinOuterContainer">
-      {token && create ? 
+       {console.log("is_playing:", is_playing)}
+      {create ? 
         <div>
           <div>Host: {name}</div>
           <div>Room: {roomID} </div>
           <Player
-            roomID={roomID}
+
             item={item}
             is_playing={is_playing}
-            // position_ms={progress_ms}
+            position_ms={progress_ms}
             deviceId={deviceId}
           />              
-        <button type="button" className="btn btn--pause-play"
-          is_playing={is_playing}
-          // onClick={handlePausePlay}
+        <button 
+          type="button" 
+          className="btn btn--pause-play"
+          onClick={() => {
+            handlePausePlay();
+            getCurrentlyPlaying(token);
+          }}
         >
           {is_playing ? "Pause" : "Play"}
         </button>
-</div>
+      </div>
   :
   <div>
 <div className="heading">Host session</div><br/>
 <div>
-    <div><input 
+    <div>
+      <input 
           placeholder="Display Name" 
           className="joinInput" 
           type="text" 
           onChange={(event) => {
-            setName(event.target.value)
-            setRoomID(randomToken())
+            setName(event.target.value);
             }}/></div><br/>
     <div>
-    <Link to={`/host?name=${name}&room=${roomID}`}>
+    <Link onClick={() => {
+      setCreate(true);
+      }} to={`/host?name=${name}&roomID=${roomID}`}>
       <button 
-        className="btn bton--loginApp-link" 
+        className="btn btn--loginApp-link" 
         type="submit" 
-        onClick={(event) => name ? setCreate(true) : event.preventDefault()}
+        onClick={(event) => name ? null : event.preventDefault()}
       >join</button>
     </Link>
     </div>
@@ -71,15 +90,6 @@ const Host = (props) => {
 }
 
 export default Host;
-
-
-/*
-token && name ?
-  load the Player and Chat
-  :
-  load the host session
-*/
-
 
 
       
