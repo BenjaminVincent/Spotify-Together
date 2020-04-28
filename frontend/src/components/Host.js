@@ -57,7 +57,7 @@ const Host = (props) => {
       <button 
         className="btn bton--loginApp-link" 
         type="submit" 
-        onClick={(event) => !name ? event.preventDefault() : setCreate(true)}
+        onClick={(event) => name ? setCreate(true) : event.preventDefault()}
       >join</button>
     </Link>
     </div>
