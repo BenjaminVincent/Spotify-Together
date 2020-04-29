@@ -6,9 +6,6 @@ import '../styles/App.css';
 import Player from './Player';
 
 
-// This component must contain the Player
-
-
 const Host = (props) => {
 
   const { 
@@ -19,23 +16,22 @@ const Host = (props) => {
     deviceId, 
     handlePausePlay,
     getCurrentlyPlaying,
+    created,
+    setCreatedRoom,
+    roomID,
+    name,
+    setHostName,
   } = props;
-
-  const generateID = () => {
-    return Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
-    
-  }
-
-  const [name, setName] = useState('');
-  const [roomID, setRoomID] = useState(generateID);
-  const [create, setCreate] = useState();
+ 
+  // const [name, setName] = useState('');
+  // const [roomID, setRoomID] = useState(generateID);
 
 
-
+  console.log("create", created);
   return (
      <div className="joinOuterContainer">
        {console.log("is_playing:", is_playing)}
-      {create ? 
+      {created ? 
         <div>
           <div>Host: {name}</div>
           <div>Room: {roomID} </div>
@@ -50,6 +46,7 @@ const Host = (props) => {
           type="button" 
           className="btn btn--pause-play"
           onClick={() => {
+            console.log('clicked');
             handlePausePlay();
             getCurrentlyPlaying(token);
           }}
@@ -67,16 +64,16 @@ const Host = (props) => {
           className="joinInput" 
           type="text" 
           onChange={(event) => {
-            setName(event.target.value);
+            name = event.target.value;
+            setHostName(name);
             }}/></div><br/>
     <div>
     <Link onClick={() => {
-      setCreate(true);
       }} to={`/host?name=${name}&roomID=${roomID}`}>
       <button 
         className="btn btn--loginApp-link" 
         type="submit" 
-        onClick={(event) => name ? null : event.preventDefault()}
+        onClick={(event) => name ? setCreatedRoom() : event.preventDefault()}
       >join</button>
     </Link>
     </div>

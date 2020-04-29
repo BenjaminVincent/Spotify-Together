@@ -30,6 +30,9 @@ class App extends Component {
     progress_ms: 0,
     deviceId: "",
     apiResponse: "",
+    created: false,
+    roomID: this.generateID(),
+    name: '',
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };
@@ -76,6 +79,12 @@ class App extends Component {
       },
     });
   }
+
+  setCreatedRoom = () => this.setState({ created: !this.state.created });
+  
+  generateID = () => Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+
+  setHostName = (name) => this.setState({ name: name });
 
 
   getCurrentlyPlaying(token) {
@@ -161,6 +170,11 @@ class App extends Component {
                     deviceId={this.state.deviceId}
                     handlePausePlay={this.handlePausePlay}
                     getCurrentlyPlaying={this.getCurrentlyPlaying}
+                    created={this.state.created}
+                    setCreatedRoom={this.setCreatedRoom}
+                    roomID={this.state.roomID}
+                    setHostName={this.setHostName}
+                    name={this.state.name}
                     />}
                 />
               </div>
