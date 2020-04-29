@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 import "../styles/Player.css";
 import '../styles/App.css';
@@ -19,12 +20,16 @@ const Host = (props) => {
     created,
     setCreatedRoom,
     roomID,
-    name,
-    setHostName,
   } = props;
  
-  // const [name, setName] = useState('');
+  const [name, setName] = useState('');
+
   // const [roomID, setRoomID] = useState(generateID);
+
+  useEffect(() => {
+    const { name } = queryString.parse(window.location.search);
+    setName(name);
+  }, [window.location.search]);
 
 
   console.log("create", created);
@@ -64,12 +69,11 @@ const Host = (props) => {
           className="joinInput" 
           type="text" 
           onChange={(event) => {
-            name = event.target.value;
-            setHostName(name);
+            setName(event.target.value);
             }}/></div><br/>
     <div>
-    <Link onClick={() => {
-      }} to={`/host?name=${name}&roomID=${roomID}`}>
+    <Link
+      to={`/host?name=${name}&roomID=${roomID}`}>
       <button 
         className="btn btn--loginApp-link" 
         type="submit" 
