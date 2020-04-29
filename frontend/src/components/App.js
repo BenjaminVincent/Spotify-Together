@@ -31,7 +31,7 @@ class App extends Component {
     deviceId: "",
     apiResponse: "",
     created: false,
-    roomID: this.generateID(),
+    room: this.generateID(),
     // name: '',
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
@@ -172,7 +172,7 @@ class App extends Component {
                     getCurrentlyPlaying={this.getCurrentlyPlaying}
                     created={this.state.created}
                     setCreatedRoom={this.setCreatedRoom}
-                    roomID={this.state.roomID}
+                    room={this.state.room}
                     />}
                 />
               </div>

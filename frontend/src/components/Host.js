@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
-import "../styles/Player.css";
+import '../styles/Player.css';
 import '../styles/App.css';
+import Chat from './Chat';
 import Player from './Player';
 
 
@@ -19,29 +20,23 @@ const Host = (props) => {
     getCurrentlyPlaying,
     created,
     setCreatedRoom,
-    roomID,
+    room,
   } = props;
  
   const [name, setName] = useState('');
-
-  // const [roomID, setRoomID] = useState(generateID);
 
   useEffect(() => {
     const { name } = queryString.parse(window.location.search);
     setName(name);
   }, [window.location.search]);
 
-
-  console.log("create", created);
   return (
      <div className="joinOuterContainer">
-       {console.log("is_playing:", is_playing)}
       {created ? 
         <div>
           <div>Host: {name}</div>
-          <div>Room: {roomID} </div>
+          <div>Room: {room} </div>
           <Player
-
             item={item}
             is_playing={is_playing}
             position_ms={progress_ms}
@@ -51,13 +46,13 @@ const Host = (props) => {
           type="button" 
           className="btn btn--pause-play"
           onClick={() => {
-            console.log('clicked');
             handlePausePlay();
             getCurrentlyPlaying(token);
           }}
         >
           {is_playing ? "Pause" : "Play"}
         </button>
+        <div><Chat/></div>
       </div>
   :
   <div>
@@ -73,7 +68,7 @@ const Host = (props) => {
             }}/></div><br/>
     <div>
     <Link
-      to={`/host?name=${name}&roomID=${roomID}`}>
+      to={`/host?name=${name}&room=${room}`}>
       <button 
         className="btn btn--loginApp-link" 
         type="submit" 

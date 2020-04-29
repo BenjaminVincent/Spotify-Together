@@ -17,7 +17,7 @@ const Chat = ({ location }) => {
     const ENDPOINT = 'localhost:8081';
 
     useEffect(() => {
-        const { name, room } = queryString.parse(location.search);
+        const { name, room } = queryString.parse(window.location.search);
 
         socket = io(ENDPOINT);
         setName(name);
@@ -30,7 +30,7 @@ const Chat = ({ location }) => {
             socket.emit('disconnect');
             socket.off();
         }
-    }, [ENDPOINT, location.search]);
+    }, [ENDPOINT, window.location.search]);
 
     useEffect(() => {
         socket.on('message', (message) => {
@@ -52,7 +52,7 @@ const Chat = ({ location }) => {
     return (
         <div>
             <div>
-                <InfoBar room={room}/>
+                <InfoBar/>
                 <Messages
                     messages={messages}
                     name={name}
