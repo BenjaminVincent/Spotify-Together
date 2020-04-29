@@ -21,14 +21,16 @@ const Host = (props) => {
     created,
     setCreatedRoom,
     room,
+    setHostName,
+    name,
   } = props;
  
-  const [name, setName] = useState('');
+  const [nameTemp, setNameTemp] = useState('');
 
-  useEffect(() => {
+  /*useEffect(() => {
     const { name } = queryString.parse(window.location.search);
     setName(name);
-  }, [window.location.search]);
+  }, [window.location.search]);*/
 
   return (
      <div className="joinOuterContainer">
@@ -64,15 +66,18 @@ const Host = (props) => {
           className="joinInput" 
           type="text" 
           onChange={(event) => {
-            setName(event.target.value);
+            setNameTemp(event.target.value);
             }}/></div><br/>
     <div>
     <Link
-      to={`/host?name=${name}&room=${room}`}>
+      to={`/host?name=${nameTemp}&room=${room}`}>
       <button 
         className="btn btn--loginApp-link" 
         type="submit" 
-        onClick={(event) => name ? setCreatedRoom() : event.preventDefault()}
+        onClick={(event) => {
+          setHostName(nameTemp);
+          nameTemp ? setCreatedRoom() : event.preventDefault();
+        }}
       >join</button>
     </Link>
     </div>

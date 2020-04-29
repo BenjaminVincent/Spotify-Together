@@ -173,6 +173,8 @@ class App extends Component {
                     created={this.state.created}
                     setCreatedRoom={this.setCreatedRoom}
                     room={this.state.room}
+                    setHostName={this.setHostName}
+                    name={this.state.name}
                     />}
                 />
               </div>
