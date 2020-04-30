@@ -7,7 +7,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "ajax": "0.0.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "node-static": "^0.7.10",
     "peerjs": "^1.2.0",
     "query-string": "^6.12.1",
