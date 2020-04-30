@@ -26,7 +26,7 @@ const Host = (props) => {
   const [nameTemp, setNameTemp] = useState('');
 
   return (
-     <div className="joinOuterContainer">
+     <div className='joinOuterContainer'>
       {created ? 
         <div>
           <div>Host: {name}</div>
@@ -38,26 +38,26 @@ const Host = (props) => {
             deviceId={deviceId}
           />              
         <button 
-          type="button" 
-          className="btn btn--pause-play"
+          type='button' 
+          className='btn btn--pause-play'
           onClick={() => {
             handlePausePlay();
             getCurrentlyPlaying(token);
           }}
         >
-          {is_playing ? "Pause" : "Play"}
+          {is_playing ? 'Pause' : 'Play'}
         </button>
         <div><Chat/></div>
       </div>
   :
   <div>
-<div className="heading">Host session</div><br/>
+<div className='heading'>Host session</div><br/>
 <div>
     <div>
       <input 
-          placeholder="Display Name" 
-          className="joinInput" 
-          type="text" 
+          placeholder='Display Name' 
+          className='joinInput' 
+          type='text' 
           onChange={(event) => {
             setNameTemp(event.target.value);
             }}/></div><br/>
@@ -65,8 +65,8 @@ const Host = (props) => {
     <Link
       to={`/host?name=${nameTemp}&room=${room}`}>
       <button 
-        className="btn btn--loginApp-link" 
-        type="submit" 
+        className='btn btn--loginApp-link' 
+        type='submit' 
         onClick={(event) => {
           setHostName(nameTemp);
           nameTemp ? setCreatedRoom() : event.preventDefault();
@@ -84,27 +84,3 @@ const Host = (props) => {
 }
 
 export default Host;
-
-
-      
-/* <div className="heading">Host session</div><br/>
-<div>
-    <div><input 
-          placeholder="Display Name" 
-          className="joinInput" 
-          type="text" 
-          onChange={(event) => {
-            setName(event.target.value)
-            setRoomID(randomToken())
-            }}/></div><br/>
-    <div>
-    <a
-      onClick={(event) => !name ? event.preventDefault() : null} 
-      href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-      "%20"
-      )}&response_type=token&show_dialog=true`}>
-                  <button className="btn bton--loginApp-link" type="submit">join</button>
-    </a>
-    </div>
-</div> */
-
