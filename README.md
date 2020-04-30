@@ -1,17 +1,20 @@
 
-# Spotify Listen together
+# Listen together
 
-Listen together is a project that allows people to listen to music together!
+Listen Together is a project that allows friends to listen to spotify together!
 
 ## Stack
 
 - React
 - Spotify API
 - jQuery
+- NodeJS
+- SocketIO
 
-## Currently Study
-- Chrome api tabCapture: [source](https://developer.chrome.com/extensions/samples#search:tabcapture)
-- WebRTC Study: [source](https://www.html5rocks.com/en/tutorials/webrtc/basics/)
+## To use Listen Together you must:
+- have spotify open
+- Authenticate and agree
+
 
 ## Contributers
 - Benjamin Vincent (BenjaminVincent)
