@@ -13,7 +13,7 @@ Listen Together is a project that allows friends to listen to spotify together!
 
 ## To use Listen Together you must:
 - have spotify open
-- Authenticate and agree
+- authorize and agree
 
 
 ## Contributers
