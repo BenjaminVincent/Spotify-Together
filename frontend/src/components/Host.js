@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import queryString from 'query-string';
-import { authEndpoint, clientId, redirectUri, scopes } from "../helpers/authConfig";
 import '../styles/Player.css';
 import '../styles/App.css';
 import Chat from './Chat';
@@ -26,11 +24,6 @@ const Host = (props) => {
   } = props;
  
   const [nameTemp, setNameTemp] = useState('');
-
-  /*useEffect(() => {
-    const { name } = queryString.parse(window.location.search);
-    setName(name);
-  }, [window.location.search]);*/
 
   return (
      <div className="joinOuterContainer">
