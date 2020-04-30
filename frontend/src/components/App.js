@@ -177,13 +177,21 @@ class App extends Component {
                     />}
                 />
               </div>
-         :
-          <a
-            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-            "%20"
-            )}&response_type=token&show_dialog=true`}>
-                        <button className="btn bton--loginApp-link" type="submit">authenticate</button>
-            </a>  
+        :
+        <div>
+        <div className='App-auth'>
+          <ul className='App-preface'>To use Listen Together you must: <br/>
+            <li>have spotify open</li>
+            <li>authenticate and agree</li>
+          </ul>
+          <a 
+            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+             <button className='btn bton--loginApp-link' type="submit">
+              authenticate
+              </button>
+          </a>
+        </div>
+        </div>
         }
          
       </div>

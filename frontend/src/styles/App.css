@@ -1,32 +1,25 @@
 
 .App-base {
   background-color: #282c34;
-  min-height: 100vh;
   font-size: calc(10px + 2vmin);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App-auth {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: calc(10px + 2vmin);
+  min-height: 100vh;
   color: #1ecd97;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-preface {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  margin-bottom: 8rem;
 }
 
 * {
@@ -62,6 +55,7 @@ body {
   padding: 0.7em 1.5em;
   text-transform: uppercase;
   transition: all 0.25s ease;
+  text-decoration: underline;
 }
 
 .btn:hover {
@@ -76,6 +70,7 @@ body {
 .btn--pause-play {
   z-index: 999;
 }
+
 /** Background **/
 
 .background {
