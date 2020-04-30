@@ -151,9 +151,8 @@ class App extends Component {
     return (
       <BrowserRouter>
       
-      <div className="App"> 
+      <div className='App-base'> 
 
-        <header className="App-header">
           {this.state.token ?
             <div>
               <Route exact path='/' component={Home}/>
@@ -187,7 +186,6 @@ class App extends Component {
             </a>  
         }
          
-        </header>
       </div>
       </BrowserRouter>
     );

@@ -7,7 +7,7 @@ const Home = (props) => {
 
     return (
         <div>
-            Spotify Listen Together <br/> <br/>
+            Listen Together <br/> <br/>
             <Link to='/join' className="btn btn--loginApp-link">join</Link>
             <Link to='/host' className="btn btn--loginApp-link">host</Link>
 
