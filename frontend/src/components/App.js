@@ -10,26 +10,37 @@ import {BrowserRouter, Route } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
 
 
+
+/*
+  Goal: remove api calls and state that rely on constant updating and move to appropriate component
+
+
+  What can stay?
+    State: token,
+
+
+*/
+
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       token: null,
-    item: {
-      album: {
-        images: [{ url: '' }]
+      item: {
+        album: {
+          images: [{ url: '' }]
+        },
+        name: '',
+        artists: [{ name: '' }],
+        duration_ms:0,
       },
-      name: '',
-      artists: [{ name: '' }],
-      duration_ms:0,
-    },
-    is_playing: false,
-    progress_ms: 0,
-    deviceId: '',
-    apiResponse: '',
-    created: false,
-    room: this.generateID(),
+      is_playing: false,
+      progress_ms: 0,
+      deviceId: '',
+      apiResponse: '',
+      created: false,
+      room: this.generateID(),
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   };

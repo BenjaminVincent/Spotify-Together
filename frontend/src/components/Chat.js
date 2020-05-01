@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
-import "../styles/Chat.css";
+import '../styles/Chat.css';
 import InfoBar from './InfoBar';
 import Input from './Input';
 import Messages from './Messages';
