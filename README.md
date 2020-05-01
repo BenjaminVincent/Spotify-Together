@@ -1,10 +1,8 @@
 
 # Listen together
-
 Listen Together is a project that allows friends to listen to spotify together!
 
 ## Stack
-
 - React
 - Spotify API
 - jQuery
