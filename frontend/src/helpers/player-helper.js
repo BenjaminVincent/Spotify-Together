@@ -10,7 +10,10 @@ export const getDevices = (token) => {
       }
     })
       .then(res => res.json())
-      .then(data => console.log('data', data))
+      .then(data => {
+        const activeDevice = filterDevices(data);
+        return activeDevice[0].id;
+      })
       .catch(err => err);
   }
 
