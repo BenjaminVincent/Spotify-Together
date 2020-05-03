@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ProgressBar from './ProgressBar';
 import '../styles/Player.css';
 import { filterDevices } from '../helpers/player-helper.js';
 import * as $ from 'jquery';
@@ -13,6 +14,7 @@ const Player = ({ token }) => {
   const [artist, setArtist] = useState('');
   const [album, setAlbum] = useState('');
   const [image, setImage] = useState('');
+  const [fetchDate, setFetchDate] = useState();
 
   const getDevices = (token) => {
     fetch('https://api.spotify.com/v1/me/player/devices', {
@@ -43,50 +45,50 @@ const Player = ({ token }) => {
         setPlaying(data.is_playing);
         setItem(data.item);
         setProgress(data.progress_ms);
+        setFetchDate(Date.now());
         setArtist(data.item.artists[0].name);
         setAlbum(data.item.album.name);
         setImage(data.item.album.images[0].url);
-        console.log('progress', data.progress_ms);
-        console.log('item', data.item);
+ 
       })
       .catch(err => err);
   }
 
-const pauseCurrent = (token) => {
-  $.ajax({
-    url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
-    type: 'PUT',
-    beforeSend: xhr => {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-      getCurrentlyPlaying(token);
-    },
-    success: () => {
-      setPlaying(false);
-    },
-    error: function(error) { 
-      console.log("Status: " + error); //alert("Error: " + errorThrown); 
-  }
-  });
-}
-
-const playCurrent = (token) => {
-  $.ajax({
-    url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
-    type: 'PUT',
-    beforeSend: xhr => {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-      getCurrentlyPlaying(token);
-    },
-    success: () => {
-      setPlaying(true);
+  const pauseCurrent = (token) => {
+    $.ajax({
+      url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
+      type: 'PUT',
+      beforeSend: xhr => {
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        getCurrentlyPlaying(token);
+      },
+      success: () => {
+        setPlaying(false);
+      },
+      error: function(error) { 
+        console.log("Status: " + error); //alert("Error: " + errorThrown); 
     }
-  });
-}
+    });
+  }
 
-const handlePausePlay = () => {
-  console.log('playing', playing);
-  playing ? pauseCurrent(token) : playCurrent(token);
-}
+  const playCurrent = (token) => {
+    $.ajax({
+      url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
+      type: 'PUT',
+      beforeSend: xhr => {
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        getCurrentlyPlaying(token);
+      },
+      success: () => {
+        setPlaying(true);
+      }
+    });
+  }
+
+  const handlePausePlay = () => {
+    console.log('playing', playing);
+    playing ? pauseCurrent(token) : playCurrent(token);
+  }
 
   useEffect(() => {
     getDevices(token);
@@ -97,9 +99,7 @@ const handlePausePlay = () => {
     backgroundImage: `url(${image})`,
   };
 
-  const progressBarStyles = {
-    width: (progress * 100 / item.duration_ms) + '%'
-  };
+
 
   return (
     <div className='App'>
@@ -113,9 +113,12 @@ const handlePausePlay = () => {
            Artist: {artist} <br/>
            Album: {album}
           </div>
-          <div className='progress'>
-            <div className='progress__bar' style={progressBarStyles} />
-          </div>
+            <ProgressBar
+              fetchDate={fetchDate}
+              progress={progress}
+              item={item}
+              playing={playing}
+            />
           <div className='background' style={backgroundStyles} />{' '}
         </div>
       </div>
