@@ -66,7 +66,7 @@ const Player = ({ token }) => {
         setPlaying(false);
       },
       error: function(error) { 
-        console.log("Status: " + error); //alert("Error: " + errorThrown); 
+        console.log("Status: " + error);
     }
     });
   }
