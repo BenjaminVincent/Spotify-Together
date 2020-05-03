@@ -118,8 +118,7 @@ const Player = ({ token }) => {
             />
           <div className='background' style={backgroundStyles} />{' '}
         </div>
-      </div>
-      <button 
+        <button 
         type='button' 
         className='btn btn--pause-play'
         onClick={() => {
@@ -128,6 +127,8 @@ const Player = ({ token }) => {
         >
         {playing ? 'Pause' : 'Play'}
       </button> 
+      </div>
+
     </div>
   );
 }
