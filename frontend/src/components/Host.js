@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { generateID } from '../helpers/player-helper.js';
 import '../styles/Player.css';
 import '../styles/App.css';
+import '../styles/Host.css';
 import Chat from './Chat';
 import Player from './Player';
 
@@ -19,17 +20,17 @@ const Host = (props) => {
   const [room, setRoom] = useState(generateID);
 
   return (
-     <div className='joinOuterContainer'>
+     <div>
       {created ? 
-        <div>
+        <div className='host-session'>
           <div>Host: {name}</div>
           <div>Room: {room}</div>
           <Player token={token}/>              
 
-        <div><Chat/></div>
+        <div className='joinOuterContainer'><Chat/></div>
       </div>
   :
-  <div>
+  <div className='joinOuterContainer'>
 <div className='heading'>Host session</div><br/>
 <div>
     <div>
