@@ -31,5 +31,4 @@ const ProgressBar = ({ fetchDate, progress, item, playing }) => {
   }
 }
 
-
 export default ProgressBar;

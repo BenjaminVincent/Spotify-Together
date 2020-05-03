@@ -86,7 +86,6 @@ const Player = ({ token }) => {
   }
 
   const handlePausePlay = () => {
-    console.log('playing', playing);
     playing ? pauseCurrent(token) : playCurrent(token);
   }
 
@@ -98,8 +97,6 @@ const Player = ({ token }) => {
   const backgroundStyles = {
     backgroundImage: `url(${image})`,
   };
-
-
 
   return (
     <div className='App'>
@@ -136,15 +133,3 @@ const Player = ({ token }) => {
 }
 
 export default Player;
-
-/* <button 
-type='button' 
-className='btn btn--pause-play'
-onClick={() => {
-  handlePausePlay();
-  getCurrentlyPlaying(token);
-}}
->
-{is_playing ? 'Pause' : 'Play'}
-</button> */
-
