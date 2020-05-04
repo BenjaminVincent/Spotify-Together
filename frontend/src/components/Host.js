@@ -5,7 +5,7 @@ import '../styles/Player.css';
 import '../styles/App.css';
 import '../styles/Host.css';
 import Chat from './Chat';
-import Player from './Player';
+
 
 
 const Host = ({ token }) => {

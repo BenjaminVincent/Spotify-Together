@@ -64,6 +64,14 @@ io.on('connection', (socket)=> {
       io.to(user.room).emit('test', { key: 'left' });
     }
   });
+
+  socket.on('sendData', (data, callback) => {
+    const user = getUser(socket.id);
+    console.log('user', user);
+    console.log('data', data);
+
+    callback();
+  });
 });
 
 server.listen(8081, () => {

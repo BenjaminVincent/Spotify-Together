@@ -4,9 +4,12 @@ import '../styles/Player.css';
 import { filterDevices } from '../helpers/player-helper.js';
 import * as $ from 'jquery';
 import queryString from 'query-string';
+import io from 'socket.io-client';
+
+let socket;
 
 
-const Player = ({ token }) => {
+const PlayerJoin = ({ token, name, room }) => {
 
   const [device, setDevice] = useState('');
   const [playing, setPlaying] = useState('');
@@ -102,6 +105,36 @@ const Player = ({ token }) => {
     checkPermission();
   }, [])
 
+  
+  const ENDPOINT = 'localhost:8081';
+
+  useEffect(() => {
+
+    socket = io(ENDPOINT);
+
+
+    socket.emit('join', { name, room }, () => {});
+
+      // on dismount of component
+    return () => {
+        socket.emit('disconnect');
+        socket.off();
+    }
+  }, [ENDPOINT]);
+
+  useEffect(() => {
+    socket.on('test', (message) => {
+        console.log('test', message);
+    });
+    sendData(data);
+  }, [data]);
+
+  const sendData = (data) => {
+    socket.emit('sendData', data, () => {
+      console.log('data', data);
+    });
+  };
+
   const backgroundStyles = {
     backgroundImage: `url(${image})`,
   };
@@ -142,4 +175,4 @@ const Player = ({ token }) => {
   );
 }
 
-export default Player;
+export default PlayerJoin;

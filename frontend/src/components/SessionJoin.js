@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Player from './Player';
+// import Player from './Player';
 import Chat from './Chat';
 import io from 'socket.io-client';
 import queryString from 'query-string';
@@ -34,7 +34,7 @@ const SessionJoin = ({ token }) => {
       <div className='host-session'>
         <div>Host: {name}</div>
         <div>Room: {room}</div>
-        <Player token={token}/>              
+        {/* <Player token={token}/>               */}
 
         {/* <div className='joinOuterContainer'><Chat/></div> */}
       </div>
