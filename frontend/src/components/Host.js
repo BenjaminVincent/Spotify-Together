@@ -9,9 +9,7 @@ import Player from './Player';
 
 
 
-const Host = (props) => {
-
-  const { token } = props;
+const Host = ({ token }) => {
  
   const [name, setName] = useState('');
 
@@ -27,7 +25,7 @@ const Host = (props) => {
           <div>Room: {room}</div>
           <Player token={token}/>              
 
-        <div className='joinOuterContainer'><Chat/></div>
+        {/* <div className='joinOuterContainer'><Chat/></div> */}
       </div>
   :
   <div className='joinOuterContainer'>

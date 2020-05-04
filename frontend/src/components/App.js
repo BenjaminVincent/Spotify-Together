@@ -37,7 +37,11 @@ class App extends Component {
             <div>
               <Route exact path='/' component={Home}/>
               <Route exact path='/chat' component={Chat}/>
-              <Route exact path='/join' component={Join}/>
+              <Route 
+                exact path='/join' 
+                component={() => 
+                  <Join token={this.state.token}/>}
+              />
               <Route 
                 exact path='/host' 
                 component={() => 

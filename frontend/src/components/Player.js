@@ -3,6 +3,7 @@ import ProgressBar from './ProgressBar';
 import '../styles/Player.css';
 import { filterDevices } from '../helpers/player-helper.js';
 import * as $ from 'jquery';
+import queryString from 'query-string';
 
 
 const Player = ({ token }) => {
@@ -15,6 +16,7 @@ const Player = ({ token }) => {
   const [album, setAlbum] = useState('');
   const [image, setImage] = useState('');
   const [fetchDate, setFetchDate] = useState();
+  const [data, setData] = useState({});
 
   const getDevices = (token) => {
     fetch('https://api.spotify.com/v1/me/player/devices', {
@@ -49,7 +51,7 @@ const Player = ({ token }) => {
         setArtist(data.item.artists[0].name);
         setAlbum(data.item.album.name);
         setImage(data.item.album.images[0].url);
- 
+        setData(data);
       })
       .catch(err => err);
   }
@@ -89,9 +91,15 @@ const Player = ({ token }) => {
     playing ? pauseCurrent(token) : playCurrent(token);
   }
 
+  const checkPermission = () => {
+    const url = window.location.href;
+    return url.includes('join') ? false : true;
+  }
+
   useEffect(() => {
     getDevices(token);
     getCurrentlyPlaying(token);
+    checkPermission();
   }, [])
 
   const backgroundStyles = {
@@ -118,6 +126,7 @@ const Player = ({ token }) => {
             />
           <div className='background' style={backgroundStyles} />{' '}
         </div>
+        {(checkPermission()) ?
         <button 
         type='button' 
         className='btn btn--pause-play'
@@ -126,7 +135,7 @@ const Player = ({ token }) => {
         }}
         >
         {playing ? 'Pause' : 'Play'}
-      </button> 
+      </button> : null}
       </div>
 
     </div>
