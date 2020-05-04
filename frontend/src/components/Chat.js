@@ -31,7 +31,7 @@ const Chat = ({ location }) => {
             socket.off();
         }
     }, [ENDPOINT]);
-
+///////////////////////////////////////////////////////////////////////////////////////
     useEffect(() => {
         socket.on('message', (message) => {
             console.log('message', message);
