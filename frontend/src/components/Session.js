@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import ProgressBar from './ProgressBar';
-import '../styles/Player.css';
+import Player from './Player';
+import Chat from './Chat';
+import queryString from 'query-string';
 import { filterDevices } from '../helpers/player-helper.js';
 import * as $ from 'jquery';
-import queryString from 'query-string';
 import io from 'socket.io-client';
 
 let socket;
 
 
-const PlayerJoin = ({ token, name, room }) => {
+const Session = ({ token }) => {
 
+  const [name, setName] = useState('');
+  const [room, setRoom] = useState('');
   const [device, setDevice] = useState('');
   const [playing, setPlaying] = useState('');
   const [item, setItem] = useState('');
@@ -20,6 +22,17 @@ const PlayerJoin = ({ token, name, room }) => {
   const [image, setImage] = useState('');
   const [fetchDate, setFetchDate] = useState();
   const [data, setData] = useState({});
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+
+  const ENDPOINT = 'localhost:8081';
+
+  const host = !window.location.href.includes('join');
+
+
+
+  // API Calls
+  ////////////////////////////////////////////////////////////////////////
 
   const getDevices = (token) => {
     fetch('https://api.spotify.com/v1/me/player/devices', {
@@ -90,89 +103,106 @@ const PlayerJoin = ({ token, name, room }) => {
     });
   }
 
-  const handlePausePlay = () => {
-    playing ? pauseCurrent(token) : playCurrent(token);
-  }
-
-  const checkPermission = () => {
-    const url = window.location.href;
-    return url.includes('join') ? false : true;
-  }
+  //Socket.io
+  //////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    getDevices(token);
-    getCurrentlyPlaying(token);
-    checkPermission();
-  }, [])
-
-  
-  const ENDPOINT = 'localhost:8081';
-
-  useEffect(() => {
+    const { name, room } = queryString.parse(window.location.search);
 
     socket = io(ENDPOINT);
-
+    setName(name);
+    setRoom(room);
 
     socket.emit('join', { name, room }, () => {});
 
-      // on dismount of component
+    if(!host) {
+      socket.on('data', (song_data) => {
+          console.log('data', song_data.is_playing);
+          setPlaying(song_data.is_playing);
+          setItem(song_data.item);
+          setProgress(song_data.progress_ms);
+          setFetchDate(Date.now());
+          setArtist(song_data.item.artists[0].name);
+          setAlbum(song_data.item.album.name);
+          setImage(song_data.item.album.images[0].url);
+          setData(song_data);
+      });
+    }
+
+    // on dismount of component
     return () => {
         socket.emit('disconnect');
         socket.off();
     }
-  }, [ENDPOINT]);
+}, [ENDPOINT]);
+
+useEffect(() => {
+    socket.on('message', (message) => {
+        console.log('message', message);
+        setMessages([...messages, message]);
+    });
+}, [messages]);
+
+const sendMessage = (event) => {
+    event.preventDefault(); // make sure page doesn't refresh on keypress
+    if (message) {
+        socket.emit('sendMessage', message, () => {
+            setMessage('');
+        });
+    }
+};
+
+  const sendData = () => {
+    socket.emit('sendData', data, () => {
+    });
+  };
+
+
+  //Other functions
+  /////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    socket.on('test', (message) => {
-        console.log('test', message);
-    });
-    sendData(data);
-  }, [data]);
+    const { name, room } = queryString.parse(window.location.search);
 
-  const sendData = (data) => {
-    socket.emit('sendData', data, () => {
-      console.log('data', data);
-    });
-  };
+    setName(name);
+    setRoom(room);
 
-  const backgroundStyles = {
-    backgroundImage: `url(${image})`,
-  };
+    getDevices(token);
+    getCurrentlyPlaying(token);
+  }, [])
+
+  const handlePausePlay = () => {
+    playing ? pauseCurrent(token) : playCurrent(token);
+  }
 
   return (
-    <div className='App'>
-      <div className='main-wrapper'>
-        <div className='now-playing__img'>
-          <img src={image} alt='not found'/>
-        </div>
-        <div className='now-playing__side'>
-          <div className='now-playing__name'>{item.name}</div>
-          <div className='now-playing__artist'>
-           Artist: {artist} <br/>
-           Album: {album}
-          </div>
-            <ProgressBar
-              fetchDate={fetchDate}
-              progress={progress}
-              item={item}
-              playing={playing}
-            />
-          <div className='background' style={backgroundStyles} />{' '}
-        </div>
-        {(checkPermission()) ?
-        <button 
-        type='button' 
-        className='btn btn--pause-play'
-        onClick={() => {
-          handlePausePlay();
-        }}
-        >
-        {playing ? 'Pause' : 'Play'}
-      </button> : null}
-      </div>
+    <div>
+      <div className='host-session'>
+        <div>Host: {name}</div>
+        <div>Room: {room}</div>
+        <Player
+          playing={playing}
+          item={item}
+          progress={progress}
+          artist={artist}
+          album={album}
+          image={image}
+          fetchDate={fetchDate}
+          handlePausePlay={handlePausePlay}
+          sendData={sendData}
+          host={host}
+          />              
 
+        <div className='joinOuterContainer'><Chat
+          message={message}
+          setMessage={setMessage}
+          messages={messages}
+          sendMessage={sendMessage}
+          name={name}
+        /></div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default PlayerJoin;
+export default Session;

@@ -38,41 +38,52 @@ app.use(function(req, res, next) {
 
 
 // Socket IO setup (All socket management is made in this function)
+
 io.on('connection', (socket)=> {
+
   socket.on('join', ({ name, room }, callback) => {
-    const { error, user } = addUser({ id: socket.id, name, room });
+    const { error, user } = addUser({ id: socket.id, name, room});
 
-    if (error) return callback(error);
+    if (error) return callback(error); 
 
-    socket.emit('test', { key: 'host joined' });
-    socket.broadcast.to(user.room).emit('test', { key: 'listener joined' });
+    socket.emit('message', { user: 'admin', text: `${user.name} has joined!` });
+    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
 
     socket.join(user.room);
 
     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
 
-    console.log('joined');
-
     if (callback) callback();
-  })
+  });
 
-  socket.on('disconnect', () => {
-    console.log('a user has left');
-    const user = removeUser(socket.id);
+  socket.on('sendMessage', (message, callback) => {
+    const user = getUser(socket.id);
+    console.log('user', user);
+    io.to(user.room).emit('message', { user: user.name, text: message });
+    io.to(user.room).emit('roomData', { room: user.room, text: message });
 
-    if (user) {
-      io.to(user.room).emit('test', { key: 'left' });
-    }
+    callback();
   });
 
   socket.on('sendData', (data, callback) => {
     const user = getUser(socket.id);
     console.log('user', user);
     console.log('data', data);
+    io.to(user.room).emit('data', data);
 
     callback();
   });
-});
+
+  socket.on('disconnect', () => {
+    console.log('a user has left');
+    const user = removeUser(socket.id);
+
+    if (user) {
+      io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` })
+    }
+  });
+})
+
 
 server.listen(8081, () => {
   console.log('server listening on port: 8081');
@@ -91,36 +102,38 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
+// io.on('connection', (socket)=> {
+//   socket.on('join', ({ name, room }, callback) => {
+//     const { error, user } = addUser({ id: socket.id, name, room });
 
-// socket.on('join', ({ name, room }, callback) => {
-//   const { error, user } = addUser({ id: socket.id, name, room});
+//     if (error) return callback(error);
 
-//   if (error) return callback(error); 
+//     socket.emit('test', { key: 'host joined' });
+//     socket.broadcast.to(user.room).emit('test', { key: 'listener joined' });
 
-//   socket.emit('message', { user: 'admin', text: `${user.name} has joined!` });
-//   socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
+//     socket.join(user.room);
 
-//   socket.join(user.room);
+//     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
 
-//   io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+//     console.log('joined');
 
-//   if (callback) callback();
-// });
+//     if (callback) callback();
+//   })
 
-// socket.on('sendMessage', (message, callback) => {
-//   const user = getUser(socket.id);
-//   console.log('user', user);
-//   io.to(user.room).emit('message', { user: user.name, text: message });
-//   io.to(user.room).emit('roomData', { room: user.room, text: message });
+//   socket.on('disconnect', () => {
+//     console.log('a user has left');
+//     const user = removeUser(socket.id);
 
-//   callback();
-// });
+//     if (user) {
+//       io.to(user.room).emit('test', { key: 'left' });
+//     }
+//   });
 
-// socket.on('disconnect', () => {
-//   console.log('a user has left');
-//   const user = removeUser(socket.id);
+//   socket.on('sendData', (data, callback) => {
+//     const user = getUser(socket.id);
+//     console.log('user', user);
+//     console.log('data', data);
 
-//   if (user) {
-//     io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` })
-//   }
+//     callback();
+//   });
 // });

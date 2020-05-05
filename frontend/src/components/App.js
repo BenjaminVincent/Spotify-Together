@@ -4,8 +4,7 @@ import Join from './Join';
 import Chat from './Chat';
 import Home from './Home';
 import Host from './Host';
-import SessionHost from './SessionHost';
-import SessionJoin from './SessionJoin';
+import Session from './Session';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
@@ -42,13 +41,13 @@ class App extends Component {
               <Route 
                 exact path='/sessionjoin' 
                 component={() => 
-                  <SessionJoin token={this.state.token}/>}
+                  <Session token={this.state.token}/>}
               />
               <Route exact path='/join' component={Join}/>
               <Route 
                 exact path='/sessionhost' 
                 component={() => 
-                  <SessionHost token={this.state.token}/>}
+                  <Session token={this.state.token}/>}
               />
               <Route exact path='/host' component={Host}/>
 
