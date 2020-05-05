@@ -115,20 +115,6 @@ const Session = ({ token }) => {
 
     socket.emit('join', { name, room }, () => {});
 
-    if(!host) {
-      socket.on('data', (song_data) => {
-          console.log('data', song_data.is_playing);
-          setPlaying(song_data.is_playing);
-          setItem(song_data.item);
-          setProgress(song_data.progress_ms);
-          setFetchDate(Date.now());
-          setArtist(song_data.item.artists[0].name);
-          setAlbum(song_data.item.album.name);
-          setImage(song_data.item.album.images[0].url);
-          setData(song_data);
-      });
-    }
-
     // on dismount of component
     return () => {
         socket.emit('disconnect');
@@ -136,21 +122,35 @@ const Session = ({ token }) => {
     }
 }, [ENDPOINT]);
 
-useEffect(() => {
-    socket.on('message', (message) => {
-        console.log('message', message);
-        setMessages([...messages, message]);
-    });
-}, [messages]);
+  useEffect(() => {
+      socket.on('message', (message) => {
+          console.log('message', message);
+          setMessages(messages => [...messages, message]);
+      });
 
-const sendMessage = (event) => {
-    event.preventDefault(); // make sure page doesn't refresh on keypress
-    if (message) {
-        socket.emit('sendMessage', message, () => {
-            setMessage('');
+      if(!host) {
+        socket.on('data', (song_data) => {
+            console.log('data', song_data.is_playing);
+            setPlaying(song_data.is_playing);
+            setItem(song_data.item);
+            setProgress(song_data.progress_ms);
+            setFetchDate(Date.now());
+            setArtist(song_data.item.artists[0].name);
+            setAlbum(song_data.item.album.name);
+            setImage(song_data.item.album.images[0].url);
+            setData(song_data);
         });
-    }
-};
+      }
+  }, []);
+
+  const sendMessage = (event) => {
+      event.preventDefault(); // make sure page doesn't refresh on keypress
+      if (message) {
+          socket.emit('sendMessage', message, () => {
+              setMessage('');
+          });
+      }
+  };
 
   const sendData = () => {
     socket.emit('sendData', data, () => {
