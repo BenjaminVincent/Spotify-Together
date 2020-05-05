@@ -113,9 +113,7 @@ const Session = ({ token }) => {
     setName(name);
     setRoom(room);
 
-    socket.emit('join', { name, room }, () => {
-      getCurrentlyPlaying(token);
-    });
+    socket.emit('join', { name, room }, () => {});
 
     // on dismount of component
     return () => {
@@ -132,6 +130,7 @@ const Session = ({ token }) => {
 
       if(!host) {
         socket.on('data', (song_data) => {
+            console.log('data', song_data);
             console.log('data', song_data.is_playing);
             setPlaying(song_data.is_playing);
             setItem(song_data.item);
