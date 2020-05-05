@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { generateID } from '../helpers/player-helper.js';
 import '../styles/Player.css';
 import '../styles/App.css';
 import '../styles/Host.css';
-import Chat from './Chat';
 
 
 
-const Host = ({ token }) => {
+const Host = () => {
  
   const [name, setName] = useState('');
   const [room, setRoom] = useState(generateID);

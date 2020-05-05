@@ -146,7 +146,7 @@ const Session = ({ token }) => {
   }, []);
 
   const sendMessage = (event) => {
-      event.preventDefault(); // make sure page doesn't refresh on keypress
+      event.preventDefault();
       if (message) {
           socket.emit('sendMessage', message, () => {
               setMessage('');

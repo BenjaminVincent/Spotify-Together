@@ -33,24 +33,21 @@ class App extends Component {
       <BrowserRouter>
       
       <div className='App-base'> 
-
           {this.state.token ?
             <div>
               <Route exact path='/' component={Home}/>
               <Route exact path='/chat' component={Chat}/>
-              <Route 
-                exact path='/sessionjoin' 
-                component={() => 
-                  <Session token={this.state.token}/>}
-              />
               <Route exact path='/join' component={Join}/>
-              <Route 
-                exact path='/sessionhost' 
+              <Route exact path='/host' component={Host}/>
+              <Route exact path='/sessionjoin' 
                 component={() => 
                   <Session token={this.state.token}/>}
               />
-              <Route exact path='/host' component={Host}/>
-
+              <Route exact path='/sessionhost' 
+                component={() => 
+                  <Session token={this.state.token}/>}
+              />
+              
             </div>
         :
         <div>
@@ -68,7 +65,6 @@ class App extends Component {
         </div>
         </div>
         }
-         
       </div>
       </BrowserRouter>
     );

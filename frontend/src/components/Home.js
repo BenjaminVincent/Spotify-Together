@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 
-const Home = (props) => {
+const Home = () => {
 
     return (
         <div className='Home-container'>

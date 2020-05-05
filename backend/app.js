@@ -102,39 +102,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-// io.on('connection', (socket)=> {
-//   socket.on('join', ({ name, room }, callback) => {
-//     const { error, user } = addUser({ id: socket.id, name, room });
-
-//     if (error) return callback(error);
-
-//     socket.emit('test', { key: 'host joined' });
-//     socket.broadcast.to(user.room).emit('test', { key: 'listener joined' });
-
-//     socket.join(user.room);
-
-//     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
-
-//     console.log('joined');
-
-//     if (callback) callback();
-//   })
-
-//   socket.on('disconnect', () => {
-//     console.log('a user has left');
-//     const user = removeUser(socket.id);
-
-//     if (user) {
-//       io.to(user.room).emit('test', { key: 'left' });
-//     }
-//   });
-
-//   socket.on('sendData', (data, callback) => {
-//     const user = getUser(socket.id);
-//     console.log('user', user);
-//     console.log('data', data);
-
-//     callback();
-//   });
-// });
