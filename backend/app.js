@@ -69,7 +69,7 @@ io.on('connection', (socket)=> {
     const user = getUser(socket.id);
     console.log('user', user);
     console.log('data', data);
-    io.to(user.room).emit('message', { user: 'admin', text: `${user.name} ${data.is_playing ? 'resumed playing' : 'has paused'} ${data.item.name}.` });
+    // io.to(user.room).emit('message', { user: 'admin', text: `${user.name} ${data.is_playing ? 'resumed playing' : 'has paused'} ${data.item.name}.` });
     io.to(user.room).emit('data', data);
 
     callback();

@@ -113,7 +113,9 @@ const Session = ({ token }) => {
     setName(name);
     setRoom(room);
 
-    socket.emit('join', { name, room }, () => {});
+    socket.emit('join', { name, room }, () => {
+      getCurrentlyPlaying(token);
+    });
 
     // on dismount of component
     return () => {
@@ -154,6 +156,7 @@ const Session = ({ token }) => {
 
   const sendData = () => {
     socket.emit('sendData', data, () => {
+
     });
   };
 
@@ -193,13 +196,13 @@ const Session = ({ token }) => {
           host={host}
           />              
 
-        <div className='joinOuterContainer'><Chat
+        {/* <div className='joinOuterContainer'><Chat
           message={message}
           setMessage={setMessage}
           messages={messages}
           sendMessage={sendMessage}
           name={name}
-        /></div>
+        /></div> */}
       </div>
     </div>
   )
