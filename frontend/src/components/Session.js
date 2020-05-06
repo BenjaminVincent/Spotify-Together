@@ -158,7 +158,7 @@ const Session = ({ token }) => {
 
   const sendData = () => {
     socket.emit('sendData', data, () => {
-
+      console.log('data from session:', data);
     });
   };
 
