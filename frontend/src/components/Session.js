@@ -100,6 +100,8 @@ const Session = ({ token }) => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
         getCurrentlyPlaying(token);
       },
+      contentType: 'application/json',
+      data: JSON.stringify({'uris': [item.uri]}),
       success: () => {
         setPlaying(true);
       }
