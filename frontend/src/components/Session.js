@@ -25,8 +25,9 @@ const Session = ({ token }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
 
-  const ENDPOINT = 'http://localhost:8081/';
+  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
   // 'https://listen-together-music.herokuapp.com/'
+  // 'http://localhost:8081/'
 
   const host = !window.location.href.includes('join');
 
