@@ -9,11 +9,11 @@ import io from 'socket.io-client';
 let socket;
 
 
-const Session = ({ token }) => {
+const Session = ({ token, device }) => {
 
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
-  const [device, setDevice] = useState('');
+  // const [device, setDevice] = useState('');
   const [playing, setPlaying] = useState('');
   const [item, setItem] = useState('');
   const [progress, setProgress] = useState('');
@@ -37,28 +37,30 @@ const Session = ({ token }) => {
   // API Calls
   ////////////////////////////////////////////////////////////////////////
 
-  const getDevices = (token) => {
-    fetch('https://api.spotify.com/v1/me/player/devices', {
-      method: 'GET', headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        const activeDevice = filterDevices(data);
-        setDevice(activeDevice[0].id);
-      })
-      .catch(err => err);
-    }
+  // const getDevices = (token) => {
+  //   fetch('https://api.spotify.com/v1/me/player/devices', {
+  //     method: 'GET', 
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ' + token,
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       const activeDevice = filterDevices(data);
+  //       setDevice(activeDevice[0].id);
+  //     })
+  //     .catch(err => err);
+  //   }
 
   const getCurrentlyPlaying = (token) => {
     fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-      method: 'GET', headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+      method: 'GET', 
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
       }
     })
       .then(res => res.json())
@@ -81,7 +83,7 @@ const Session = ({ token }) => {
       type: 'PUT',
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        getCurrentlyPlaying(token);
+        // getCurrentlyPlaying(token);
       },
       success: () => {
         setPlaying(false);
@@ -98,14 +100,30 @@ const Session = ({ token }) => {
       type: 'PUT',
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        getCurrentlyPlaying(token);
+        // getCurrentlyPlaying(token);
       },
-      contentType: 'application/json',
-      data: JSON.stringify({'uris': [item.uri]}),
+      // contentType: 'application/json',
+      // data: JSON.stringify({'uris': [item.uri]}),
       success: () => {
         setPlaying(true);
       }
     });
+  }
+
+  //Other functions
+  /////////////////////////////////////////////////////////////////////////
+
+  // useEffect(() => {
+  //   const { name, room } = queryString.parse(window.location.search);
+
+  //   setName(name);
+  //   setRoom(room);
+
+
+  // }, [])
+
+  const handlePausePlay = () => {
+    playing ? pauseCurrent(token) : playCurrent(token);
   }
 
   //Socket.io
@@ -128,6 +146,9 @@ const Session = ({ token }) => {
 }, [ENDPOINT]);
 
   useEffect(() => {
+
+    // getDevices(token);
+    getCurrentlyPlaying(token);
       socket.on('message', (message) => {
           console.log('message', message);
           setMessages(messages => [...messages, message]);
@@ -135,8 +156,11 @@ const Session = ({ token }) => {
 
       if(!host) {
         socket.on('data', (song_data) => {
-            console.log('data', song_data);
-            console.log('data', song_data.is_playing);
+            // console.log('listener token:', token);
+            // console.log('data', song_data);
+            // console.log('data', song_data.is_playing);
+            // getDevices(token);
+            console.log('listener device:', device);
             setPlaying(song_data.is_playing);
             setItem(song_data.item);
             setProgress(song_data.progress_ms);
@@ -145,6 +169,8 @@ const Session = ({ token }) => {
             setAlbum(song_data.item.album.name);
             setImage(song_data.item.album.images[0].url);
             setData(song_data);
+            
+            playCurrent(token)
         });
       }
   }, []);
@@ -160,27 +186,11 @@ const Session = ({ token }) => {
 
   const sendData = () => {
     socket.emit('sendData', data, () => {
-      console.log('data from session:', data);
+      // console.log('data from session:', data);
+      console.log('Host device:', device);
+      // console.log('Host token:', token);
     });
   };
-
-
-  //Other functions
-  /////////////////////////////////////////////////////////////////////////
-
-  useEffect(() => {
-    const { name, room } = queryString.parse(window.location.search);
-
-    setName(name);
-    setRoom(room);
-
-    getDevices(token);
-    getCurrentlyPlaying(token);
-  }, [])
-
-  const handlePausePlay = () => {
-    playing ? pauseCurrent(token) : playCurrent(token);
-  }
 
   return (
     <div>

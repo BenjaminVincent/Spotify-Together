@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as $ from 'jquery';
 import '../styles/App.css';
 import Join from './Join';
 import Chat from './Chat';
@@ -16,16 +17,35 @@ class App extends Component {
     super(props);
     this.state = {
       token: null,
+      device: '',
     };
   }
+  filterDevices = (devices) => devices.devices.filter(device => device.is_active);
 
   componentDidMount() {
     let _token = hash.access_token;
     if (_token) {
       this.setState({
-        token: _token
+        token: _token,
       });
+      this.getDevices(_token);
     }
+  }
+
+  getDevices = (token) => {
+    $.ajax({
+      url: 'https://api.spotify.com/v1/me/player/devices',
+      type: 'GET',
+      beforeSend: xhr => {
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+      },
+      success: (data) => {
+        const activeDevice = this.filterDevices(data);
+        this.setState({
+          device: activeDevice[0].id,
+        });
+      },
+    });
   }
 
   render() {
@@ -41,11 +61,11 @@ class App extends Component {
               <Route exact path='/host' component={Host}/>
               <Route exact path='/sessionjoin' 
                 component={() => 
-                  <Session token={this.state.token}/>}
+                  <Session token={this.state.token} device={this.state.device}/>}
               />
               <Route exact path='/sessionhost' 
                 component={() => 
-                  <Session token={this.state.token}/>}
+                  <Session token={this.state.token} device={this.state.device}/>}
               />
               
             </div>

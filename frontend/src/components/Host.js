@@ -10,7 +10,7 @@ import '../styles/Host.css';
 const Host = () => {
  
   const [name, setName] = useState('');
-  const [room, setRoom] = useState(generateID);
+  const [room, setRoom] = useState('cat');
 
   return (
     <div className='joinOuterContainer'>
