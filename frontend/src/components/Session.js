@@ -60,7 +60,7 @@ const Session = ({ token, device }) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + token,
       }
     })
       .then(res => res.json())
@@ -94,6 +94,22 @@ const Session = ({ token, device }) => {
     });
   }
 
+  // const playCurrent = (token) => {
+  //   $.ajax({
+  //     url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
+  //     type: 'PUT',
+  //     beforeSend: xhr => {
+  //       xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+  //       // getCurrentlyPlaying(token);
+  //     },
+  //     // contentType: 'application/json',
+  //     // data: JSON.stringify({'uris': [item.uri]}),
+  //     success: () => {
+  //       setPlaying(true);
+  //     }
+  //   });
+  // }
+
   const playCurrent = (token) => {
     $.ajax({
       url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
@@ -101,14 +117,19 @@ const Session = ({ token, device }) => {
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
         // getCurrentlyPlaying(token);
+        if (host) getCurrentlyPlaying(token);
       },
-      // contentType: 'application/json',
-      // data: JSON.stringify({'uris': [item.uri]}),
+      data: JSON.stringify(
+        {
+          'uris': [item.uri],
+          'position_ms': progress,
+        }
+      ),
       success: () => {
         setPlaying(true);
       }
     });
-  }
+}
 
   //Other functions
   /////////////////////////////////////////////////////////////////////////
@@ -148,7 +169,7 @@ const Session = ({ token, device }) => {
   useEffect(() => {
 
     // getDevices(token);
-    getCurrentlyPlaying(token);
+    // getCurrentlyPlaying(token);
       socket.on('message', (message) => {
           console.log('message', message);
           setMessages(messages => [...messages, message]);
@@ -157,10 +178,10 @@ const Session = ({ token, device }) => {
       if(!host) {
         socket.on('data', (song_data) => {
             // console.log('listener token:', token);
-            // console.log('data', song_data);
+            
             // console.log('data', song_data.is_playing);
             // getDevices(token);
-            console.log('listener device:', device);
+            // console.log('listener device:', device);
             setPlaying(song_data.is_playing);
             setItem(song_data.item);
             setProgress(song_data.progress_ms);
@@ -168,9 +189,13 @@ const Session = ({ token, device }) => {
             setArtist(song_data.item.artists[0].name);
             setAlbum(song_data.item.album.name);
             setImage(song_data.item.album.images[0].url);
-            setData(song_data);
+            setData(song_data); 
             
-            playCurrent(token)
+            
+            console.log('listener data:', song_data);
+
+
+
         });
       }
   }, []);
@@ -185,10 +210,9 @@ const Session = ({ token, device }) => {
   };
 
   const sendData = () => {
-    socket.emit('sendData', data, () => {
-      // console.log('data from session:', data);
-      console.log('Host device:', device);
-      // console.log('Host token:', token);
+    socket.emit('sendData', data, async() => {
+      await getCurrentlyPlaying(token);
+      console.log('Host data:', data);
     });
   };
 

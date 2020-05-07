@@ -40,7 +40,8 @@ const PlayerHost = ({
             />
           <div className='background' style={backgroundStyles} />{' '}
         </div>
-        {
+        {/* {
+        host ?
         <button 
         type='button' 
         className='btn btn--pause-play'
@@ -50,7 +51,10 @@ const PlayerHost = ({
         }}
         >
         {playing ? 'Pause' : 'Play'}
-      </button>}
+      </button>
+      :
+      null
+      } */}
       </div>
 
     </div>
