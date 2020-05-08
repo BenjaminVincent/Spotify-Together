@@ -65,7 +65,7 @@ const Session = ({ token, device }) => {
     })
       .then(res => res.json())
       .then(data => {
-        setPlaying(data.is_playing);
+        setPlaying(true);
         setItem(data.item);
         setProgress(data.progress_ms);
         setFetchDate(Date.now());
@@ -116,8 +116,8 @@ const Session = ({ token, device }) => {
       type: 'PUT',
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        // getCurrentlyPlaying(token);
-        if (host) getCurrentlyPlaying(token);
+        // // getCurrentlyPlaying(token);
+        // if (host) getCurrentlyPlaying(token);
       },
       data: JSON.stringify(
         {
@@ -157,7 +157,9 @@ const Session = ({ token, device }) => {
     setName(name);
     setRoom(room);
 
-    socket.emit('join', { name, room }, () => {});
+    socket.emit('join', { name, room }, () => {
+      if (host) getCurrentlyPlaying(token);
+    });
 
     // on dismount of component
     return () => {
@@ -168,8 +170,6 @@ const Session = ({ token, device }) => {
 
   useEffect(() => {
 
-    // getDevices(token);
-    // getCurrentlyPlaying(token);
       socket.on('message', (message) => {
           console.log('message', message);
           setMessages(messages => [...messages, message]);
@@ -182,7 +182,7 @@ const Session = ({ token, device }) => {
             // console.log('data', song_data.is_playing);
             // getDevices(token);
             // console.log('listener device:', device);
-            setPlaying(song_data.is_playing);
+            setPlaying(true);
             setItem(song_data.item);
             setProgress(song_data.progress_ms);
             setFetchDate(Date.now());
@@ -210,8 +210,7 @@ const Session = ({ token, device }) => {
   };
 
   const sendData = () => {
-    socket.emit('sendData', data, async() => {
-      await getCurrentlyPlaying(token);
+    socket.emit('sendData', data, () => {
       console.log('Host data:', data);
     });
   };
