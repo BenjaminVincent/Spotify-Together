@@ -12,7 +12,7 @@ const PlayerHost = ({
   image,
   fetchDate,
   handlePausePlay,
-  sendData,
+  sendSongData,
   host,
 }) => {
 
@@ -40,21 +40,21 @@ const PlayerHost = ({
             />
           <div className='background' style={backgroundStyles} />{' '}
         </div>
-        {/* {
+        {
         host ?
         <button 
         type='button' 
         className='btn btn--pause-play'
         onClick={() => {
           handlePausePlay();
-          sendData();
+          sendSongData();
         }}
         >
         {playing ? 'Pause' : 'Play'}
       </button>
       :
       null
-      } */}
+      }
       </div>
 
     </div>

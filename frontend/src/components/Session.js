@@ -73,6 +73,7 @@ const Session = ({ token, device }) => {
         setAlbum(data.item.album.name);
         setImage(data.item.album.images[0].url);
         setData(data);
+        console.log('data:', data);
       })
       .catch(err => err);
   }
@@ -116,15 +117,14 @@ const Session = ({ token, device }) => {
       type: 'PUT',
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        // // getCurrentlyPlaying(token);
+        getCurrentlyPlaying(token);
         // if (host) getCurrentlyPlaying(token);
       },
-      data: JSON.stringify(
-        {
-          'uris': [item.uri],
-          'position_ms': progress,
-        }
-      ),
+      // data: JSON.stringify(
+      //   {
+      //     'uris': [item.uri],
+      //   }
+      // ),
       success: () => {
         setPlaying(true);
       }
@@ -158,7 +158,7 @@ const Session = ({ token, device }) => {
     setRoom(room);
 
     socket.emit('join', { name, room }, () => {
-      if (host) getCurrentlyPlaying(token);
+
     });
 
     // on dismount of component
@@ -169,11 +169,18 @@ const Session = ({ token, device }) => {
 }, [ENDPOINT]);
 
   useEffect(() => {
+    if (host) {
+      playCurrent(token);
+    }
 
-      socket.on('message', (message) => {
-          console.log('message', message);
-          setMessages(messages => [...messages, message]);
-      });
+    socket.on('message', (message) => {
+        console.log('message', message);
+        if (message.user === 'admin' && message.text.includes('has joined!')) {
+          console.log('inside message conditional');
+          // getCurrentlyPlaying(token)
+        }
+        setMessages(messages => [...messages, message]);
+    });
 
       if(!host) {
         socket.on('data', (song_data) => {
@@ -182,7 +189,6 @@ const Session = ({ token, device }) => {
             // console.log('data', song_data.is_playing);
             // getDevices(token);
             // console.log('listener device:', device);
-            setPlaying(true);
             setItem(song_data.item);
             setProgress(song_data.progress_ms);
             setFetchDate(Date.now());
@@ -190,12 +196,7 @@ const Session = ({ token, device }) => {
             setAlbum(song_data.item.album.name);
             setImage(song_data.item.album.images[0].url);
             setData(song_data); 
-            
-            
             console.log('listener data:', song_data);
-
-
-
         });
       }
   }, []);
@@ -209,7 +210,7 @@ const Session = ({ token, device }) => {
       }
   };
 
-  const sendData = () => {
+  const sendSongData = () => {
     socket.emit('sendData', data, () => {
       console.log('Host data:', data);
     });
@@ -229,7 +230,7 @@ const Session = ({ token, device }) => {
           image={image}
           fetchDate={fetchDate}
           handlePausePlay={handlePausePlay}
-          sendData={sendData}
+          sendSongData={sendSongData}
           host={host}
           />              
 
