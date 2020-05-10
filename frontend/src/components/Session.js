@@ -13,12 +13,11 @@ const Session = ({ token, device }) => {
 
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
-  // const [device, setDevice] = useState('');
   const [playing, setPlaying] = useState('');
   const [item, setItem] = useState('');
   const [song, setSong] = useState('');
   const [uri, _setUri] = useState('');
-  const [progress, setProgress] = useState('');
+  const [progress, _setProgress] = useState('');
   const [duration, setDuration] = useState('');
   const [artist, setArtist] = useState('');
   const [album, setAlbum] = useState('');
@@ -30,7 +29,8 @@ const Session = ({ token, device }) => {
 
   const songDataRef = useRef(songData);
   const uriRef = useRef(uri);
-
+  const progressRef = useRef(progress);
+ 
   const setSongData = (data) => {
     songDataRef.current = data;
     _setSongData(data);
@@ -41,15 +41,12 @@ const Session = ({ token, device }) => {
     _setUri(data);
   }
 
+  const setProgress = (data) => {
+    progressRef.current = data;
+    _setProgress(data);
+  }
+
   const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
-  //'http://localhost:8081/'
-
-
-  /*
-    Wait until data has been returned from getCurrentlyPlaying (host)
-    then on join - call sendSongData
-    -> listener will receive current song data on join
-  */
 
   const host = !window.location.href.includes('join');
 
@@ -73,11 +70,27 @@ const Session = ({ token, device }) => {
     setArtist(data.item.artists[0].name);
     setAlbum(data.item.album.name);
     setImage(data.item.album.images[0].url);
-    // setImage(data.item.album.images[0]);
     setSongData(data);
     return data;
   }
 
+  const pauseCurrent = (token) => {
+    $.ajax({
+      url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
+      type: 'PUT',
+      dataType: 'json',
+      beforeSend: xhr => {
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        if (host) getCurrentlyPlaying(token);
+      },
+      success: () => {
+        setPlaying(false);
+      },
+      error: function(error) { 
+        console.log("Status: " + error);
+    }
+    });
+  }
 
   const playCurrent = (token) => {
     $.ajax({
@@ -92,6 +105,7 @@ const Session = ({ token, device }) => {
       data: JSON.stringify(
         {
           'uris': [uriRef.current],
+          'position_ms': progressRef.current,
         }
       ),
       success: () => {
@@ -100,15 +114,12 @@ const Session = ({ token, device }) => {
     });
 }
 
-
-
-
   //Other functions
   /////////////////////////////////////////////////////////////////////////
 
-  // const handlePausePlay = () => {
-  //   playing ? pauseCurrent(token) : playCurrent(token);
-  // }
+  const handlePausePlay = () => {
+    playing ? pauseCurrent(token) : playCurrent(token);
+  }
 
   //Socket.io
   //////////////////////////////////////////////////////////////////////////////
@@ -138,6 +149,7 @@ const Session = ({ token, device }) => {
         console.log('message', message);
         if (message.user === 'admin' && message.text.includes('has joined!')) {
           console.log('inside message conditional');
+          getCurrentlyPlaying(token);
           sendSongData();
         }
         setMessages(messages => [...messages, message]);
@@ -193,7 +205,7 @@ const Session = ({ token, device }) => {
           album={album}
           image={image}
           fetchDate={fetchDate}
-          // handlePausePlay={handlePausePlay}
+          handlePausePlay={handlePausePlay}
           sendSongData={sendSongData}
           host={host}
           />      
@@ -210,90 +222,3 @@ const Session = ({ token, device }) => {
 }
 
 export default Session;
-
-
-
-
-//   const pauseCurrent = (token) => {
-//     $.ajax({
-//       url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
-//       type: 'PUT',
-//       beforeSend: xhr => {
-//         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-//         getCurrentlyPlaying(token);
-//       },
-//       success: () => {
-//         setPlaying(false);
-//       },
-//       error: function(error) { 
-//         console.log("Status: " + error);
-//     }
-//     });
-//   }
-
-
-
-
-
-
-
-// API Calls
-  ////////////////////////////////////////////////////////////////////////
-
-  // const getDevices = (token) => {
-  //   fetch('https://api.spotify.com/v1/me/player/devices', {
-  //     method: 'GET', 
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + token,
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       const activeDevice = filterDevices(data);
-  //       setDevice(activeDevice[0].id);
-  //     })
-  //     .catch(err => err);
-  //   }
-
-  // const getCurrentlyPlaying = (token) => {
-  //   fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-  //     method: 'GET', 
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + token,
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setPlaying(true);
-  //       setItem(data.item);
-  //       setProgress(data.progress_ms);
-  //       setFetchDate(Date.now());
-  //       setArtist(data.item.artists[0].name);
-  //       setAlbum(data.item.album.name);
-  //       setImage(data.item.album.images[0].url);
-  //       setSongData(data);
-  //       console.log('data:', data);
-  //     })
-  //     .catch(err => err);
-  // }
-
-  
-  // const playCurrent = (token) => {
-  //   $.ajax({
-  //     url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
-  //     type: 'PUT',
-  //     beforeSend: xhr => {
-  //       xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-  //       // getCurrentlyPlaying(token);
-  //     },
-  //     // contentType: 'application/json',
-  //     // data: JSON.stringify({'uris': [item.uri]}),
-  //     success: () => {
-  //       setPlaying(true);
-  //     }
-  //   });
-  // }

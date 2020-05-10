@@ -50,6 +50,7 @@ const PlayerHost = ({
         className='btn btn--pause-play'
         onClick={() => {
           sendSongData();
+          handlePausePlay();
         }}
         >
         {playing ? 'Pause' : 'Play'}
