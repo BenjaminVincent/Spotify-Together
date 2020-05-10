@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-const ProgressBar = ({ fetchDate, progress, item, playing }) => {
+const ProgressBar = ({ fetchDate, progress, duration, playing }) => {
 
   const [currentDate, setCurrentDate] = useState(Date.now());
 
   const progressBarStylesPlaying = {
-    width: ((currentDate - fetchDate + progress) * 100 / item.duration_ms) + '%'
+    width: ((currentDate - fetchDate + progress) * 100 / duration) + '%'
   };
 
   const progressBarStylesPaused = {
-    width: ((progress) * 100 / item.duration_ms) + '%'
+    width: ((progress) * 100 / duration) + '%'
   };
 
   useEffect(() => {

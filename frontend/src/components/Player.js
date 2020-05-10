@@ -6,7 +6,9 @@ import '../styles/Player.css';
 const PlayerHost = ({
   playing,
   item,
+  song,
   progress,
+  duration,
   artist,
   album,
   image,
@@ -27,7 +29,7 @@ const PlayerHost = ({
           <img src={image} alt='not found'/>
         </div>
         <div className='now-playing__side'>
-          <div className='now-playing__name'>{item.name}</div>
+          <div className='now-playing__name'>{song}</div>
           <div className='now-playing__artist'>
            Artist: {artist} <br/>
            Album: {album}
@@ -35,6 +37,7 @@ const PlayerHost = ({
             <ProgressBar
               fetchDate={fetchDate}
               progress={progress}
+              duration={duration}
               item={item}
               playing={playing}
             />
@@ -46,7 +49,6 @@ const PlayerHost = ({
         type='button' 
         className='btn btn--pause-play'
         onClick={() => {
-          handlePausePlay();
           sendSongData();
         }}
         >

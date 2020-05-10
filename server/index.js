@@ -20,8 +20,11 @@ io.on('connection', (socket)=> {
       const { error, user } = addUser({ id: socket.id, name, room});
   
       if (error) return callback(error); 
-  
+      
+      // goes to Host
       socket.emit('message', { user: 'admin', text: `${user.name} has joined!` });
+      
+      // goes to Listeners
       socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
   
       socket.join(user.room);
@@ -40,7 +43,7 @@ io.on('connection', (socket)=> {
       callback();
     });
   
-    socket.on('sendData', (data, callback) => {
+    socket.on('sendSongData', (data, callback) => {
       const user = getUser(socket.id);
       console.log('user', user);
       console.log('data', data);
