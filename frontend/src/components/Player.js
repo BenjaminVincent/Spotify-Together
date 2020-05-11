@@ -1,6 +1,7 @@
 import React from 'react';
 import ProgressBar from './ProgressBar';
 import '../styles/Player.css';
+import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 
 
 const PlayerHost = ({
@@ -53,7 +54,7 @@ const PlayerHost = ({
           handlePausePlay();
         }}
         >
-        {playing ? 'Pause' : 'Play'}
+        {playing ? <FaPauseCircle/> : <FaPauseCircle/>}
       </button>
       :
       null
