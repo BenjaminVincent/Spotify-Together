@@ -23,6 +23,14 @@ const PlayerHost = ({
     backgroundImage: `url(${image})`,
   };
 
+
+  async function handleSongData() {
+    await sendSongData();
+    await handlePausePlay();
+    
+    return;
+  };
+
   return (
     <div className='App-base'>
       <div className='main-wrapper'>
@@ -49,8 +57,7 @@ const PlayerHost = ({
         <div 
         className='pp-btn'
         onClick={() => {
-          sendSongData();
-          handlePausePlay();
+          handleSongData();
         }}
         >
         {playing ? <FaPauseCircle size='4em'/> : <FaPlayCircle size='4em'/>}

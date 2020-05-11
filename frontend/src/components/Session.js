@@ -3,6 +3,7 @@ import Player from './Player';
 import Chat from './Chat';
 import queryString from 'query-string';
 import { filterDevices } from '../helpers/player-helper.js';
+import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
 import io from 'socket.io-client';
 
@@ -100,7 +101,7 @@ const Session = ({ token, device }) => {
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
         console.log('uri from playCurrrent', uriRef);
-        if (host) getCurrentlyPlaying(token).then((isPlay) => console.log('data from playCurrent', isPlay));
+        if (host) getCurrentlyPlaying(token);
       },
       data: JSON.stringify(
         {
@@ -148,9 +149,17 @@ const Session = ({ token, device }) => {
     socket.on('message', (message) => {
         console.log('message', message);
         if (message.user === 'admin' && message.text.includes('has joined!')) {
-          console.log('inside message conditional');
-          getCurrentlyPlaying(token);
-          sendSongData();
+          async function handleSong() {
+            await getCurrentlyPlaying(token);
+            await sendSongData();
+            return;
+          }
+          async function handleJoiner() {
+            await playCurrent(token);
+            return;
+          }
+        if (host) handleSong();
+        if (!host) handleJoiner();
         }
         setMessages(messages => [...messages, message]);
     });
@@ -169,8 +178,12 @@ const Session = ({ token, device }) => {
             setAlbum(song_data.item.album.name);
             setImage(song_data.item.album.images[0].url);
             setSongData(song_data); 
-            console.log('listener data:', song_data);
-            playCurrent(token);
+            console.log('listener is_playing:', song_data.is_playing);
+            if (song_data.is_playing) {
+              playCurrent(token)
+            } else {
+              pauseCurrent(token);
+            }
         });
       }
   }, []);
@@ -185,8 +198,9 @@ const Session = ({ token, device }) => {
   };
 
   const sendSongData = () => {
+    getCurrentlyPlaying(token);
     socket.emit('sendSongData', songDataRef, () => {
-      console.log('Host data:', songDataRef);
+      console.log('Host is_playing:', songDataRef.current.is_playing);
     });
   };
 
@@ -195,6 +209,7 @@ const Session = ({ token, device }) => {
       <div className='host-session'>
         <div>Host: {name}</div>
         <div>Room: {room}</div>
+        <a href='/'><FaAngleLeft color='white' size='2em'/></a>
         <Player
           playing={playing}
           item={item}
