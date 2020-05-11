@@ -24,7 +24,7 @@ const PlayerHost = ({
   };
 
   return (
-    <div className='App'>
+    <div>
       <div className='main-wrapper'>
         <div className='now-playing__img'>
           <img src={image} alt='not found'/>
@@ -46,16 +46,16 @@ const PlayerHost = ({
         </div>
         {
         host ?
-        <button 
+        <span 
         type='button' 
-        className='btn btn--pause-play'
+        className='pp-btn btn--pause-play'
         onClick={() => {
           sendSongData();
           handlePausePlay();
         }}
         >
-        {playing ? <FaPauseCircle/> : <FaPauseCircle/>}
-      </button>
+        {playing ? <FaPauseCircle/> : <FaPlayCircle/>}
+      </span>
       :
       null
       }

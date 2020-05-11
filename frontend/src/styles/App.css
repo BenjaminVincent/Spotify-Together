@@ -58,6 +58,22 @@ body {
   text-decoration: underline;
 }
 
+.pp-btn {
+  background-color: transparent;
+  height: 71.2px;
+  border-radius: .5em;
+  color: #1ecd97;
+  cursor: pointer;
+  font-size: 8vmin;
+  transition: all 0.25s ease;
+}
+
+.pp-btn:hover {
+  background: #1ecd97;
+  color: #333;
+}
+
+
 .btn:hover {
   background: #1ecd97;
   color: #333;
