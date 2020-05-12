@@ -61,6 +61,7 @@ const Session = ({ token, device }) => {
         }
     })    
     const data = await res.json();
+    console.log('is_playing from getCurrentlyPlaying:', data.is_playing);
     setPlaying(data.is_playing);
     setItem(data.item);
     setSong(data.item.name);
@@ -100,7 +101,7 @@ const Session = ({ token, device }) => {
       dataType: 'json',
       beforeSend: xhr => {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        console.log('uri from playCurrrent', uriRef);
+        // console.log('uri from playCurrrent', uriRef);
         if (host) getCurrentlyPlaying(token);
       },
       data: JSON.stringify(
@@ -118,8 +119,14 @@ const Session = ({ token, device }) => {
   //Other functions
   /////////////////////////////////////////////////////////////////////////
 
-  const handlePausePlay = () => {
-    playing ? pauseCurrent(token) : playCurrent(token);
+  async function handlePausePlay() {
+    if (playing) {
+      await pauseCurrent(token);
+      sendSongData();
+    } else {
+      await playCurrent(token);
+      sendSongData();
+    } 
   }
 
   //Socket.io
@@ -174,11 +181,12 @@ const Session = ({ token, device }) => {
             setProgress(song_data.progress_ms);
             setDuration(song_data.item.duration_ms);
             setFetchDate(Date.now());
+            setPlaying(song_data.is_playing);
             setArtist(song_data.item.artists[0].name);
             setAlbum(song_data.item.album.name);
             setImage(song_data.item.album.images[0].url);
-            setSongData(song_data); 
-            console.log('listener is_playing:', song_data.is_playing);
+            setSongData(song_data);
+            console.log('listener data from socket call:', song_data.is_playing, song_data.progress_ms);
             if (song_data.is_playing) {
               playCurrent(token)
             } else {
@@ -198,9 +206,9 @@ const Session = ({ token, device }) => {
   };
 
   const sendSongData = () => {
-    getCurrentlyPlaying(token);
+    // getCurrentlyPlaying(token);
     socket.emit('sendSongData', songDataRef, () => {
-      console.log('Host is_playing:', songDataRef.current.is_playing);
+      console.log('Host is_playing:', songDataRef.current.is_playing, songDataRef.current.progress_ms);
     });
   };
 

@@ -25,9 +25,8 @@ const PlayerHost = ({
 
 
   async function handleSongData() {
-    await sendSongData();
     await handlePausePlay();
-    
+    await sendSongData();
     return;
   };
 
@@ -57,7 +56,7 @@ const PlayerHost = ({
         <div 
         className='pp-btn'
         onClick={() => {
-          handleSongData();
+          handlePausePlay();
         }}
         >
         {playing ? <FaPauseCircle size='4em'/> : <FaPlayCircle size='4em'/>}
