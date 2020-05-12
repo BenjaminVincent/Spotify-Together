@@ -61,7 +61,8 @@ const Session = ({ token, device }) => {
         }
     })    
     const data = await res.json();
-    console.log('is_playing from getCurrentlyPlaying:', data.is_playing);
+    sendSongData(data);
+    // console.log('is_playing from getCurrentlyPlaying:', data.is_playing);
     setPlaying(data.is_playing);
     setItem(data.item);
     setSong(data.item.name);
@@ -87,6 +88,7 @@ const Session = ({ token, device }) => {
       },
       success: () => {
         setPlaying(false);
+
       },
       error: function(error) { 
         console.log("Status: " + error);
@@ -157,8 +159,10 @@ const Session = ({ token, device }) => {
         console.log('message', message);
         if (message.user === 'admin' && message.text.includes('has joined!')) {
           async function handleSong() {
-            await getCurrentlyPlaying(token);
-            await sendSongData();
+            let results = await getCurrentlyPlaying(token);
+            // console.log('results:', results);
+            results.is_playing = !results.is_playing
+            await sendSongData(results);
             return;
           }
           async function handleJoiner() {
@@ -174,8 +178,8 @@ const Session = ({ token, device }) => {
       if(!host) {
 
         socket.on('data', (song_data) => {
-            song_data = song_data.current;
-            setItem(song_data.item);
+            // song_data = song_data.current;
+            setItem(song_data.item || 'not found');
             setSong(song_data.item.name);
             setUri(song_data.item.uri);
             setProgress(song_data.progress_ms);
@@ -186,9 +190,9 @@ const Session = ({ token, device }) => {
             setAlbum(song_data.item.album.name);
             setImage(song_data.item.album.images[0].url);
             setSongData(song_data);
-            console.log('listener data from socket call:', song_data.is_playing, song_data.progress_ms);
-            if (song_data.is_playing) {
-              playCurrent(token)
+            // console.log('listener data from socket call:', song_data.is_playing, song_data.progress_ms);
+            if (!song_data.is_playing) {
+              playCurrent(token);
             } else {
               pauseCurrent(token);
             }
@@ -205,19 +209,20 @@ const Session = ({ token, device }) => {
       }
   };
 
-  const sendSongData = () => {
+  const sendSongData = (d) => {
     // getCurrentlyPlaying(token);
-    socket.emit('sendSongData', songDataRef, () => {
-      console.log('Host is_playing:', songDataRef.current.is_playing, songDataRef.current.progress_ms);
+    socket.emit('sendSongData', d, () => {
+      // console.log('Host is_playing:', songDataRef.current.is_playing, songDataRef.current.progress_ms);
+      // console.log('sendSongData:', d);
     });
   };
 
   return (
     <div>
       <div className='host-session'>
+        <a href='/'><FaAngleLeft color='white' size='2em'/></a>
         <div>Host: {name}</div>
         <div>Room: {room}</div>
-        <a href='/'><FaAngleLeft color='white' size='2em'/></a>
         <Player
           playing={playing}
           item={item}
@@ -232,13 +237,13 @@ const Session = ({ token, device }) => {
           sendSongData={sendSongData}
           host={host}
           />      
-        {/* <div className='joinOuterContainer'><Chat
+        <div className='joinOuterContainer'><Chat
           message={message}
           setMessage={setMessage}
           messages={messages}
           sendMessage={sendMessage}
           name={name}
-        /></div> */}
+        /></div>
       </div>
     </div>
   )
