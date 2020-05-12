@@ -1,0 +1,22 @@
+.user-profile {
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+/* .session-leave {
+
+} */
+
+.session-info {
+    display: flex;
+    flex-direction: column;
+    height: 1.5em;
+    margin: .6rem;
+}
+
+
+.session-info-spacing {
+
+    margin: 1em;
+}

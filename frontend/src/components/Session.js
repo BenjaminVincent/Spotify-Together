@@ -6,6 +6,7 @@ import { filterDevices } from '../helpers/player-helper.js';
 import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
 import io from 'socket.io-client';
+import '../styles/Session.css';
 
 let socket;
 
@@ -27,6 +28,7 @@ const Session = ({ token, device }) => {
   const [songData, _setSongData] = useState({});
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [userProfile, setUserProfile] = useState('');
 
   const songDataRef = useRef(songData);
   const uriRef = useRef(uri);
@@ -51,6 +53,23 @@ const Session = ({ token, device }) => {
 
   const host = !window.location.href.includes('join');
 
+
+  async function getUserInfo(token) {
+    const res = await fetch('https://api.spotify.com/v1/me', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        }
+    });
+    const data = await res.json();
+    console.log('getUserInfo:', data);
+    setUserProfile(data.images[0].url);
+    return data;
+  }
+
+
   async function getCurrentlyPlaying(token) {
     const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       method: 'GET', 
@@ -59,7 +78,7 @@ const Session = ({ token, device }) => {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
         }
-    })    
+    });    
     const data = await res.json();
     sendSongData(data);
     // console.log('is_playing from getCurrentlyPlaying:', data.is_playing);
@@ -159,6 +178,7 @@ const Session = ({ token, device }) => {
         console.log('message', message);
         if (message.user === 'admin' && message.text.includes('has joined!')) {
           async function handleSong() {
+            await getUserInfo(token);
             let results = await getCurrentlyPlaying(token);
             // console.log('results:', results);
             results.is_playing = !results.is_playing
@@ -219,10 +239,14 @@ const Session = ({ token, device }) => {
 
   return (
     <div>
+      
       <div className='host-session'>
-        <a href='/'><FaAngleLeft color='white' size='2em'/></a>
-        <div>Host: {name}</div>
-        <div>Room: {room}</div>
+        <div className='session-info'>
+          <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
+          <div className='session-info-spacing'>Host: {name}</div>
+          <div className='session-info-spacing'>Room: {room}</div>
+          <img className='user-profile session-info-spacing' src={userProfile}></img>
+        </div>
         <Player
           playing={playing}
           item={item}
