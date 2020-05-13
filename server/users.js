@@ -1,6 +1,6 @@
 const users = [];
 
-const addUser = ({ id, name, room }) => {
+const addUser = ({ id, name, room, host }) => {
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -9,7 +9,7 @@ const addUser = ({ id, name, room }) => {
   if(!name || !room) return { error: 'Username and room are required.' };
   if(existingUser) return { error: 'Username is taken.' };
 
-  const user = { id, name, room };
+  const user = { id, name, room, host };
 
   users.push(user);
 
@@ -26,9 +26,12 @@ const getUser = (id) => users.find((user) => user.id === id);
 
 const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
+const getHostName = (room) => getUsersInRoom(room).filter((user) => user.host)[0].name;
+
 module.exports = { 
     addUser, 
     removeUser, 
     getUser, 
-    getUsersInRoom 
+    getUsersInRoom,
+    getHostName,
 };

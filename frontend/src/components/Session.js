@@ -13,6 +13,8 @@ const Session = ({ token, device }) => {
 
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
+  const [users, setUsers] = useState([]);
+  const [hostName, setHostName] = useState('');
   const [playing, setPlaying] = useState('');
   const [item, setItem] = useState('');
   const [song, setSong] = useState('');
@@ -47,7 +49,10 @@ const Session = ({ token, device }) => {
     _setProgress(data);
   }
 
-  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  const ENDPOINT = 'http://localhost:5000';
+
+  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+
 
   const host = !window.location.href.includes('join');
 
@@ -63,7 +68,7 @@ const Session = ({ token, device }) => {
     });
     const data = await res.json();
     console.log('getUserInfo:', data);
-    setUserProfile(data.images[0].url);
+    // setUserProfile(data.images[0].url || null);
     return data;
   }
 
@@ -141,10 +146,8 @@ const Session = ({ token, device }) => {
   async function handlePausePlay() {
     if (playing) {
       await pauseCurrent(token);
-      sendSongData();
     } else {
       await playCurrent(token);
-      sendSongData();
     } 
   }
 
@@ -158,7 +161,7 @@ const Session = ({ token, device }) => {
     setName(name);
     setRoom(room);
 
-    socket.emit('join', { name, room }, () => {});
+    socket.emit('join', { name, room, host }, () => {});
 
     // on dismount of component
     return () => {
@@ -193,29 +196,36 @@ const Session = ({ token, device }) => {
         setMessages(messages => [...messages, message]);
     });
 
-      if(!host) {
+    if(!host) {
 
-        socket.on('data', (song_data) => {
-            // song_data = song_data.current;
-            setItem(song_data.item || 'not found');
-            setSong(song_data.item.name);
-            setUri(song_data.item.uri);
-            setProgress(song_data.progress_ms);
-            setDuration(song_data.item.duration_ms);
-            setFetchDate(Date.now());
-            setPlaying(song_data.is_playing);
-            setArtist(song_data.item.artists[0].name);
-            setAlbum(song_data.item.album.name);
-            setImage(song_data.item.album.images[0].url);
-            setSongData(song_data);
-            // console.log('listener data from socket call:', song_data.is_playing, song_data.progress_ms);
-            if (!song_data.is_playing) {
-              playCurrent(token);
-            } else {
-              pauseCurrent(token);
-            }
-        });
-      }
+      socket.on('data', (song_data) => {
+          // song_data = song_data.current;
+          setItem(song_data.item || 'not found');
+          setSong(song_data.item.name);
+          setUri(song_data.item.uri);
+          setProgress(song_data.progress_ms);
+          setDuration(song_data.item.duration_ms);
+          setFetchDate(Date.now());
+          setPlaying(song_data.is_playing);
+          setArtist(song_data.item.artists[0].name);
+          setAlbum(song_data.item.album.name);
+          setImage(song_data.item.album.images[0].url);
+          setSongData(song_data);
+          // console.log('listener data from socket call:', song_data.is_playing, song_data.progress_ms);
+          if (!song_data.is_playing) {
+            playCurrent(token);
+          } else {
+            pauseCurrent(token);
+          }
+      });
+    }
+
+    socket.on("roomData", ({ users, hostName }) => {
+      setUsers(users);
+      setHostName(hostName);
+      console.log('hostName', hostName);
+    });
+
   }, []);
 
   const sendMessage = (event) => {
@@ -241,9 +251,9 @@ const Session = ({ token, device }) => {
       <div className='session-container'>
         <div className='session-info'>
           <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
-          <div className='session-info-spacing'>Host: {name}</div>
+          <div className='session-info-spacing'>Host: {hostName}</div>
           <div className='session-info-spacing'>Room: {room}</div>
-          <img className='user-profile session-info-spacing' src={userProfile}></img>
+          {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
         </div>
         <Player
           playing={playing}
