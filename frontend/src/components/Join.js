@@ -4,7 +4,7 @@ import { FaAngleLeft } from 'react-icons/fa';
 import '../styles/Listener.css';
 
 const Join = () => {
-  
+
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
 
@@ -12,7 +12,7 @@ const Join = () => {
       <div className='joinOuterContainer'>
         <Link to='/' ><FaAngleLeft color='white' size='2em'/></Link>  
         <div className='heading'>Join session</div><br/>
-            <div>
+          <div>
             <div><input placeholder='Display Name' className='joinInput' type='text' onChange={(event) => setName(event.target.value)}/></div><br/>
             <div><input placeholder="Room ID" className="joinInput"type="text" onChange={(event) => setRoom(event.target.value)}/></div><br/>
             <div>
