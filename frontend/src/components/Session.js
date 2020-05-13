@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
+import End from './End';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
 import io from 'socket.io-client';
 import '../styles/Session.css';
+import { Redirect } from 'react-router-dom';
 
 let socket;
 
@@ -14,7 +16,7 @@ const Session = ({ token, device }) => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState([]);
-  const [hostName, setHostName] = useState('');
+  const [hostName, _setHostName] = useState('');
   const [playing, setPlaying] = useState('');
   const [item, setItem] = useState('');
   const [song, setSong] = useState('');
@@ -29,10 +31,12 @@ const Session = ({ token, device }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [userProfile, setUserProfile] = useState('');
+  const [end, setEnd] = useState(false);
 
   const songDataRef = useRef(songData);
   const uriRef = useRef(uri);
   const progressRef = useRef(progress);
+  const hostNameRef = useRef(hostName);
  
   const setSongData = (data) => {
     songDataRef.current = data;
@@ -49,9 +53,14 @@ const Session = ({ token, device }) => {
     _setProgress(data);
   }
 
-  // const ENDPOINT = 'http://localhost:5000';
+  const setHostName = (data) => {
+    hostNameRef.current = data;
+    _setHostName(data);
+  }
 
-  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  const ENDPOINT = 'http://localhost:5000';
+
+  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
@@ -193,6 +202,12 @@ const Session = ({ token, device }) => {
         if (host) handleSong();
         if (!host) handleJoiner();
         }
+
+        if (message.user === 'admin' && message.text.includes(`${hostNameRef.current} has left.`)) {
+          console.log('hostName', hostNameRef.current);
+          setEnd(true);
+        }
+
         setMessages(messages => [...messages, message]);
     });
 
@@ -223,7 +238,7 @@ const Session = ({ token, device }) => {
     socket.on("roomData", ({ users, hostName }) => {
       setUsers(users);
       setHostName(hostName);
-      console.log('hostName', hostName);
+      console.log('users', users);
     });
 
   }, []);
@@ -247,36 +262,39 @@ const Session = ({ token, device }) => {
 
   return (
     <div>
-      
       <div className='session-container'>
-        <div className='session-info'>
-          <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
-          <div className='session-info-spacing'>Host: {hostName}</div>
-          <div className='session-info-spacing'>Room: {room}</div>
-          {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
-        </div>
-        <Player
-          playing={playing}
-          item={item}
-          song={song}
-          duration={duration}
-          progress={progress}
-          artist={artist}
-          album={album}
-          image={image}
-          fetchDate={fetchDate}
-          handlePausePlay={handlePausePlay}
-          sendSongData={sendSongData}
-          host={host}
-          />      
-        <div className='joinOuterContainer'><Chat
-          message={message}
-          setMessage={setMessage}
-          messages={messages}
-          sendMessage={sendMessage}
-          name={name}
-        />
-        </div>
+      {end ? 
+        <Redirect to='/end'/>
+      : <div>
+          <div className='session-info'>
+            <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
+            <div className='session-info-spacing'>Host: {hostName}</div>
+            <div className='session-info-spacing'>Room: {room}</div>
+            {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
+          </div>
+          <Player
+            playing={playing}
+            item={item}
+            song={song}
+            duration={duration}
+            progress={progress}
+            artist={artist}
+            album={album}
+            image={image}
+            fetchDate={fetchDate}
+            handlePausePlay={handlePausePlay}
+            sendSongData={sendSongData}
+            host={host}
+            />      
+          <div className='joinOuterContainer'><Chat
+            message={message}
+            setMessage={setMessage}
+            messages={messages}
+            sendMessage={sendMessage}
+            name={name}
+          />
+          </div>
+        </div>}
       </div>
     </div>
   )

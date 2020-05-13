@@ -3,7 +3,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
 
-const { addUser, removeUser, getUser, getUsersInRoom, getHostName } = require('./users');
+const { addUser, removeUser, getUser, getUsersInRoom, getHostName, logUsers } = require('./users');
 
 const router = require('./router');
 
@@ -55,7 +55,23 @@ io.on('connection', (socket)=> {
     });
   
     socket.on('disconnect', () => {
+
       const user = removeUser(socket.id);
+
+      // logUsers();
+
+      // if (user.host) {
+      //   io.of('/').in(user.room).clients((error, socketIds) => {
+      //     if (error) throw error;
+        
+      //     socketIds.forEach(socketId => {
+      //       io.sockets.sockets[socketId].leave(user.room);
+      //       removeUser(socketId);
+      //     });
+      //   });
+      // }
+
+      // logUsers();
   
       if (user) {
         io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` })

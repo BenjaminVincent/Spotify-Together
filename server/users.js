@@ -28,10 +28,13 @@ const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
 const getHostName = (room) => getUsersInRoom(room).filter((user) => user.host)[0].name;
 
+const logUsers = () => console.log('users', users);
+
 module.exports = { 
     addUser, 
     removeUser, 
     getUser, 
     getUsersInRoom,
     getHostName,
+    logUsers,
 };

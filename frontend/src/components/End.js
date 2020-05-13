@@ -6,10 +6,10 @@ const End = () => {
     return (
         <div>
             <div>The session has been ended by the Host.</div>
-            <Link 
-            to={`/`}>
+            <a 
+            href='/'>
             <button className='btn bton--loginApp-link' type='submit'>ok</button>
-            </Link>
+            </a>
         </div>
     );
 };
