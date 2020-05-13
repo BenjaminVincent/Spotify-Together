@@ -2,14 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Player from './Player';
 import Chat from './Chat';
 import queryString from 'query-string';
-import { filterDevices } from '../helpers/player-helper.js';
 import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
 import io from 'socket.io-client';
 import '../styles/Session.css';
 
 let socket;
-
 
 const Session = ({ token, device }) => {
 
@@ -240,7 +238,7 @@ const Session = ({ token, device }) => {
   return (
     <div>
       
-      <div className='host-session'>
+      <div className='session-container'>
         <div className='session-info'>
           <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
           <div className='session-info-spacing'>Host: {name}</div>
