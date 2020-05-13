@@ -3,6 +3,7 @@ import onlineIcon from '../icons/onlineIcon.png';
 import '../styles/InfoBar.css';
 
 const InfoBar = () => (
+  
   <div>
     <div>
       <img className='onlineIcon' src={onlineIcon} alt='online' />

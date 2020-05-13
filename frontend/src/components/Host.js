@@ -5,7 +5,6 @@ import { FaAngleLeft } from 'react-icons/fa';
 import '../styles/Player.css';
 import '../styles/App.css';
 
-
 const Host = () => {
  
   const [name, setName] = useState('');
@@ -25,7 +24,8 @@ const Host = () => {
               onChange={(event) => {
                 setName(event.target.value);
                 }}
-                /></div><br/>
+                />
+        </div><br/>
         <div>
           <Link
             onClick={(event) => {if(!name) event.preventDefault()}}

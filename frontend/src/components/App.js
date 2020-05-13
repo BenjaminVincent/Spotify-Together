@@ -10,7 +10,6 @@ import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
 
-
 class App extends Component {
 
   constructor(props) {
@@ -20,6 +19,7 @@ class App extends Component {
       device: '',
     };
   }
+
   filterDevices = (devices) => devices.devices.filter(device => device.is_active);
 
   componentDidMount() {
@@ -51,7 +51,6 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-      
       <div className='App-base'> 
           {this.state.token ?
             <div>
@@ -67,23 +66,22 @@ class App extends Component {
                 component={() => 
                   <Session token={this.state.token} device={this.state.device}/>}
               />
-              
             </div>
         :
-        <div>
-        <div className='App-auth'>
-          <ul className='App-preface'>To use Listen Together you must: <br/>
-            <li>have spotify open</li>
-            <li>authenticate and agree</li>
-          </ul>
-          <a 
-            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
-             <button className='btn bton--loginApp-link' type='submit'>
-              authenticate
-              </button>
-          </a>
-        </div>
-        </div>
+            <div>
+              <div className='App-auth'>
+                <ul className='App-preface'>To use Listen Together you must: <br/>
+                  <li>have spotify open</li>
+                  <li>authenticate and agree</li>
+                </ul>
+                <a 
+                  href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+                  <button className='btn bton--loginApp-link' type='submit'>
+                    authenticate
+                    </button>
+                </a>
+              </div>
+            </div>
         }
       </div>
       </BrowserRouter>

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { FaAngleLeft } from 'react-icons/fa';
 import '../styles/Listener.css';
 
-
 const Join = () => {
+  
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
 

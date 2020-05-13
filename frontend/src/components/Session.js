@@ -265,7 +265,8 @@ const Session = ({ token, device }) => {
           messages={messages}
           sendMessage={sendMessage}
           name={name}
-        /></div>
+        />
+        </div>
       </div>
     </div>
   )
