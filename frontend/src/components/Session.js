@@ -49,9 +49,9 @@ const Session = ({ token, device }) => {
     _setProgress(data);
   }
 
-  const ENDPOINT = 'http://localhost:5000';
+  // const ENDPOINT = 'http://localhost:5000';
 
-  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
