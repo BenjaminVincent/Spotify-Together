@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
+import HandleError from './HandleError'; 
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
@@ -171,10 +172,15 @@ const Session = ({ token, device }) => {
 
     socket.emit('join', { name, room, host }, () => {});
 
+    async function houseKeeping() {
+      await pauseCurrent(token);
+      socket.emit('disconnect');
+      socket.off();
+    }
+
     // on dismount of component
     return () => {
-        socket.emit('disconnect');
-        socket.off();
+        houseKeeping();
     }
 }, [ENDPOINT]);
 
