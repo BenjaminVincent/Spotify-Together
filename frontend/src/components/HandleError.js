@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const End = () => {
+const HandleError = ({ errorMessage }) => {
 
     return (
         <div>
-            <div>The session has been ended by the Host.</div>
+            <div>{errorMessage}</div>
             <a 
             href='/'>
             <button className='btn bton--loginApp-link' type='submit'>ok</button>
@@ -14,4 +13,4 @@ const End = () => {
     );
 };
 
-export default End;
+export default HandleError;

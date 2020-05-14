@@ -6,10 +6,11 @@ import Chat from './Chat';
 import Home from './Home';
 import Host from './Host';
 import Session from './Session';
-import End from './End';
+import HandleError from './HandleError';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
+
 
 class App extends Component {
 
@@ -17,7 +18,7 @@ class App extends Component {
     super(props);
     this.state = {
       token: null,
-      device: '',
+      device: null,
     };
   }
 
@@ -41,10 +42,18 @@ class App extends Component {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       },
       success: (data) => {
+        // console.log('data', data);
+        // if (!data) return 'No Device Found';
         const activeDevice = this.filterDevices(data);
-        this.setState({
-          device: activeDevice[0].id,
-        });
+        if (activeDevice.length === 0) {
+          this.setState({
+            device: 'No Device ID found',
+          });
+        } else {
+          this.setState({
+            device: activeDevice[0].id,
+          });
+        }
       },
     });
   }
@@ -54,12 +63,20 @@ class App extends Component {
       <BrowserRouter>
       <div className='App-base'> 
           {this.state.token ?
+            this.state.device === 'No Device ID found' ?
+            <Route exact path='/' 
+            component={() => 
+              <HandleError errorMessage="No Device found. Please open spotify and make sure it's active."/>}
+            /> :
             <div>
               <Route exact path='/' component={Home}/>
               <Route exact path='/chat' component={Chat}/>
               <Route exact path='/join' component={Join}/>
               <Route exact path='/host' component={Host}/>
-              <Route exact path='/end' component={End}/>
+              <Route exact path='/end' 
+                component={() => 
+              <HandleError errorMessage='The session has been ended by the Host.'/>}
+              />
               <Route exact path='/sessionjoin' 
                 component={() => 
                   <Session token={this.state.token} device={this.state.device}/>}

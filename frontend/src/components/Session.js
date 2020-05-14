@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
-import End from './End';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
@@ -58,9 +57,9 @@ const Session = ({ token, device }) => {
     _setHostName(data);
   }
 
-  const ENDPOINT = 'http://localhost:5000';
+  // const ENDPOINT = 'http://localhost:5000';
 
-  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
