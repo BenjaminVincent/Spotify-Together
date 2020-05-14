@@ -58,9 +58,9 @@ const Session = ({ token, device }) => {
     _setHostName(data);
   }
 
-  // const ENDPOINT = 'http://localhost:5000';
+  const ENDPOINT = 'http://localhost:5000';
 
-  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
@@ -172,17 +172,19 @@ const Session = ({ token, device }) => {
 
     socket.emit('join', { name, room, host }, () => {});
 
-    async function houseKeeping() {
-      await pauseCurrent(token);
+    // on dismount of component
+    return () => {
       socket.emit('disconnect');
       socket.off();
     }
-
-    // on dismount of component
-    return () => {
-        houseKeeping();
-    }
 }, [ENDPOINT]);
+
+useEffect(() => {
+  // pause music if user leaves room
+  window.addEventListener('beforeunload', (event) => {
+    pauseCurrent(token);
+  });
+}, []);
 
   useEffect(() => {
     if (host) {
@@ -211,6 +213,7 @@ const Session = ({ token, device }) => {
         if (message.user === 'admin' && message.text.includes(`${hostNameRef.current} has left.`)) {
           console.log('hostName', hostNameRef.current);
           setEnd(true);
+          pauseCurrent(token);
         }
 
         setMessages(messages => [...messages, message]);
