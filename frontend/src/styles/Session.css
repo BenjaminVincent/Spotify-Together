@@ -19,6 +19,15 @@
 
 .session-container {
     display: flex;
-    justify-content: space-evenly;
-    flex-direction: row;
+    justify-content: center; 
+}
+
+.chat-window {
+    background-color: #282c34;
+    width: 28%;
+    height: 100%;   
+}
+
+.player-window {
+    align-items: center;
 }

@@ -6,7 +6,9 @@ const InfoBar = () => (
   
   <div>
     <div>
-      <img className='onlineIcon' src={onlineIcon} alt='online' />
+      Listen Together <br/>
+      {/* <img className='onlineIcon' src={onlineIcon} alt='online' /> */}
+      Chat
     </div>
   </div>
 );

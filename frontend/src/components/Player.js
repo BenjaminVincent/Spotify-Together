@@ -31,7 +31,6 @@ const PlayerHost = ({
   };
 
   return (
-    <div className='App-base'>
       <div className='main-wrapper'>
         <div className='now-playing__img'>
           <img src={image} alt='not found'/>
@@ -65,9 +64,6 @@ const PlayerHost = ({
       null
       }
       </div>
-
-
-    </div>
   );
 }
 

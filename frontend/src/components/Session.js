@@ -280,27 +280,33 @@ useEffect(() => {
             <div className='session-info-spacing'>Room: {room}</div>
             {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
           </div>
-          <Player
-            playing={playing}
-            item={item}
-            song={song}
-            duration={duration}
-            progress={progress}
-            artist={artist}
-            album={album}
-            image={image}
-            fetchDate={fetchDate}
-            handlePausePlay={handlePausePlay}
-            sendSongData={sendSongData}
-            host={host}
-            />      
-          <Chat
-            message={message}
-            setMessage={setMessage}
-            messages={messages}
-            sendMessage={sendMessage}
-            name={name}
-          />
+          <div className='session-container'>
+            <div className='player-window'>
+              <Player
+                playing={playing}
+                item={item}
+                song={song}
+                duration={duration}
+                progress={progress}
+                artist={artist}
+                album={album}
+                image={image}
+                fetchDate={fetchDate}
+                handlePausePlay={handlePausePlay}
+                sendSongData={sendSongData}
+                host={host}
+                />
+              </div>
+            <div className='chat-window'>     
+              <Chat
+                message={message}
+                setMessage={setMessage}
+                messages={messages}
+                sendMessage={sendMessage}
+                name={name}
+              />
+            </div>
+          </div>
         </div>}
       </div>
     </div>

@@ -3,8 +3,8 @@ import React from 'react';
 const HandleError = ({ errorMessage }) => {
 
     return (
-        <div>
-            <div>{errorMessage}</div>
+        <div className='joinOuterContainer'>
+            <div>{errorMessage}</div><br/>
             <a 
             href='/'>
             <button className='btn' type='submit'>ok</button>
