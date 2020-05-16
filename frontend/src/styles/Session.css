@@ -6,9 +6,11 @@
 
 .session-info {
     display: flex;
-    flex-direction: column;
-    height: 1.5em;
-    margin: .6rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    height: 2.5em;
 }
 
 .session-info-spacing {

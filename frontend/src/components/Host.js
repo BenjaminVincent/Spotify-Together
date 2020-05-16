@@ -31,7 +31,7 @@ const Host = () => {
             onClick={(event) => {if(!name) event.preventDefault()}}
             to={`/sessionhost?name=${name}&room=${room}`}>
             <button 
-              className='btn btn--loginApp-link' 
+              className='btn' 
               type='submit'
             >join</button>
           </Link>

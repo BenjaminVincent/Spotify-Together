@@ -19,7 +19,7 @@ const Join = () => {
                 <Link 
                     onClick={(event) => (name && room) ? null : event.preventDefault()} 
                     to={`/sessionjoin?name=${name}&room=${room}`}>
-                    <button className='btn bton--loginApp-link' type='submit'>join</button>
+                    <button className='btn' type='submit'>join</button>
                 </Link>
             </div>
         </div>

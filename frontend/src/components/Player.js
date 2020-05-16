@@ -54,7 +54,7 @@ const PlayerHost = ({
         {
         host ?
         <div 
-        className='pp-btn'
+        className='pause-play-btn'
         onClick={() => {
           handlePausePlay();
         }}

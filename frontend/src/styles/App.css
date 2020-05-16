@@ -2,6 +2,7 @@
 .App-base {
   background-color: #282c34;
   font-size: calc(10px + 2vmin);
+  height: 100%;
 }
 
 .App-auth {
@@ -14,12 +15,9 @@
 }
 
 .App-preface {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   color: #fff;
-  margin-bottom: 8rem;
+  margin-bottom: 4em;
+  list-style: inside;
 }
 
 * {
@@ -30,6 +28,11 @@
 
 html, body {
   height: 100%;
+}
+
+.auth-bullets {
+  margin-left: 1.5em;
+  width: 80%;
 }
 
 body {
@@ -58,7 +61,13 @@ body {
   text-decoration: underline;
 }
 
-.pp-btn {
+@media only screen and (max-width: 800px) {
+  .btn {
+    font-size: 5vmin;
+  }
+}
+
+.pause-play-btn {
   display: flex;
   border-radius: 2em;
   background-color: transparent;
@@ -74,14 +83,9 @@ body {
   color: #333;
 }
 
-
 .btn:hover {
   background: #1ecd97;
   color: #333;
-}
-
-.btn--login {
-  margin: 0 auto;
 }
 
 /** Background **/

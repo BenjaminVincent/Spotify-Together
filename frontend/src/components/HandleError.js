@@ -7,7 +7,7 @@ const HandleError = ({ errorMessage }) => {
             <div>{errorMessage}</div>
             <a 
             href='/'>
-            <button className='btn bton--loginApp-link' type='submit'>ok</button>
+            <button className='btn' type='submit'>ok</button>
             </a>
         </div>
     );
