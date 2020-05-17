@@ -3,13 +3,17 @@ import '../styles/Chat.css';
 import InfoBar from './InfoBar';
 import Input from './Input';
 import Messages from './Messages';
+import UserList from './UserList';
 
-const Chat = ({ message, setMessage, messages, sendMessage, name }) => {
+const Chat = ({ message, setMessage, messages, sendMessage, name, users }) => {
 
     return (
         <div>
             <div>
                 <InfoBar/>
+                <UserList
+                    users={users}
+                />
                 <Messages
                     messages={messages}
                     name={name}

@@ -58,9 +58,9 @@ const Session = ({ token, device }) => {
     _setHostName(data);
   }
 
-  // const ENDPOINT = 'http://localhost:5000';
+  const ENDPOINT = 'http://localhost:5000';
 
-  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
@@ -304,6 +304,7 @@ useEffect(() => {
                 messages={messages}
                 sendMessage={sendMessage}
                 name={name}
+                users={users}
               />
             </div>
           </div>
