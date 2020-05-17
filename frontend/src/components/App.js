@@ -68,7 +68,7 @@ class App extends Component {
             component={() => 
               <HandleError errorMessage="No Device found. Please open spotify and make sure it's active."/>}
             /> :
-            <div>
+            <div className='App-allowed'>
               <Route exact path='/' component={Home}/>
               <Route exact path='/chat' component={Chat}/>
               <Route exact path='/join' component={Join}/>

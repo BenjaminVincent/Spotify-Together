@@ -11,23 +11,39 @@
     align-items: center;
     width: 30%;
     height: 2.5em;
+    z-index: 100;
 }
 
 .session-info-spacing {
-    margin: 1em;
+    border-left: 2em;
+    border-right: 2em;
 }
 
 .session-container {
+    height: 100%;
     display: flex;
-    justify-content: center; 
+    justify-content: space-between;
 }
 
 .chat-window {
-    background-color: #282c34;
-    width: 28%;
-    height: 100%;   
+    background-color: #282c34 !important;
+    /* background-color: teal; */
+    height: 100%;
+    z-index: 9999;
+    width: 280px;
+    float: right;
 }
 
 .player-window {
+    display: flex;
+    justify-content: center;
     align-items: center;
+}
+
+.song-details {
+    flex-direction: column;
+}
+
+.entire-session {
+    height: 100%;
 }

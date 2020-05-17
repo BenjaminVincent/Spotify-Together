@@ -2,7 +2,7 @@
 .App-base {
   background-color: #282c34;
   font-size: calc(10px + 2vmin);
-  height: 100%;
+  height: 100vmin;
 }
 
 .App-auth {
@@ -20,14 +20,14 @@
   list-style: inside;
 }
 
+.App-allowed {
+  height: 100%;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-html, body {
-  height: 100%;
 }
 
 .auth-bullets {
@@ -40,10 +40,6 @@ body {
   color: #eee;
   font-family: Helvetica, Arial;
   font-size: 3vmin;
-}
-
-.hidden {
-  display: none;
 }
 
 /** Buttons **/
@@ -63,12 +59,14 @@ body {
 
 @media only screen and (max-width: 800px) {
   .btn {
-    font-size: 5vmin;
+    font-size: 5.5vmin;
   }
 }
 
 .pause-play-btn {
   display: flex;
+  justify-content: center;
+  width: 12.5%;
   border-radius: 2em;
   background-color: transparent;
   color: #1ecd97;
@@ -78,7 +76,7 @@ body {
   margin: 4em;
 }
 
-.pp-btn:hover {
+.pause-play-btn:hover {
   background: #1ecd97;
   color: #333;
 }
@@ -102,23 +100,11 @@ body {
 }
 
 .main-wrapper {
-  align-items: center;
   display: flex;
-  height: 100%;
-  margin: 0 auto;
+  align-items: center;
   justify-content: center;
-  position: relative;
-  width: 80%;
+  height: 100%;
+  margin: auto;
   z-index: 1;
 }
 
-.container {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  height: 100%;
-}
-
-.main-container {
-  flex: 1;
-}

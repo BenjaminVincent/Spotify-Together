@@ -14,15 +14,15 @@
 }
 
 .now-playing__img {
-    float: left;
-    margin-right: 10px;
-    text-align: right;
-    width: 45%;
+    margin-right: .6em;
+    width: 300px;
 }
 
 .now-playing__img img {
-    max-width: 80vmin;
-    width: 100%;
+    /* max-width: 80vmin;
+    width: 100%; */
+    width: 300px;
+    height: 300px;
 }
 
 .now-playing__side {

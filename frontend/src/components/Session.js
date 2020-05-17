@@ -269,19 +269,18 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      <div>
+    <div className='entire-session'>
+
       {end ? 
         <Redirect to='/end'/>
-      : <div>
+      : <div className='session-container'>
           <div className='session-info'>
             <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
             <div className='session-info-spacing'>Host: {hostName}</div>
             <div className='session-info-spacing'>Room: {room}</div>
             {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
           </div>
-          <div className='session-container'>
-            <div className='player-window'>
+            {/* <div className='player-window'>
               <Player
                 playing={playing}
                 item={item}
@@ -296,8 +295,8 @@ useEffect(() => {
                 sendSongData={sendSongData}
                 host={host}
                 />
-              </div>
-            <div className='chat-window'>     
+              </div> */}
+              <div className='chat-window'>     
               <Chat
                 message={message}
                 setMessage={setMessage}
@@ -306,9 +305,8 @@ useEffect(() => {
                 name={name}
               />
             </div>
-          </div>
         </div>}
-      </div>
+
     </div>
   )
 }

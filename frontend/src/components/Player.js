@@ -48,7 +48,7 @@ const PlayerHost = ({
               item={item}
               playing={playing}
             />
-          <div className='background' style={backgroundStyles} />{' '}
+          <div className='background' style={backgroundStyles} />
         </div>
         {
         host ?

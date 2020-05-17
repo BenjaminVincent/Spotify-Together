@@ -1,15 +1,11 @@
 import React from 'react';
-import onlineIcon from '../icons/onlineIcon.png';
 import '../styles/InfoBar.css';
 
 const InfoBar = () => (
   
-  <div>
-    <div>
-      Listen Together <br/>
-      {/* <img className='onlineIcon' src={onlineIcon} alt='online' /> */}
-      Chat
-    </div>
+  <div className='infoBar'>
+      <div className='infoBar-title'>Listen Together</div>
+      <div className='infoBar-chat'>Chat</div>
   </div>
 );
 
