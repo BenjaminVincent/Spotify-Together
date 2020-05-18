@@ -1,3 +1,10 @@
+const express = require("express");
+const usersRouter = express.Router();
+
+usersRouter.get("/", function(req, res, next) {
+  res.send(users);
+});
+
 const users = [];
 
 const addUser = ({ id, name, room, host }) => {
@@ -37,4 +44,5 @@ module.exports = {
     getUsersInRoom,
     getHostName,
     logUsers,
+    usersRouter,
 };

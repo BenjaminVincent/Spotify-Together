@@ -6,6 +6,7 @@ const cors = require('cors');
 const { addUser, removeUser, getUser, getUsersInRoom, getHostName, logUsers } = require('./users');
 
 const router = require('./router');
+const { usersRouter } = require('./users');
 
 const app = express();
 const server = http.createServer(app);
@@ -13,6 +14,7 @@ const io = socketio(server, { origins: '*:*'});
 
 app.use(cors());
 app.use(router);
+app.use('/users', usersRouter);
 
 io.on('connection', (socket)=> {
 

@@ -24,6 +24,14 @@ html, body {
   .joinInnerContainer {
     width: 20%;
   }
+
+  .joinError {
+    color: #86181d;
+    background-color: #ffdce0;
+    padding: 10px 20px;
+    font-size: 13px;
+    text-align: start;
+  }
   
   .joinInput {
     border-radius: 0;
