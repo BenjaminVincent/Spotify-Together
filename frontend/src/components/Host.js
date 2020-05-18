@@ -10,6 +10,10 @@ const Host = () => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('cat');
 
+  const handleClick = (e) => {
+    if (!name) e.preventDefault();
+  }
+
   return (
     <div className='joinOuterContainer'>
       <Link to='/' ><FaAngleLeft color='white' size='2em'/></Link>
@@ -17,7 +21,7 @@ const Host = () => {
       <div>
         <div>
           <input 
-              placeholder='Display Name' 
+              placeholder='Display name'
               className='joinInput' 
               type='text'
               onKeyPress={event => event.key === 'Enter' && name ? event.preventDefault() : null}  
@@ -28,7 +32,7 @@ const Host = () => {
         </div><br/>
         <div>
           <Link
-            onClick={(event) => {if(!name) event.preventDefault()}}
+            onClick={(event) => handleClick(event)}
             to={`/sessionhost?name=${name}&room=${room}`}>
             <button 
               className='btn' 
