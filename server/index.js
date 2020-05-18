@@ -34,7 +34,7 @@ io.on('connection', (socket)=> {
       io.to(user.room).emit('roomData', { 
         room: user.room, 
         hostName: getHostName(user.room), 
-        users: getUsersInRoom(user.room) 
+        users: getUsersInRoom(user.room),
       });
   
       if (callback) callback();
@@ -79,7 +79,7 @@ io.on('connection', (socket)=> {
         io.to(user.room).emit('roomData', { 
           room: user.room, 
           hostName: getHostName(user.room), 
-          users: getUsersInRoom(user.room) 
+          users: getUsersInRoom(user.room), 
         });
       }
     });

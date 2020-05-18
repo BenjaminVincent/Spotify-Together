@@ -13,7 +13,7 @@ const Join = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const getUsers = async () => {
-    let response = await fetch("http://localhost:5000/users");
+    let response = await fetch('http://localhost:5000/users');
     let data = await response.json();
     return data;
   }

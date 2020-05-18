@@ -1,7 +1,7 @@
 const express = require("express");
 const usersRouter = express.Router();
 
-usersRouter.get("/", function(req, res, next) {
+usersRouter.get('/', function(req, res, next) {
   res.send(users);
 });
 
@@ -33,7 +33,13 @@ const getUser = (id) => users.find((user) => user.id === id);
 
 const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
-const getHostName = (room) => getUsersInRoom(room).filter((user) => user.host)[0].name;
+const getHostName = (room) => {
+  if (getUsersInRoom(room).filter((user) => user.host).length === 0) {
+    return;
+  } else {
+    return getUsersInRoom(room).filter((user) => user.host)[0].name;
+  }
+} 
 
 const logUsers = () => console.log('users', users);
 
