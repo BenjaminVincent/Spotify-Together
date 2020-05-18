@@ -303,6 +303,7 @@ useEffect(() => {
                 messages={messages}
                 sendMessage={sendMessage}
                 name={name}
+                users={users}
               />
             </div>
         </div>}

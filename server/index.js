@@ -41,7 +41,6 @@ io.on('connection', (socket)=> {
     socket.on('sendMessage', (message, callback) => {
       const user = getUser(socket.id);
       io.to(user.room).emit('message', { user: user.name, text: message });
-      io.to(user.room).emit('roomData', { room: user.room, text: message });
   
       callback();
     });
@@ -75,6 +74,11 @@ io.on('connection', (socket)=> {
   
       if (user) {
         io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` })
+        io.to(user.room).emit('roomData', { 
+          room: user.room, 
+          hostName: getHostName(user.room), 
+          users: getUsersInRoom(user.room) 
+        });
       }
     });
   })

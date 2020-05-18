@@ -4,21 +4,10 @@
     flex-direction: column;
     justify-content: space-between;
     border-radius: 4px 4px 0 0;
-    height: 3em;
+    height: 1.5em;
     width: 100%;
   }
-  
-  .leftInnerContainer {
-    flex: 0.5;
-    display: flex;
-    align-items: center;
-    margin-left: 5%;
-    color: white;
-  }
-  
-  .rightInnerContainer {
-    display: flex;
-    flex: 0.5;
-    justify-content: flex-end;
-    margin-right: 5%;
-  }
+
+.infoBar-title {
+  padding-left: 10px;
+}
