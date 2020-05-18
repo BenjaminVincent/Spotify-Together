@@ -280,7 +280,7 @@ useEffect(() => {
             <div className='session-info-spacing'>Room: {room}</div>
             {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
           </div>
-            {/* <div className='player-window'>
+            <div className='player-window'>
               <Player
                 playing={playing}
                 item={item}
@@ -295,7 +295,7 @@ useEffect(() => {
                 sendSongData={sendSongData}
                 host={host}
                 />
-              </div> */}
+              </div>
               <div className='chat-window'>     
               <Chat
                 message={message}

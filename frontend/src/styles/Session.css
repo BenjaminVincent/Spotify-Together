@@ -27,10 +27,10 @@
 
 .chat-window {
     background-color: #282c34 !important;
-    /* background-color: teal; */
+    /* background-color: rgb(15, 97, 97); */
     height: 100%;
     z-index: 9999;
-    width: 280px;
+    width: 300px;
     float: right;
 }
 
