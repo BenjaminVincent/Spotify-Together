@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { generateID } from '../helpers/player-helper.js';
 import { FaAngleLeft } from 'react-icons/fa';
+import ErrorMessage from './ErrorMessage'; 
 import '../styles/Player.css';
 import '../styles/App.css';
 
@@ -9,15 +10,23 @@ const Host = () => {
  
   const [name, setName] = useState('');
   const [room, setRoom] = useState('cat');
+  const [errorMessage, setErrorMessage] = useState('');
+  const MAXNAMELENGTH = 16;
 
   const handleClick = (e) => {
     if (!name) e.preventDefault();
+    if (name.length > MAXNAMELENGTH) {
+      setErrorMessage('Please eneter a shorter name');
+      e.preventDefault();
+      
+    }
   }
 
   return (
     <div className='joinOuterContainer'>
       <Link to='/' ><FaAngleLeft color='white' size='2em'/></Link>
       <div className='heading'>Host session</div><br/>
+      <ErrorMessage message={errorMessage}/>
       <div>
         <div>
           <input 
