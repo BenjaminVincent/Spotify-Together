@@ -75,6 +75,10 @@ body {
   margin: 4em;
 }
 
+.above {
+  z-index: 9999;
+}
+
 .pause-play-btn:hover {
   background: #1ecd97;
   color: #333;

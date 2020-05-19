@@ -3,7 +3,6 @@ import ProgressBar from './ProgressBar';
 import '../styles/Player.css';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 
-
 const PlayerHost = ({
   playing,
   item,
@@ -15,19 +14,11 @@ const PlayerHost = ({
   image,
   fetchDate,
   handlePausePlay,
-  sendSongData,
   host,
 }) => {
 
   const backgroundStyles = {
     backgroundImage: `url(${image})`,
-  };
-
-
-  async function handleSongData() {
-    await handlePausePlay();
-    await sendSongData();
-    return;
   };
 
   return (

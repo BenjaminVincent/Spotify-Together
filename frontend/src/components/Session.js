@@ -93,7 +93,6 @@ const Session = ({ token, device }) => {
     });    
     const data = await res.json();
     sendSongData(data);
-    // console.log('is_playing from getCurrentlyPlaying:', data.is_playing);
     setPlaying(data.is_playing);
     setItem(data.item);
     setSong(data.item.name);
@@ -140,7 +139,7 @@ const Session = ({ token, device }) => {
       },
       data: JSON.stringify(
         {
-          'uris': [uriRef.current],
+          'uris': [uriRef.current, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
           'position_ms': progressRef.current,
         }
       ),
@@ -148,7 +147,7 @@ const Session = ({ token, device }) => {
         setPlaying(true);
       }
     });
-}
+  }
 
   //Other functions
   /////////////////////////////////////////////////////////////////////////
@@ -223,7 +222,6 @@ useEffect(() => {
     if(!host) {
 
       socket.on('data', (song_data) => {
-          // song_data = song_data.current;
           setItem(song_data.item || 'not found');
           setSong(song_data.item.name);
           setUri(song_data.item.uri);
@@ -235,7 +233,6 @@ useEffect(() => {
           setAlbum(song_data.item.album.name);
           setImage(song_data.item.album.images[0].url);
           setSongData(song_data);
-          // console.log('listener data from socket call:', song_data.is_playing, song_data.progress_ms);
           if (!song_data.is_playing) {
             playCurrent(token);
           } else {
@@ -262,10 +259,7 @@ useEffect(() => {
   };
 
   const sendSongData = (d) => {
-    // getCurrentlyPlaying(token);
     socket.emit('sendSongData', d, () => {
-      // console.log('Host is_playing:', songDataRef.current.is_playing, songDataRef.current.progress_ms);
-      // console.log('sendSongData:', d);
     });
   };
 
@@ -293,7 +287,6 @@ useEffect(() => {
                 image={image}
                 fetchDate={fetchDate}
                 handlePausePlay={handlePausePlay}
-                sendSongData={sendSongData}
                 host={host}
                 />
               </div>
