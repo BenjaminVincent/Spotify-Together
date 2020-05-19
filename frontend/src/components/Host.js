@@ -18,7 +18,10 @@ const Host = () => {
     if (name.length > MAXNAMELENGTH) {
       setErrorMessage('Please eneter a shorter name');
       e.preventDefault();
-      
+    }
+    if (name.toLowerCase() === 'admin') {
+      setErrorMessage('Please use a valid name');
+      e.preventDefault();
     }
   }
 

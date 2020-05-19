@@ -11,11 +11,10 @@ const Join = () => {
   const [room, setRoom] = useState('');
   const [allowed, setAllowed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const MAXNAMELENGTH = 16;
 
   const getUsers = async () => {
     // let response = await fetch('https://listen-together-music.herokuapp.com/users');
-    let response = await fetch('http://localhost:3000/users');
+    let response = await fetch('http://localhost:5000/users');
     let data = await response.json();
     return data;
   }
@@ -25,10 +24,10 @@ const Join = () => {
     let users = await getUsers();
     let roomExists = users.find((user) => user.room === room);
     let userInRoom = users.find((user) => user.room === room && user.name.toLowerCase() === name.toLowerCase());
-
+    const MAXNAMELENGTH = 16;
 
     if (roomExists) {
-      if (userInRoom) {
+      if (userInRoom || name.toLowerCase() === 'admin') {
         setErrorMessage(`User "${name}" already exists in room`);
       } else if (name.length > MAXNAMELENGTH) {
         setErrorMessage('Please enter a shorter name');
