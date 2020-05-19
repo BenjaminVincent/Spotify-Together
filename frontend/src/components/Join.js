@@ -22,11 +22,15 @@ const Join = () => {
     e.preventDefault();
     let users = await getUsers();
     let roomExists = users.find((user) => user.room === room);
-    let userInRoom = users.find((user) => user.room === room && user.name === name)
+    let userInRoom = users.find((user) => user.room === room && user.name.toLowerCase() === name.toLowerCase());
+    const MAXNAMELENGTH = 20;
 
     if (roomExists) {
+      // if (name.length > maxNameLength) setErrorMessage('Please enter a shorter name');
       if (userInRoom) {
         setErrorMessage(`User "${name}" already exists in room`);
+      } if (name.length > MAXNAMELENGTH) {
+        setErrorMessage('Please enter a shorter name');
       } else {
         setAllowed(true);
       }

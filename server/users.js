@@ -8,13 +8,15 @@ usersRouter.get('/', function(req, res, next) {
 const users = [];
 
 const addUser = ({ id, name, room, host }) => {
-  name = name.trim().toLowerCase();
-  room = room.trim().toLowerCase();
+  name = name.trim();
+  room = room.trim();
 
-  const existingUser = users.find((user) => user.room === room && user.name === name);
+  const existingUser = users.find((user) => user.room === room && user.name.toLowerCase() === name.toLowerCase());
+  const maxNameLength = 20;
 
-  if(!name || !room) return { error: 'Username and room are required.' };
-  if(existingUser) return { error: 'Username is taken.' };
+  if (!name || !room) return { error: 'Username and room are required.' };
+  if (existingUser) return { error: 'Username is taken.' };
+  if (name.length > maxNameLength) return { error: 'Username is too long' };
 
   const user = { id, name, room, host };
 
@@ -26,7 +28,7 @@ const addUser = ({ id, name, room, host }) => {
 const removeUser = (id) => {
   const index = users.findIndex((user) => user.id === id);
 
-  if(index !== -1) return users.splice(index, 1)[0];
+  if (index !== -1) return users.splice(index, 1)[0];
 }
 
 const getUser = (id) => users.find((user) => user.id === id);

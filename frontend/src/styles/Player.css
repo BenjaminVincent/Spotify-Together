@@ -19,10 +19,10 @@
 }
 
 .now-playing__img img {
-    /* max-width: 80vmin;
-    width: 100%; */
-    width: 300px;
-    height: 300px;
+    max-width: 30vmin;
+    max-height: 30vmin;
+    /* width: 300px; */
+    /* height: 300px; */
 }
 
 .now-playing__side {

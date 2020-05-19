@@ -105,6 +105,7 @@ const Session = ({ token, device }) => {
     setAlbum(data.item.album.name);
     setImage(data.item.album.images[0].url);
     setSongData(data);
+    console.log(data);
     return data;
   }
 
