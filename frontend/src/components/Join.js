@@ -13,8 +13,8 @@ const Join = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const getUsers = async () => {
-    // let response = await fetch('https://listen-together-music.herokuapp.com/users');
-    const response = await fetch('http://localhost:5000/users');
+    let response = await fetch('https://listen-together-music.herokuapp.com/users');
+    // const response = await fetch('http://localhost:5000/users');
     const data = await response.json();
     return data;
   }

@@ -26,7 +26,7 @@ const Session = ({ token, device }) => {
     },
     progress_ms: '',
   });
-  const [playing, setPlaying] = useState('');
+  const [playing, _setPlaying] = useState('');
   const [fetchDate, setFetchDate] = useState();
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
@@ -39,6 +39,7 @@ const Session = ({ token, device }) => {
 
   const songDataRef = useRef(songData);
   const hostNameRef = useRef(hostName);
+  const playingRef = useRef(playing);
  
   const setSongData = (data) => {
     songDataRef.current = data;
@@ -50,9 +51,14 @@ const Session = ({ token, device }) => {
     _setHostName(data);
   }
 
-  const ENDPOINT = 'http://localhost:5000';
+  const setPlaying = (data) => {
+    playingRef.current = data;
+    _setPlaying(data);
+  }
 
-  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  // const ENDPOINT = 'http://localhost:5000';
+
+  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
@@ -69,15 +75,15 @@ const Session = ({ token, device }) => {
       updateData(data);
       sendSongData(data);
     }
-    const playState = playing ? 'Play' : 'Pause';
-    const res = await (playing ? pauseCurrent(token) : playCurrent(token, songDataRef));
+    const playState = playingRef.current ? 'Play' : 'Pause';
+    const res = await (playingRef.current ? pauseCurrent(token) : playCurrent(token, songDataRef));
     if (res instanceof Error) {
       console.log(`${playState} error`, res);
     } else {
       res.ok ? setPlaying(prevPlaying => !prevPlaying) : console.log('Play error', res.status);
     }
-    console.log('playing', playing);
-  }
+    console.log('playing', playingRef.current);
+  };
 
   const handleEnterRoom = async () => {
     if (host) {
@@ -93,13 +99,13 @@ const Session = ({ token, device }) => {
     } else {
       console.log('GetUserInfo error', res.status);
     }
-  }
+  };
 
   const handleNewUser = async () => {
     const data = await getCurrentlyPlaying(token);
     data.is_playing = !data.is_playing
     sendSongData(data);
-  }
+  };
 
   const sendMessage = (event) => {
     event.preventDefault();
@@ -226,6 +232,6 @@ const Session = ({ token, device }) => {
 
     </div>
   )
-}
+};
 
 export default Session;

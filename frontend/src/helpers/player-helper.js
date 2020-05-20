@@ -27,7 +27,7 @@ export const playCurrent = async (token, songData) => {
     },
     body: JSON.stringify(
       {
-        'uris': [songData.current.item.uri, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
+        'uris': [songData.current.item.uri],
         'position_ms': songData.current.progress_ms,
       }
     ),
