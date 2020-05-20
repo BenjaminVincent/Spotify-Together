@@ -1,102 +1,68 @@
 export const filterDevices = (devices) => devices.devices.filter(device => device.is_active);
-
-
-export const getDevices = (token) => {
-    fetch('https://api.spotify.com/v1/me/player/devices', {
-      method: 'GET', headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        const activeDevice = filterDevices(data);
-        return activeDevice[0].id;
-      })
-      .catch(err => err);
-  }
-
-
-// export const getDevices = (token) => {
-//   $.ajax({
-//     url: 'https://api.spotify.com/v1/me/player/devices',
-//     type: 'GET',
-//     beforeSend: xhr => {
-//       xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-//     },
-//     success: (data) => {
-//       const activeDevice = this.filterDevices(data);
-//       this.setState({
-//         deviceId: activeDevice[0].id,
-//       });
-//     },
-//   });
-// }
-
-// export const setCreatedRoom = () => this.setState({ created: !this.state.created });
-
 export const generateID = () => Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
 export const setHostName = (name) => this.setState({ name: name });
 
+export const getCurrentlyPlaying = async (token) => {
+  const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    method: 'GET', 
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+      }
+  }).catch((error) => {
+    return error;
+  });
+  const data = await res.json();
+  return data;
+}
 
-// export const getCurrentlyPlaying = (token) => {
-//   $.ajax({
-//     url: 'https://api.spotify.com/v1/me/player/currently-playing',
-//     type: 'GET',
-//     beforeSend: xhr => {
-//       xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-//     },
-//     success: (data) => {
-//       this.setState({
-//         item: data.item,
-//         progress_ms: data.progress_ms,
-//         is_playing: data.is_playing,
-//         position_ms: data.progress_ms,
-//       });
-//     },
-//   });
-// }
+export const playCurrent = async (token, songData) => {
+  const res = await fetch('https://api.spotify.com/v1/me/player/play', {
+    method: 'PUT', 
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    body: JSON.stringify(
+      {
+        'uris': [songData.current.item.uri, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
+        'position_ms': songData.current.progress_ms,
+      }
+    ),
+  }).catch((error) => {
+    return error;
+  });
 
-// export const handlePausePlay = () => {
-//   this.state.is_playing ? this.pauseCurrent(this.state.token) : this.playCurrent(this.state.token);
-// }
+  return res;
+}
 
-// export const pauseCurrent = (token) => {
-//   $.ajax({
-//     url: `https://api.spotify.com/v1/me/player/pause?device_id=${this.state.deviceId}`,
-//     type: 'PUT',
-//     beforeSend: xhr => {
-//       xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-//       this.getCurrentlyPlaying(this.state.token);
-//     },
-//     success: () => {
-//       this.setState({
-//         is_playing: false,
-//       });
-//     }
-//   });
-// }
+export const pauseCurrent = async (token) => {
+  const res = await fetch('https://api.spotify.com/v1/me/player/pause', {
+    method: 'PUT', 
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    }
+  }).catch((error) => {
+    return error;
+  });
 
-// export const playCurrent = (token) => {
-//   $.ajax({
-//     url: `https://api.spotify.com/v1/me/player/play?device_id=${this.state.deviceId}`,
-//     type: 'PUT',
-//     beforeSend: xhr => {
-//       xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-//       this.getCurrentlyPlaying(this.state.token);
-//     },
-//     data: JSON.stringify(
-//       {
-//         'uris': [this.state.item.uri],
-//         'position_ms': this.state.progress_ms,
-//       }
-//     ),
-//     success: () => {
-//       this.setState({
-//         is_playing: true,
-//       });
-//     }
-//   });
-// }
-// 
+  return res;
+}
+
+export const getUserInfo = async (token) => {
+  const res = await fetch('https://api.spotify.com/v1/me', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+      }
+  }).catch((error) => {
+    return error;
+  });
+  return res;
+}

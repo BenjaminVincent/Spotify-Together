@@ -14,16 +14,16 @@ const Join = () => {
 
   const getUsers = async () => {
     // let response = await fetch('https://listen-together-music.herokuapp.com/users');
-    let response = await fetch('http://localhost:5000/users');
-    let data = await response.json();
+    const response = await fetch('http://localhost:5000/users');
+    const data = await response.json();
     return data;
   }
 
   const handleClick = async (e) => {
     e.preventDefault();
-    let users = await getUsers();
-    let roomExists = users.find((user) => user.room === room);
-    let userInRoom = users.find((user) => user.room === room && user.name.toLowerCase() === name.toLowerCase());
+    const users = await getUsers();
+    const roomExists = users.find((user) => user.room === room);
+    const userInRoom = users.find((user) => user.room === room && user.name.toLowerCase() === name.toLowerCase());
     const MAXNAMELENGTH = 16;
 
     if (roomExists) {
