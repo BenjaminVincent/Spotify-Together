@@ -7,7 +7,6 @@
 .session-info {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
     width: 30%;
     height: 2.5em;
@@ -15,8 +14,8 @@
 }
 
 .session-info-spacing {
-    border-left: 2em;
-    border-right: 2em;
+    border-left: 4em;
+    border-right: 4em;
 }
 
 .session-container {
@@ -46,4 +45,13 @@
 
 .entire-session {
     height: 100%;
+}
+
+.session-queue {
+    float: left;   
+}
+
+.thing {
+    z-index: 9999;
+    width: 30%
 }

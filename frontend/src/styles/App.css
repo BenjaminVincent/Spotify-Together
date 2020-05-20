@@ -92,6 +92,7 @@ body {
 /** Background **/
 
 .background {
+  z-index: -1;
   left: 0;
   right: 0;
   top: 0;
@@ -106,7 +107,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
   margin: auto;
   z-index: 1;
 }

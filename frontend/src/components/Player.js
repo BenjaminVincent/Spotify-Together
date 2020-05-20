@@ -29,8 +29,8 @@ const PlayerHost = ({
         <div className='now-playing__side'>
           <div className='now-playing__name'>{song}</div>
           <div className='now-playing__artist'>
-           Artist: {artist} <br/>
-           Album: {album}
+          {artist} <br/>
+          {album}
           </div>
             <ProgressBar
               fetchDate={fetchDate}

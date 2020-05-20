@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
-import HandleError from './HandleError'; 
+import HandleError from './HandleError';
+import Queue from './Queue/Queue';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import * as $ from 'jquery';
@@ -139,7 +140,7 @@ const Session = ({ token, device }) => {
       },
       data: JSON.stringify(
         {
-          'uris': [uriRef.current, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
+          'uris': [uriRef.current],
           'position_ms': progressRef.current,
         }
       ),
@@ -269,11 +270,19 @@ useEffect(() => {
       {end ? 
         <Redirect to='/end'/>
       : <div className='session-container'>
+        <div className='thing'>
           <div className='session-info'>
             <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
             <div className='session-info-spacing'>Host: {hostName}</div>
             <div className='session-info-spacing'>Room: {room}</div>
-            {/* <img className='user-profile session-info-spacing' src={'../../public/user-circle-icon'}></img> */}
+            </div>
+            <div className='session-queue'>
+            <Queue 
+              song={song}
+              artist={artist}
+              image={image}
+            />
+            </div>
           </div>
             <div className='player-window'>
               <Player
@@ -290,6 +299,7 @@ useEffect(() => {
                 host={host}
                 />
               </div>
+
               <div className='chat-window'>     
               <Chat
                 message={message}
