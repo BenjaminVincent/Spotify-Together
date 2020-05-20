@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import io from 'socket.io-client';
 import '../styles/Session.css';
 import { Redirect } from 'react-router-dom';
+import { getCurrentlyPlaying, playCurrent, pauseCurrent, getUserInfo } from '../helpers/player-helper';
 
 let socket;
 
@@ -65,33 +66,7 @@ const Session = ({ token, device }) => {
 
   const host = !window.location.href.includes('join');
 
-
-  async function getUserInfo(token) {
-    const res = await fetch('https://api.spotify.com/v1/me', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-        }
-    });
-    const data = await res.json();
-    console.log('getUserInfo:', data);
-    // setUserProfile(data.images[0].url || null);
-    return data;
-  }
-
-
-  async function getCurrentlyPlaying(token) {
-    const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-      method: 'GET', 
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-        }
-    });    
-    const data = await res.json();
+  const updateData = (data) => {
     sendSongData(data);
     setPlaying(data.is_playing);
     setItem(data.item);
@@ -104,60 +79,35 @@ const Session = ({ token, device }) => {
     setAlbum(data.item.album.name);
     setImage(data.item.album.images[0].url);
     setSongData(data);
-    console.log(data);
-    return data;
+    console.log('data', data);
   }
 
-  const pauseCurrent = (token) => {
-    $.ajax({
-      url: `https://api.spotify.com/v1/me/player/pause?device_id=${device}`,
-      type: 'PUT',
-      dataType: 'json',
-      beforeSend: xhr => {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        if (host) getCurrentlyPlaying(token);
-      },
-      success: () => {
-        setPlaying(false);
-
-      },
-      error: function(error) { 
-        console.log("Status: " + error);
-    }
-    });
-  }
-
-  const playCurrent = (token) => {
-    $.ajax({
-      url: `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
-      type: 'PUT',
-      dataType: 'json',
-      beforeSend: xhr => {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-        // console.log('uri from playCurrrent', uriRef);
-        if (host) getCurrentlyPlaying(token);
-      },
-      data: JSON.stringify(
-        {
-          'uris': [uriRef.current, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
-          'position_ms': progressRef.current,
-        }
-      ),
-      success: () => {
-        setPlaying(true);
-      }
-    });
-  }
-
-  //Other functions
-  /////////////////////////////////////////////////////////////////////////
-
-  async function handlePausePlay() {
-    if (playing) {
-      await pauseCurrent(token);
+  const handlePausePlay = async () => {
+    const data = await getCurrentlyPlaying(token);
+    updateData(data);
+    const playState = playing ? 'Play' : 'Pause';
+    const res = await (playing ? pauseCurrent(token) : playCurrent(token, uriRef, progressRef));
+    if (res instanceof Error) {
+      console.log(`${playState} error`, res);
     } else {
-      await playCurrent(token);
-    } 
+      res.ok ? setPlaying(prevPlaying => !prevPlaying) : console.log('Play error', res.status);
+    }
+  }
+
+  const handleEnterRoom = async () => {
+    if (host) {
+      const data = await getCurrentlyPlaying(token);
+      updateData(data);
+    }
+
+    const res = await getUserInfo(token);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('userinfo', data);
+      if(!data.images.length) setUserProfile(data.images[0].url);
+    } else {
+      console.log('GetUserInfo error', res.status);
+    }
   }
 
   //Socket.io
@@ -177,25 +127,23 @@ const Session = ({ token, device }) => {
       socket.emit('disconnect');
       socket.off();
     }
-}, [ENDPOINT]);
-
-useEffect(() => {
-  // pause music if user leaves room
-  window.addEventListener('beforeunload', (event) => {
-    pauseCurrent(token);
-  });
-}, []);
+  }, [ENDPOINT]);
 
   useEffect(() => {
-    if (host) {
-      getCurrentlyPlaying(token);
-    }
+    // pause music if user leaves room
+    window.addEventListener('beforeunload', (event) => {
+      pauseCurrent(token);
+    });
+  }, []);
+
+  useEffect(() => {
+    handleEnterRoom();
 
     socket.on('message', (message) => {
         console.log('message', message);
+
         if (message.user === 'admin' && message.text.includes('has joined!')) {
           async function handleSong() {
-            await getUserInfo(token);
             let results = await getCurrentlyPlaying(token);
             // console.log('results:', results);
             results.is_playing = !results.is_playing
@@ -203,7 +151,7 @@ useEffect(() => {
             return;
           }
           async function handleJoiner() {
-            await playCurrent(token);
+            await playCurrent(token, uriRef, progressRef);
             return;
           }
         if (host) handleSong();
@@ -234,10 +182,11 @@ useEffect(() => {
           setImage(song_data.item.album.images[0].url);
           setSongData(song_data);
           if (!song_data.is_playing) {
-            playCurrent(token);
+            playCurrent(token, uriRef, progressRef);
           } else {
             pauseCurrent(token);
           }
+          console.log(song_data);
       });
     }
 
@@ -260,6 +209,7 @@ useEffect(() => {
 
   const sendSongData = (d) => {
     socket.emit('sendSongData', d, () => {
+      console.log(d);
     });
   };
 
