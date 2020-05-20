@@ -17,7 +17,7 @@ export const getCurrentlyPlaying = async (token) => {
   return data;
 }
 
-export const playCurrent = async (token, uriRef, progressRef) => {
+export const playCurrent = async (token, songData) => {
   const res = await fetch('https://api.spotify.com/v1/me/player/play', {
     method: 'PUT', 
     headers: {
@@ -27,8 +27,8 @@ export const playCurrent = async (token, uriRef, progressRef) => {
     },
     body: JSON.stringify(
       {
-        'uris': [uriRef.current, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
-        'position_ms': progressRef.current,
+        'uris': [songData.current.item.uri, 'spotify:track:0gjH2qn0la5lyXsWsJpmnx'],
+        'position_ms': songData.current.progress_ms,
       }
     ),
   }).catch((error) => {

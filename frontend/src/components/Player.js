@@ -15,6 +15,7 @@ const PlayerHost = ({
   fetchDate,
   handlePausePlay,
   host,
+  songData,
 }) => {
 
   const backgroundStyles = {
@@ -27,7 +28,7 @@ const PlayerHost = ({
           <img src={image} alt='not found'/>
         </div>
         <div className='now-playing__side'>
-          <div className='now-playing__name'>{song}</div>
+          <div className='now-playing__name'>{songData.item.name}</div>
           <div className='now-playing__artist'>
            Artist: {artist} <br/>
            Album: {album}

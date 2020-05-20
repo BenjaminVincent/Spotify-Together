@@ -13,45 +13,36 @@ import { getCurrentlyPlaying, playCurrent, pauseCurrent, getUserInfo } from '../
 let socket;
 
 const Session = ({ token, device }) => {
-
+  const [songData, _setSongData] = useState({ 
+    item: { 
+      name: '',
+      uri: '',
+      duration_ms: '',
+      artists: [{ name: '' }],
+      album: {
+        name: '',
+        images: [{ url: '' }],
+      },
+    },
+    progress_ms: '',
+  });
+  const [playing, setPlaying] = useState('');
+  const [fetchDate, setFetchDate] = useState();
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState([]);
   const [hostName, _setHostName] = useState('');
-  const [playing, setPlaying] = useState('');
-  const [item, setItem] = useState('');
-  const [song, setSong] = useState('');
-  const [uri, _setUri] = useState('');
-  const [progress, _setProgress] = useState('');
-  const [duration, setDuration] = useState('');
-  const [artist, setArtist] = useState('');
-  const [album, setAlbum] = useState('');
-  const [image, setImage] = useState('');
-  const [fetchDate, setFetchDate] = useState();
-  const [songData, _setSongData] = useState({});
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [userProfile, setUserProfile] = useState('');
   const [end, setEnd] = useState(false);
 
   const songDataRef = useRef(songData);
-  const uriRef = useRef(uri);
-  const progressRef = useRef(progress);
   const hostNameRef = useRef(hostName);
  
   const setSongData = (data) => {
     songDataRef.current = data;
     _setSongData(data);
-  }
-
-  const setUri = (data) => {
-    uriRef.current = data;
-    _setUri(data);
-  }
-
-  const setProgress = (data) => {
-    progressRef.current = data;
-    _setProgress(data);
   }
 
   const setHostName = (data) => {
@@ -67,31 +58,25 @@ const Session = ({ token, device }) => {
   const host = !window.location.href.includes('join');
 
   const updateData = (data) => {
-    sendSongData(data);
-    setPlaying(data.is_playing);
-    setItem(data.item);
-    setSong(data.item.name);
-    setUri(data.item.uri);
-    setProgress(data.progress_ms);
-    setDuration(data.item.duration_ms);
-    setFetchDate(Date.now());
-    setArtist(data.item.artists[0].name);
-    setAlbum(data.item.album.name);
-    setImage(data.item.album.images[0].url);
     setSongData(data);
-    console.log('data', data);
+    setPlaying(data.is_playing);
+    setFetchDate(Date.now());
   }
 
   const handlePausePlay = async () => {
-    const data = await getCurrentlyPlaying(token);
-    updateData(data);
+    if (host) {
+      const data = await getCurrentlyPlaying(token);
+      updateData(data);
+      sendSongData(data);
+    }
     const playState = playing ? 'Play' : 'Pause';
-    const res = await (playing ? pauseCurrent(token) : playCurrent(token, uriRef, progressRef));
+    const res = await (playing ? pauseCurrent(token) : playCurrent(token, songDataRef));
     if (res instanceof Error) {
       console.log(`${playState} error`, res);
     } else {
       res.ok ? setPlaying(prevPlaying => !prevPlaying) : console.log('Play error', res.status);
     }
+    console.log('playing', playing);
   }
 
   const handleEnterRoom = async () => {
@@ -109,6 +94,28 @@ const Session = ({ token, device }) => {
       console.log('GetUserInfo error', res.status);
     }
   }
+
+  const handleNewUser = async () => {
+    const data = await getCurrentlyPlaying(token);
+    data.is_playing = !data.is_playing
+    sendSongData(data);
+  }
+
+  const sendMessage = (event) => {
+    event.preventDefault();
+    if (message) {
+        socket.emit('sendMessage', message, () => {
+            setMessage('');
+        });
+    }
+  };
+
+  const sendSongData = (d) => {
+    socket.emit('sendSongData', d, () => {
+      console.log('sendSongData', d);
+    });
+  };
+
 
   //Socket.io
   //////////////////////////////////////////////////////////////////////////////
@@ -130,32 +137,18 @@ const Session = ({ token, device }) => {
   }, [ENDPOINT]);
 
   useEffect(() => {
+    handleEnterRoom();
+
     // pause music if user leaves room
     window.addEventListener('beforeunload', (event) => {
       pauseCurrent(token);
     });
-  }, []);
-
-  useEffect(() => {
-    handleEnterRoom();
 
     socket.on('message', (message) => {
         console.log('message', message);
 
-        if (message.user === 'admin' && message.text.includes('has joined!')) {
-          async function handleSong() {
-            let results = await getCurrentlyPlaying(token);
-            // console.log('results:', results);
-            results.is_playing = !results.is_playing
-            await sendSongData(results);
-            return;
-          }
-          async function handleJoiner() {
-            await playCurrent(token, uriRef, progressRef);
-            return;
-          }
-        if (host) handleSong();
-        if (!host) handleJoiner();
+        if (message.user === 'admin' && message.text.includes('has joined!') && host) {
+          handleNewUser();
         }
 
         if (message.user === 'admin' && message.text.includes(`${hostNameRef.current} has left.`)) {
@@ -168,25 +161,10 @@ const Session = ({ token, device }) => {
     });
 
     if(!host) {
-
-      socket.on('data', (song_data) => {
-          setItem(song_data.item || 'not found');
-          setSong(song_data.item.name);
-          setUri(song_data.item.uri);
-          setProgress(song_data.progress_ms);
-          setDuration(song_data.item.duration_ms);
-          setFetchDate(Date.now());
-          setPlaying(song_data.is_playing);
-          setArtist(song_data.item.artists[0].name);
-          setAlbum(song_data.item.album.name);
-          setImage(song_data.item.album.images[0].url);
-          setSongData(song_data);
-          if (!song_data.is_playing) {
-            playCurrent(token, uriRef, progressRef);
-          } else {
-            pauseCurrent(token);
-          }
-          console.log(song_data);
+      socket.on('data', (data) => {
+        updateData(data);
+        handlePausePlay();
+        console.log('listener progess', data.progress_ms);
       });
     }
 
@@ -197,21 +175,6 @@ const Session = ({ token, device }) => {
     });
 
   }, []);
-
-  const sendMessage = (event) => {
-      event.preventDefault();
-      if (message) {
-          socket.emit('sendMessage', message, () => {
-              setMessage('');
-          });
-      }
-  };
-
-  const sendSongData = (d) => {
-    socket.emit('sendSongData', d, () => {
-      console.log(d);
-    });
-  };
 
   return (
     <div className='entire-session'>
@@ -228,16 +191,17 @@ const Session = ({ token, device }) => {
             <div className='player-window'>
               <Player
                 playing={playing}
-                item={item}
-                song={song}
-                duration={duration}
-                progress={progress}
-                artist={artist}
-                album={album}
-                image={image}
+                item={songData.item}
+                song={songData.item.name}
+                duration={songData.item.duration_ms}
+                progress={songData.progress_ms}
+                artist={songData.item.artists[0].name}
+                album={songData.item.album.name}
+                image={songData.item.album.images[0].url}
                 fetchDate={fetchDate}
                 handlePausePlay={handlePausePlay}
                 host={host}
+                songData={songData}
                 />
               </div>
               <div className='chat-window'>     
