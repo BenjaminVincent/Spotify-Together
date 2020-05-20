@@ -21,7 +21,6 @@ const Session = ({ token, device }) => {
       duration_ms: '',
       artists: [{ name: '' }],
       album: {
-        name: '',
         images: [{ url: '' }],
       },
     },
@@ -191,9 +190,9 @@ const Session = ({ token, device }) => {
             </div>
             <div className='session-queue'>
             <Queue 
-              song={song}
-              artist={artist}
-              image={image}
+              song={songData.item.name}
+              artist={songData.item.artists[0].name}
+              image={songData.item.album.images[0].url}
             />
             </div>
           </div>
@@ -205,7 +204,6 @@ const Session = ({ token, device }) => {
                 duration={songData.item.duration_ms}
                 progress={songData.progress_ms}
                 artist={songData.item.artists[0].name}
-                album={songData.item.album.name}
                 image={songData.item.album.images[0].url}
                 fetchDate={fetchDate}
                 handlePausePlay={handlePausePlay}

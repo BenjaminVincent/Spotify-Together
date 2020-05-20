@@ -10,7 +10,6 @@ const PlayerHost = ({
   progress,
   duration,
   artist,
-  album,
   image,
   fetchDate,
   handlePausePlay,
@@ -31,7 +30,6 @@ const PlayerHost = ({
           <div className='now-playing__name'>{songData.item.name}</div>
           <div className='now-playing__artist'>
           {artist} <br/>
-          {album}
           </div>
             <ProgressBar
               fetchDate={fetchDate}
