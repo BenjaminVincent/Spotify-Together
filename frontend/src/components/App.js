@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import * as $ from 'jquery';
+import React, { useState, useEffect } from 'react';
 import '../styles/App.css';
 import Join from './Join';
 import Chat from './Chat';
@@ -10,104 +9,83 @@ import HandleError from './HandleError';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
+import { getDevices, filterDevices } from '../helpers/player-helper';
 
 
-class App extends Component {
+const App = () => {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      token: null,
-      device: null,
-    };
-  }
+  const [token, setToken] = useState('');
+  const [device, setDevice] = useState('');
 
-  filterDevices = (devices) => devices.devices.filter(device => device.is_active);
+  const updateDevice = async (_token) => {
+    const res = await getDevices(_token);
+    if (res.ok) {
+      const data = await res.json();
+      const activeDevice = filterDevices(data);
+      if (activeDevice.length === 0) {
+        setDevice('No Device ID found');
+      } else {
+        setDevice(activeDevice[0].id);
+      }
+    } else {
+      console.log('getDevices error', res.status);
+    }
+  };
 
-  componentDidMount() {
+  useEffect(() => {
     let _token = hash.access_token;
     if (_token) {
-      this.setState({
-        token: _token,
-      });
-      this.getDevices(_token);
+      setToken(_token);
+      updateDevice(_token)
     }
-  }
+  }, []);
 
-  getDevices = (token) => {
-    $.ajax({
-      url: 'https://api.spotify.com/v1/me/player/devices',
-      type: 'GET',
-      beforeSend: xhr => {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-      },
-      success: (data) => {
-        // console.log('data', data);
-        // if (!data) return 'No Device Found';
-        const activeDevice = this.filterDevices(data);
-        if (activeDevice.length === 0) {
-          this.setState({
-            device: 'No Device ID found',
-          });
-        } else {
-          this.setState({
-            device: activeDevice[0].id,
-          });
-        }
-      },
-    });
-  }
-
-  render() {
-    return (
-      <BrowserRouter>
-      <div className='App-base'> 
-          {this.state.token ?
-            this.state.device === 'No Device ID found' ?
-            <Route exact path='/' 
+  return (
+    <BrowserRouter>
+    <div className='App-base'> 
+      {token ?
+        device === 'No Device ID found' ?
+        <Route exact path='/' 
+        component={() => 
+          <HandleError errorMessage="No Device found. Please open spotify and make sure it's active."/>}
+        /> :
+        <div className='App-allowed'>
+          <Route exact path='/' component={Home}/>
+          <Route exact path='/chat' component={Chat}/>
+          <Route exact path='/join' component={Join}/>
+          <Route exact path='/host' component={Host}/>
+          <Route exact path='/end' 
             component={() => 
-              <HandleError errorMessage="No Device found. Please open spotify and make sure it's active."/>}
-            /> :
-            <div className='App-allowed'>
-              <Route exact path='/' component={Home}/>
-              <Route exact path='/chat' component={Chat}/>
-              <Route exact path='/join' component={Join}/>
-              <Route exact path='/host' component={Host}/>
-              <Route exact path='/end' 
-                component={() => 
-              <HandleError errorMessage='The session has been ended by the Host.'/>}
-              />
-              <Route exact path='/sessionjoin' 
-                component={() => 
-                  <Session token={this.state.token} device={this.state.device}/>}
-              />
-              <Route exact path='/sessionhost' 
-                component={() => 
-                  <Session token={this.state.token} device={this.state.device}/>}
-              />
-            </div>
-        :
-            <div>
-              <div className='App-auth'>
-                <ul className='App-preface'>To use Listen Together you must: <br/>
-                  <div className='auth-bullets'>
-                    <li>have spotify open</li>
-                    <li>authenticate and agree</li>
-                  </div>
-                </ul>
-                <a 
-                  href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
-                  <button className='btn' type='submit'>
-                    authenticate
-                    </button>
-                </a>
+          <HandleError errorMessage='The session has been ended by the Host.'/>}
+          />
+          <Route exact path='/sessionjoin' 
+            component={() => 
+              <Session token={token}/>}
+          />
+          <Route exact path='/sessionhost' 
+            component={() => 
+              <Session token={token}/>}
+          />
+        </div>
+      :
+        <div>
+          <div className='App-auth'>
+            <ul className='App-preface'>To use Listen Together you must: <br/>
+              <div className='auth-bullets'>
+                <li>have spotify open</li>
+                <li>authenticate and agree</li>
               </div>
-            </div>
-        }
-      </div>
-      </BrowserRouter>
-    );
-  }
-}
+            </ul>
+            <a 
+              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+              <button className='btn' type='submit'>authenticate</button>
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+    </BrowserRouter>
+  );
+};
 
 export default App;
