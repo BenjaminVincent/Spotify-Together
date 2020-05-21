@@ -120,10 +120,6 @@ const Session = ({ token }) => {
     });
   };
 
-
-  //Socket.io
-  //////////////////////////////////////////////////////////////////////////////
-
   useEffect(() => {
     const { name, room } = queryString.parse(window.location.search);
 
@@ -187,7 +183,7 @@ const Session = ({ token }) => {
       : <div className='session-container'>
           <div className='thing'>
             <div className='session-info'>
-              <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
+              <a className='session-info-spacing-leave' href='/'><FaAngleLeft color='white' size='2em'/></a>
               <div className='session-info-spacing'>Host: {hostName}</div>
               <div className='session-info-spacing'>Room: {room}</div>
             </div>
