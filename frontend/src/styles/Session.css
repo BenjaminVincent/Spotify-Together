@@ -14,8 +14,8 @@
 }
 
 .session-info-spacing {
-    border-left: 4em;
-    border-right: 4em;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 .session-container {
