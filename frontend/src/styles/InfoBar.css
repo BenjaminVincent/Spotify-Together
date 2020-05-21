@@ -1,11 +1,11 @@
 .infoBar {
-    display: flex;
-    align-items: right;
-    flex-direction: column;
-    justify-content: space-between;
-    border-radius: 4px 4px 0 0;
-    height: 1.5em;
-    width: 100%;
+  display: flex;
+  align-items: right;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 4px 4px 0 0;
+  height: 1.5em;
+  width: 100%;
   }
 
 .infoBar-title {

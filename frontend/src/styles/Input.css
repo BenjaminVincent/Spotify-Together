@@ -1,7 +1,7 @@
 .form {
   display: flex;
   justify-content: center;
-  }
+}
   
 .input {
   color: #fff;
@@ -32,5 +32,3 @@ input:focus, textarea:focus, select:focus{
   border-radius: 2em;
   width: 23%;
 }
-
-
