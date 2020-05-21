@@ -3,7 +3,7 @@ import ProgressBar from './ProgressBar';
 import '../styles/Player.css';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 
-const PlayerHost = ({
+const Player = ({
   playing,
   item,
   song,
@@ -57,4 +57,4 @@ const PlayerHost = ({
   );
 }
 
-export default PlayerHost;
+export default Player;

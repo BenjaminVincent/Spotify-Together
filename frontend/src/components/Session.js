@@ -73,12 +73,11 @@ const Session = ({ token }) => {
       updateData(data);
       sendSongData(data);
     }
-    const playState = playingRef.current ? 'Play' : 'Pause';
     const res = await (playingRef.current ? pauseCurrent(token) : playCurrent(token, songDataRef));
     if (res instanceof Error) {
-      console.log(`${playState} error`, res);
+      console.log('Pause/play error', res);
     } else {
-      res.ok ? setPlaying(prevPlaying => !prevPlaying) : console.log(`${playState} error`, res.status);
+      res.ok ? setPlaying(!playingRef.current) : console.log('Pause/play error', res.status);
     }
     console.log('playing', playingRef.current);
   };

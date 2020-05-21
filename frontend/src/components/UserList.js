@@ -6,7 +6,7 @@ const UserList = ({ users }) => {
 
   let listUsers = users.map(user => (
 
-    <li className='user-image'>
+    <li className='user-image' key={user.id}>
         <FaUserCircle size='1.2em'/>
         <span className='user-name'>{user.name}</span>
     </li>
