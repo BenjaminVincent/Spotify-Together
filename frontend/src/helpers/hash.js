@@ -10,5 +10,4 @@ const hash = window.location.hash
   }, {});
 window.location.hash = '';
 
-
 export default hash;
