@@ -21,7 +21,7 @@ const Chat = ({ message, setMessage, messages, sendMessage, name, users }) => {
                 sendMessage={sendMessage}
             />
         </div>
-    )
+    );
 };
 
 export default Chat;

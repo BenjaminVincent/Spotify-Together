@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
-import HandleError from './HandleError';
 import Queue from './Queue/Queue';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
-import * as $ from 'jquery';
 import io from 'socket.io-client';
 import '../styles/Session.css';
 import { Redirect } from 'react-router-dom';
@@ -13,7 +11,7 @@ import { getCurrentlyPlaying, playCurrent, pauseCurrent, getUserInfo } from '../
 
 let socket;
 
-const Session = ({ token, device }) => {
+const Session = ({ token }) => {
   const [songData, _setSongData] = useState({ 
     item: { 
       name: '',
@@ -44,17 +42,17 @@ const Session = ({ token, device }) => {
   const setSongData = (data) => {
     songDataRef.current = data;
     _setSongData(data);
-  }
+  };
 
   const setHostName = (data) => {
     hostNameRef.current = data;
     _setHostName(data);
-  }
+  };
 
   const setPlaying = (data) => {
     playingRef.current = data;
     _setPlaying(data);
-  }
+  };
 
   const ENDPOINT = 'http://localhost:5000';
 
@@ -67,7 +65,7 @@ const Session = ({ token, device }) => {
     setSongData(data);
     setPlaying(data.is_playing);
     setFetchDate(Date.now());
-  }
+  };
 
   const handlePausePlay = async () => {
     if (host) {
@@ -80,7 +78,7 @@ const Session = ({ token, device }) => {
     if (res instanceof Error) {
       console.log(`${playState} error`, res);
     } else {
-      res.ok ? setPlaying(prevPlaying => !prevPlaying) : console.log('Play error', res.status);
+      res.ok ? setPlaying(prevPlaying => !prevPlaying) : console.log(`${playState} error`, res.status);
     }
     console.log('playing', playingRef.current);
   };
@@ -184,15 +182,14 @@ const Session = ({ token, device }) => {
 
   return (
     <div className='entire-session'>
-
       {end ? 
         <Redirect to='/end'/>
       : <div className='session-container'>
-        <div className='thing'>
-          <div className='session-info'>
-            <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
-            <div className='session-info-spacing'>Host: {hostName}</div>
-            <div className='session-info-spacing'>Room: {room}</div>
+          <div className='thing'>
+            <div className='session-info'>
+              <a className='session-info-spacing' href='/'><FaAngleLeft color='white' size='2em'/></a>
+              <div className='session-info-spacing'>Host: {hostName}</div>
+              <div className='session-info-spacing'>Room: {room}</div>
             </div>
             <div className='session-queue'>
             <Queue 
@@ -202,36 +199,35 @@ const Session = ({ token, device }) => {
             />
             </div>
           </div>
-            <div className='player-window'>
-              <Player
-                playing={playing}
-                item={songData.item}
-                song={songData.item.name}
-                duration={songData.item.duration_ms}
-                progress={songData.progress_ms}
-                artist={songData.item.artists[0].name}
-                image={songData.item.album.images[0].url}
-                fetchDate={fetchDate}
-                handlePausePlay={handlePausePlay}
-                host={host}
-                songData={songData}
-                />
-              </div>
-
-              <div className='chat-window'>     
-              <Chat
-                message={message}
-                setMessage={setMessage}
-                messages={messages}
-                sendMessage={sendMessage}
-                name={name}
-                users={users}
+          <div className='player-window'>
+            <Player
+              playing={playing}
+              item={songData.item}
+              song={songData.item.name}
+              duration={songData.item.duration_ms}
+              progress={songData.progress_ms}
+              artist={songData.item.artists[0].name}
+              image={songData.item.album.images[0].url}
+              fetchDate={fetchDate}
+              handlePausePlay={handlePausePlay}
+              host={host}
+              songData={songData}
               />
-            </div>
-        </div>}
-
+          </div>
+          <div className='chat-window'>     
+            <Chat
+              message={message}
+              setMessage={setMessage}
+              messages={messages}
+              sendMessage={sendMessage}
+              name={name}
+              users={users}
+            />
+          </div>
+        </div>
+      }
     </div>
-  )
+  );
 };
 
 export default Session;
