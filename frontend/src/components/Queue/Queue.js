@@ -12,7 +12,7 @@ import Search from './Search';
 
 */
 
-const Queue = ({token, song, artist, image, queue, addToQueue, queueData, setQueueData, removeFromQueue}) => {
+const Queue = ({token, song, artist, image, queue, addToQueue, queueData, setQueueData, removeFromQueue, host}) => {
 
   const upNext = queue.slice(1).map(track => (
     <QueueItem
@@ -22,19 +22,22 @@ const Queue = ({token, song, artist, image, queue, addToQueue, queueData, setQue
       image={track.album.images[0].url}
       uri={track.uri}
       removeFromQueue={removeFromQueue}
+      host={host}
     />
   ));
 
   return (
   <div className='queue-container'>
+    {host ?
     <Search
       token={token}
       addToQueue={addToQueue}
       // queueData={queueData}
       // setQueueData={setQueueData}
     />
+    : null}
     <div className='queue-title'>Up Next: </div>
-    {queue.length ? upNext : null}
+    {queue.length ? <div className='queued-items'>{upNext}</div> : null}
   </div>
   );
 }

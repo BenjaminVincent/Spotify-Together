@@ -17,6 +17,7 @@ const ProgressBar = ({ fetchDate, progress, duration, playing, handlePlayNext })
   }, [])
 
   useEffect(() => {
+    // is song over? play next song
     if ((currentDate - fetchDate + progress) > duration && playing) {
       handlePlayNext();
       console.log('song end');

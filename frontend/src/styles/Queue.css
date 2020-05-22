@@ -6,12 +6,15 @@
 .queue-item {
     display: flex;
     float: left;
-    border: solid #1A1A1D;;
+    border: solid #1A1A1D;
+    border-radius: 0.15em;
+    margin-top: 0.3em;
     width: 6em;
     height: 2.02em;    
 }
 
 .queue-title {
+    margin-top: 0.5em;
     margin-bottom: .5em;
 }
 
@@ -32,4 +35,13 @@
 
 .queue-item-artist {
     font-size: .35em;
+}
+
+.queue-item-delete {
+    cursor: pointer;
+}
+
+.queued-items {
+    display: flex;
+    flex-direction: column;
 }

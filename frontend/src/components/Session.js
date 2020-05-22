@@ -35,8 +35,6 @@ const Session = ({ token }) => {
   const [userProfile, setUserProfile] = useState('');
   const [end, setEnd] = useState(false);
   const [queue, _setQueue] = useState([]);
-  // const [queueData, setQueueData] = useState([]);
-  const [songEnd, setSongEnd] = useState(false);
 
   const songDataRef = useRef(songData);
   const hostNameRef = useRef(hostName);
@@ -71,13 +69,12 @@ const Session = ({ token }) => {
   const removeFirstInQueue = () => {
     queueRef.current = queueRef.current.filter((_, i) => i !== 0);
     _setQueue(queue => queue.filter((_, i) => i !== 0));
-    // setQueueData(queueData => queueData.filter((_, i) => i !== 0));
   }
 
+  // Delete song => make sure it doesn't delete all tracks with name uri (2 of same song)
   const removeFromQueue = (uri) => {
-    queueRef.current = queueRef.current.filter((track) => track.uri !== uri);
-    _setQueue(queue => queue.filter((track) => track.uri !== uri));
-    // setQueueData(queueData => queueData.filter((track) => track.uri !== uri));
+      queueRef.current = queueRef.current.filter((track) => track.uri !== uri);
+      _setQueue(queue => queue.filter((track) => track.uri !== uri));
   };
 
 
@@ -109,11 +106,12 @@ const Session = ({ token }) => {
     console.log('playing', playingRef.current);
   };
 
+  // Remove first song in queue and play next
   const handlePlayNext = async () => {
     if (queueRef.current.length > 1) {
       removeFirstInQueue();
-      // console.log('queueData', queueData);
       const res = await (playCurrent(token, queueRef, 0));
+
       if (res instanceof Error) {
         console.log('Play error', res);
       } else {
@@ -139,7 +137,7 @@ const Session = ({ token }) => {
     if (res.ok) {
       const data = await res.json();
       console.log('userinfo', data);
-      if(!data.images.length) setUserProfile(data.images[0].url);
+      if (!data.images.length) setUserProfile(data.images[0].url);
     } else {
       console.log('GetUserInfo error', res.status);
     }
@@ -149,6 +147,7 @@ const Session = ({ token }) => {
     const data = await getCurrentlyPlaying(token);
     data.is_playing = !data.is_playing
     sendSongData(data);
+    sendQueueData(queue);
   };
 
   const sendMessage = (event) => {
@@ -163,6 +162,12 @@ const Session = ({ token }) => {
   const sendSongData = (d) => {
     socket.emit('sendSongData', d, () => {
       console.log('sendSongData', d);
+    });
+  };
+
+  const sendQueueData = (d) => {
+    socket.emit('queueData', d, () => {
+      console.log('queueData', d);
     });
   };
 
@@ -206,7 +211,7 @@ const Session = ({ token }) => {
         setMessages(messages => [...messages, message]);
     });
 
-    if(!host) {
+    if (!host) {
       socket.on('data', (data) => {
         updateData(data);
         if (!queueRef.current.length) addToQueue(data.item);
@@ -230,7 +235,7 @@ const Session = ({ token }) => {
   }, []);
 
   useEffect(() => {
-    if (host) socket.emit('queueData', queue, () => {});
+    if (host) sendQueueData(queue);
   }, [queue])
 
   return (
@@ -256,6 +261,7 @@ const Session = ({ token }) => {
               // queueData={queueData}
               // setQueueData={setQueueData}
               removeFromQueue={removeFromQueue}
+              host={host}
             />
             </div>
           </div>

@@ -9,8 +9,6 @@ import '../../styles/Search.css';
 
     functionality:
         - Type in a song (track) and search spotify database for result
-
-
 */
 
 const Search = ({ token, addToQueue, queueData, setQueueData }) => {
@@ -37,17 +35,18 @@ const Search = ({ token, addToQueue, queueData, setQueueData }) => {
         addToQueue(track);
         // setQueueData(queueData => [...queueData, track]);
         setSearchResults('');
+        document.getElementById('search-input').value = ''
       }}>
       {track.name} - {track.artists[0].name} 
       </li>
     ));
-    return songs
+    return songs;
   }
 
   return (
     <div>  
-      <div>Search</div>
-      <input 
+      <input
+        id='search-input'
         className='joinInput' 
         placeholder='Search...' 
         type='text'

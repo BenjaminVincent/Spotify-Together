@@ -9,7 +9,7 @@ import '../styles/App.css';
 const Host = () => {
  
   const [name, setName] = useState('');
-  const [room, setRoom] = useState(generateID);
+  const [room, setRoom] = useState('cat');
   const [errorMessage, setErrorMessage] = useState('');
   const MAXNAMELENGTH = 16;
 
