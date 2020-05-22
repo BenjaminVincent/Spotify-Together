@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ProgressBar = ({ fetchDate, progress, duration, playing, setSongEnd }) => {
+const ProgressBar = ({ fetchDate, progress, duration, playing, handlePlayNext }) => {
 
   const [currentDate, setCurrentDate] = useState(Date.now());
 
@@ -18,7 +18,7 @@ const ProgressBar = ({ fetchDate, progress, duration, playing, setSongEnd }) => 
 
   useEffect(() => {
     if ((currentDate - fetchDate + progress) > duration && playing) {
-      setSongEnd(true);
+      handlePlayNext();
       console.log('song end');
     }
   }, [currentDate])

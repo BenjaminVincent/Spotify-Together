@@ -105,15 +105,17 @@ const Session = ({ token }) => {
   };
 
   const handlePlayNext = async () => {
-    removeFirstInQueue();
-    // console.log('queueData', queueData);
-    const res = await (playCurrent(token, queueRef, 0));
-    if (res instanceof Error) {
-      console.log('Play error', res);
-    } else {
-      res.ok ? setPlaying(true) : console.log('Play error', res.status);
-    }
-  }
+    if (queueRef.current.length > 1) {
+      removeFirstInQueue();
+      // console.log('queueData', queueData);
+      const res = await (playCurrent(token, queueRef, 0));
+      if (res instanceof Error) {
+        console.log('Play error', res);
+      } else {
+        res.ok ? setPlaying(true) : console.log('Play error', res.status);
+      }
+      setTimeout(() => getAndUpdateData(), 500);
+  }}
 
   const getAndUpdateData = async () => {
     const data = await getCurrentlyPlaying(token);
@@ -215,14 +217,6 @@ const Session = ({ token }) => {
 
   }, []);
 
-  useEffect(() => {
-    if (songEnd && host) {
-      handlePlayNext();
-      setTimeout(() => getAndUpdateData(), 500);
-    }
-    setSongEnd(false);
-  }, [songEnd])
-
   return (
     <div className='entire-session'>
       {end ? 
@@ -262,7 +256,7 @@ const Session = ({ token }) => {
               handlePausePlay={handlePausePlay}
               host={host}
               songData={songData}
-              setSongEnd={setSongEnd}
+              handlePlayNext={handlePlayNext}
               />
           </div>
           <div className='chat-window'>     
