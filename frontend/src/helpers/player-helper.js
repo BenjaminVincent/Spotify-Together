@@ -30,7 +30,7 @@ export const getCurrentlyPlaying = async (token) => {
   return data;
 }
 
-export const playCurrent = async (token, songData) => {
+export const playCurrent = async (token, queueRef, songData) => {
   const res = await fetch('https://api.spotify.com/v1/me/player/play', {
     method: 'PUT', 
     headers: {
@@ -40,7 +40,7 @@ export const playCurrent = async (token, songData) => {
     },
     body: JSON.stringify(
       {
-        'uris': [songData.current.item.uri],
+        'uris': queueRef.current,
         'position_ms': songData.current.progress_ms,
       }
     )
@@ -76,4 +76,19 @@ export const getUserInfo = async (token) => {
     return error;
   });
   return res;
+}
+
+export const getSearch = async (token, q) => {
+  const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURI(q)}&type=artist,track`, {
+    method: 'GET', 
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    }
+  }).catch((error) => {
+    return error;
+  });
+  const data = await res.json();
+  return data;
 }

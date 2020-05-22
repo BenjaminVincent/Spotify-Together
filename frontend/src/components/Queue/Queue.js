@@ -12,17 +12,28 @@ import Search from './Search';
 
 */
 
-const Queue = ({song, artist, image}) => {
+const Queue = ({token, song, artist, image, queueList, queue, setQueue, queueData, setQueueData,}) => {
 
-  const queueList = [];
+  const upNext = queueData.map(track => (
+    <QueueItem
+      key={track.id}
+      song={track.name}
+      artist={track.artists[0].name}
+      image={track.album.images[0].url}
+    />
+  ));
+
   return (
-  // <div className='queue-container'>
-  //   <div className='queue-title'>Up Next: </div>
-  //   <div><QueueItem song={song} artist={artist} image={image}/></div>
-  //   <Search/>
-  // </div>
-
-<Search/>
+  <div className='queue-container'>
+    <Search
+      token={token}
+      setQueue={setQueue}
+      queueData={queueData}
+      setQueueData={setQueueData}
+    />
+    <div className='queue-title'>Up Next: </div>
+    {queueData.length ? upNext : null}
+  </div>
   );
 }
 

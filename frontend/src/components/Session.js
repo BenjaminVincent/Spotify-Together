@@ -11,6 +11,8 @@ import { getCurrentlyPlaying, playCurrent, pauseCurrent, getUserInfo } from '../
 
 let socket;
 
+const queueList = [];
+
 const Session = ({ token }) => {
   const [songData, _setSongData] = useState({ 
     item: { 
@@ -34,10 +36,13 @@ const Session = ({ token }) => {
   const [messages, setMessages] = useState([]);
   const [userProfile, setUserProfile] = useState('');
   const [end, setEnd] = useState(false);
+  const [queue, _setQueue] = useState(queueList);
+  const [queueData, setQueueData] = useState([]);
 
   const songDataRef = useRef(songData);
   const hostNameRef = useRef(hostName);
   const playingRef = useRef(playing);
+  const queueRef = useRef(queue);
  
   const setSongData = (data) => {
     songDataRef.current = data;
@@ -52,6 +57,11 @@ const Session = ({ token }) => {
   const setPlaying = (data) => {
     playingRef.current = data;
     _setPlaying(data);
+  };
+
+  const setQueue = (data) => {
+    queueRef.current = [...queueRef.current, data];
+    _setQueue(queue => [...queue, data]);
   };
 
   const ENDPOINT = 'http://localhost:5000';
@@ -73,7 +83,7 @@ const Session = ({ token }) => {
       updateData(data);
       sendSongData(data);
     }
-    const res = await (playingRef.current ? pauseCurrent(token) : playCurrent(token, songDataRef));
+    const res = await (playingRef.current ? pauseCurrent(token) : playCurrent(token, queueRef, songDataRef));
     if (res instanceof Error) {
       console.log('Pause/play error', res);
     } else {
@@ -188,9 +198,16 @@ const Session = ({ token }) => {
             </div>
             <div className='session-queue'>
             <Queue 
+              token={token}
               song={songData.item.name}
               artist={songData.item.artists[0].name}
               image={songData.item.album.images[0].url}
+              uri={songData.item.uri}
+              queueList={queueList}
+              queue={queue}
+              setQueue={setQueue}
+              queueData={queueData}
+              setQueueData={setQueueData}
             />
             </div>
           </div>
