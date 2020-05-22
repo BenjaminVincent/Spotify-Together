@@ -35,7 +35,7 @@ const Session = ({ token }) => {
   const [userProfile, setUserProfile] = useState('');
   const [end, setEnd] = useState(false);
   const [queue, _setQueue] = useState([]);
-  const [queueData, setQueueData] = useState([]);
+  // const [queueData, setQueueData] = useState([]);
   const [songEnd, setSongEnd] = useState(false);
 
   const songDataRef = useRef(songData);
@@ -66,13 +66,13 @@ const Session = ({ token }) => {
   const removeFirstInQueue = () => {
     queueRef.current = queueRef.current.filter((_, i) => i !== 0);
     _setQueue(queue => queue.filter((_, i) => i !== 0));
-    setQueueData(queueData => queueData.filter((_, i) => i !== 0));
+    // setQueueData(queueData => queueData.filter((_, i) => i !== 0));
   }
 
   const removeFromQueue = (uri) => {
-    queueRef.current = queueRef.current.filter((_uri) => _uri !== uri);
-    _setQueue(queue => queue.filter((_uri) => _uri !== uri));
-    setQueueData(queueData => queueData.filter((track) => track.uri !== uri));
+    queueRef.current = queueRef.current.filter((track) => track.uri !== uri);
+    _setQueue(queue => queue.filter((track) => track.uri !== uri));
+    // setQueueData(queueData => queueData.filter((track) => track.uri !== uri));
   };
 
 
@@ -106,13 +106,16 @@ const Session = ({ token }) => {
 
   const handlePlayNext = async () => {
     removeFirstInQueue();
-    console.log('queueData', queueData);
+    // console.log('queueData', queueData);
     const res = await (playCurrent(token, queueRef, 0));
     if (res instanceof Error) {
       console.log('Play error', res);
     } else {
       res.ok ? setPlaying(true) : console.log('Play error', res.status);
     }
+  }
+
+  const getAndUpdateData = async () => {
     const data = await getCurrentlyPlaying(token);
     updateData(data);
   }
@@ -121,8 +124,8 @@ const Session = ({ token }) => {
     if (host) {
       const data = await getCurrentlyPlaying(token);
       updateData(data);
-      setQueue(data.item.uri);
-      setQueueData(queueData => [...queueData, data.item])
+      setQueue(data.item);
+      // setQueueData(queueData => [...queueData, data.item])
     }
 
     const res = await getUserInfo(token);
@@ -213,7 +216,10 @@ const Session = ({ token }) => {
   }, []);
 
   useEffect(() => {
-    if (songEnd && host) handlePlayNext();
+    if (songEnd && host) {
+      handlePlayNext();
+      setTimeout(() => getAndUpdateData(), 500);
+    }
     setSongEnd(false);
   }, [songEnd])
 
@@ -237,8 +243,8 @@ const Session = ({ token }) => {
               uri={songData.item.uri}
               queue={queue}
               setQueue={setQueue}
-              queueData={queueData}
-              setQueueData={setQueueData}
+              // queueData={queueData}
+              // setQueueData={setQueueData}
               removeFromQueue={removeFromQueue}
             />
             </div>

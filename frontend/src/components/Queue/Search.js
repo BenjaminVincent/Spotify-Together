@@ -34,8 +34,8 @@ const Search = ({ token, setQueue, queueData, setQueueData }) => {
         className='search-results' 
         key={track.id}
         onClick={() => {
-        setQueue(track.uri);
-        setQueueData(queueData => [...queueData, track]);
+        setQueue(track);
+        // setQueueData(queueData => [...queueData, track]);
         setSearchResults('');
       }}>
       {track.name} - {track.artists[0].name} 

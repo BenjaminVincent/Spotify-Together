@@ -40,14 +40,15 @@ export const playCurrent = async (token, queueRef, position) => {
     },
     body: JSON.stringify(
       {
-        'uris': queueRef.current,
+        'uris': [queueRef.current[0].uri],
         'position_ms': position,
       }
     )
   }).catch((error) => {
     return error;
   });
-  console.log('queueRef', queueRef);
+  console.log('queueRef', queueRef.current[0].uri);
+  console.log('position', position);
   return res;
 }
 
