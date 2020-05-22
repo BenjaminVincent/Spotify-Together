@@ -78,9 +78,9 @@ const Session = ({ token }) => {
   };
 
 
-  const ENDPOINT = 'http://localhost:5000';
+  // const ENDPOINT = 'http://localhost:5000';
 
-  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
@@ -108,8 +108,9 @@ const Session = ({ token }) => {
 
   // Remove first song in queue and play next
   const handlePlayNext = async () => {
+    // if last song don't call playCurrent will cause error (uris empty)
     if (queueRef.current.length > 1) {
-      removeFirstInQueue();
+      if (host) removeFirstInQueue();
       const res = await (playCurrent(token, queueRef, 0));
 
       if (res instanceof Error) {
@@ -147,7 +148,7 @@ const Session = ({ token }) => {
     const data = await getCurrentlyPlaying(token);
     data.is_playing = !data.is_playing
     sendSongData(data);
-    sendQueueData(queue);
+    sendQueueData(queueRef.current);
   };
 
   const sendMessage = (event) => {
@@ -235,8 +236,8 @@ const Session = ({ token }) => {
   }, []);
 
   useEffect(() => {
-    if (host) sendQueueData(queue);
-  }, [queue])
+    if (host) sendQueueData(queueRef.current);
+  }, [queue]);
 
   return (
     <div className='entire-session'>
