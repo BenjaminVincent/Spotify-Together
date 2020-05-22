@@ -13,7 +13,7 @@ import '../../styles/Search.css';
 
 */
 
-const Search = ({ token, setQueue, queueData, setQueueData }) => {
+const Search = ({ token, addToQueue, queueData, setQueueData }) => {
 
   // const [q, setQ] = useState('');
   // const [typing, setTyping] = useState(true);
@@ -34,7 +34,7 @@ const Search = ({ token, setQueue, queueData, setQueueData }) => {
         className='search-results' 
         key={track.id}
         onClick={() => {
-        setQueue(track);
+        addToQueue(track);
         // setQueueData(queueData => [...queueData, track]);
         setSearchResults('');
       }}>

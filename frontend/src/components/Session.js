@@ -59,6 +59,11 @@ const Session = ({ token }) => {
   };
 
   const setQueue = (data) => {
+    queueRef.current = data;
+    _setQueue(data);
+  }
+
+  const addToQueue = (data) => {
     queueRef.current = [...queueRef.current, data];
     _setQueue(queue => [...queue, data]);
   };
@@ -126,7 +131,7 @@ const Session = ({ token }) => {
     if (host) {
       const data = await getCurrentlyPlaying(token);
       updateData(data);
-      setQueue(data.item);
+      addToQueue(data.item);
       // setQueueData(queueData => [...queueData, data.item])
     }
 
@@ -204,6 +209,7 @@ const Session = ({ token }) => {
     if(!host) {
       socket.on('data', (data) => {
         updateData(data);
+        if (!queueRef.current.length) addToQueue(data.item);
         handlePausePlay();
         console.log('listener progess', data.progress_ms);
       });
@@ -215,7 +221,17 @@ const Session = ({ token }) => {
       console.log('users', users);
     });
 
+    if (!host) {
+      socket.on("queueData", (data) => {
+        setQueue(data);
+        console.log('listener queue data', data);
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (host) socket.emit('queueData', queue, () => {});
+  }, [queue])
 
   return (
     <div className='entire-session'>
@@ -236,7 +252,7 @@ const Session = ({ token }) => {
               image={songData.item.album.images[0].url}
               uri={songData.item.uri}
               queue={queue}
-              setQueue={setQueue}
+              addToQueue={addToQueue}
               // queueData={queueData}
               // setQueueData={setQueueData}
               removeFromQueue={removeFromQueue}

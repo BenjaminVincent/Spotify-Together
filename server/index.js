@@ -54,6 +54,14 @@ io.on('connection', (socket)=> {
   
       callback();
     });
+
+    socket.on('queueData', (data, callback) => {
+      const user = getUser(socket.id);
+      // io.to(user.room).emit('message', { user: 'admin', text: `${user.name} ${data.is_playing ? 'resumed playing' : 'has paused'} ${data.item.name}.` });
+      io.to(user.room).emit('queueData', data);
+  
+      callback();
+    });
   
     socket.on('disconnect', () => {
 
