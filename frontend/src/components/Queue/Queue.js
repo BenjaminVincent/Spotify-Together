@@ -12,14 +12,16 @@ import Search from './Search';
 
 */
 
-const Queue = ({token, song, artist, image, queue, setQueue, queueData, setQueueData,}) => {
+const Queue = ({token, song, artist, image, queue, setQueue, queueData, setQueueData, removeFromQueue}) => {
 
-  const upNext = queueData.map(track => (
+  const upNext = queueData.slice(1).map(track => (
     <QueueItem
       key={track.id}
       song={track.name}
       artist={track.artists[0].name}
       image={track.album.images[0].url}
+      uri={track.uri}
+      removeFromQueue={removeFromQueue}
     />
   ));
 

@@ -63,10 +63,18 @@ const Session = ({ token }) => {
     _setQueue(queue => [...queue, data]);
   };
 
-  const removeQueue = () => {
+  const removeFirstInQueue = () => {
     queueRef.current = queueRef.current.filter((_, i) => i !== 0);
     _setQueue(queue => queue.filter((_, i) => i !== 0));
+    setQueueData(queueData => queueData.filter((_, i) => i !== 0));
   }
+
+  const removeFromQueue = (uri) => {
+    queueRef.current = queueRef.current.filter((_uri) => _uri !== uri);
+    _setQueue(queue => queue.filter((_uri) => _uri !== uri));
+    setQueueData(queueData => queueData.filter((track) => track.uri !== uri));
+  };
+
 
   const ENDPOINT = 'http://localhost:5000';
 
@@ -97,8 +105,7 @@ const Session = ({ token }) => {
   };
 
   const handlePlayNext = async () => {
-    removeQueue();
-    setQueueData(queueData => queueData.filter((_, i) => i !== 0));
+    removeFirstInQueue();
     console.log('queueData', queueData);
     const res = await (playCurrent(token, queueRef, 0));
     if (res instanceof Error) {
@@ -232,6 +239,7 @@ const Session = ({ token }) => {
               setQueue={setQueue}
               queueData={queueData}
               setQueueData={setQueueData}
+              removeFromQueue={removeFromQueue}
             />
             </div>
           </div>
