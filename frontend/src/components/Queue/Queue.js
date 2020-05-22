@@ -12,7 +12,7 @@ import Search from './Search';
 
 */
 
-const Queue = ({token, song, artist, image, queueList, queue, setQueue, queueData, setQueueData,}) => {
+const Queue = ({token, song, artist, image, queue, setQueue, queueData, setQueueData,}) => {
 
   const upNext = queueData.map(track => (
     <QueueItem

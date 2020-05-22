@@ -11,8 +11,6 @@ import { getCurrentlyPlaying, playCurrent, pauseCurrent, getUserInfo } from '../
 
 let socket;
 
-const queueList = [];
-
 const Session = ({ token }) => {
   const [songData, _setSongData] = useState({ 
     item: { 
@@ -36,8 +34,9 @@ const Session = ({ token }) => {
   const [messages, setMessages] = useState([]);
   const [userProfile, setUserProfile] = useState('');
   const [end, setEnd] = useState(false);
-  const [queue, _setQueue] = useState(queueList);
+  const [queue, _setQueue] = useState([]);
   const [queueData, setQueueData] = useState([]);
+  const [songEnd, setSongEnd] = useState(false);
 
   const songDataRef = useRef(songData);
   const hostNameRef = useRef(hostName);
@@ -64,6 +63,11 @@ const Session = ({ token }) => {
     _setQueue(queue => [...queue, data]);
   };
 
+  const removeQueue = () => {
+    queueRef.current = queueRef.current.filter((_, i) => i !== 0);
+    _setQueue(queue => queue.filter((_, i) => i !== 0));
+  }
+
   const ENDPOINT = 'http://localhost:5000';
 
   // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
@@ -83,7 +87,7 @@ const Session = ({ token }) => {
       updateData(data);
       sendSongData(data);
     }
-    const res = await (playingRef.current ? pauseCurrent(token) : playCurrent(token, queueRef, songDataRef));
+    const res = await (playingRef.current ? pauseCurrent(token) : playCurrent(token, queueRef, songDataRef.current.progress_ms));
     if (res instanceof Error) {
       console.log('Pause/play error', res);
     } else {
@@ -92,10 +96,26 @@ const Session = ({ token }) => {
     console.log('playing', playingRef.current);
   };
 
+  const handlePlayNext = async () => {
+    removeQueue();
+    setQueueData(queueData => queueData.filter((_, i) => i !== 0));
+    console.log('queueData', queueData);
+    const res = await (playCurrent(token, queueRef, 0));
+    if (res instanceof Error) {
+      console.log('Play error', res);
+    } else {
+      res.ok ? setPlaying(true) : console.log('Play error', res.status);
+    }
+    const data = await getCurrentlyPlaying(token);
+    updateData(data);
+  }
+
   const handleEnterRoom = async () => {
     if (host) {
       const data = await getCurrentlyPlaying(token);
       updateData(data);
+      setQueue(data.item.uri);
+      setQueueData(queueData => [...queueData, data.item])
     }
 
     const res = await getUserInfo(token);
@@ -185,6 +205,11 @@ const Session = ({ token }) => {
 
   }, []);
 
+  useEffect(() => {
+    if (songEnd && host) handlePlayNext();
+    setSongEnd(false);
+  }, [songEnd])
+
   return (
     <div className='entire-session'>
       {end ? 
@@ -203,7 +228,6 @@ const Session = ({ token }) => {
               artist={songData.item.artists[0].name}
               image={songData.item.album.images[0].url}
               uri={songData.item.uri}
-              queueList={queueList}
               queue={queue}
               setQueue={setQueue}
               queueData={queueData}
@@ -224,6 +248,7 @@ const Session = ({ token }) => {
               handlePausePlay={handlePausePlay}
               host={host}
               songData={songData}
+              setSongEnd={setSongEnd}
               />
           </div>
           <div className='chat-window'>     

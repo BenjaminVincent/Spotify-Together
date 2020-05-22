@@ -15,6 +15,7 @@ const Player = ({
   handlePausePlay,
   host,
   songData,
+  setSongEnd,
 }) => {
 
   const backgroundStyles = {
@@ -37,6 +38,7 @@ const Player = ({
               duration={duration}
               item={item}
               playing={playing}
+              setSongEnd={setSongEnd}
             />
           <div className='background' style={backgroundStyles} />
         </div>
