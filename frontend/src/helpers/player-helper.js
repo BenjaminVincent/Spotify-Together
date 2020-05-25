@@ -47,8 +47,8 @@ export const playCurrent = async (token, queueRef, position) => {
   }).catch((error) => {
     return error;
   });
-  console.log('queueRef', queueRef.current[0].uri);
-  console.log('position', position);
+  // console.log('queueRef', queueRef.current[0].uri);
+  // console.log('position', position);
   return res;
 }
 
