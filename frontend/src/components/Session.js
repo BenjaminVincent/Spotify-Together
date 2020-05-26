@@ -275,7 +275,11 @@ const Session = ({ token }) => {
               handlePausePlay={handlePausePlay}
               host={host}
               songData={songData}
+              sendSongData={sendSongData}
+              sendQueueData={sendQueueData}
               handlePlayNext={handlePlayNext}
+              songDataRef={songDataRef}
+              queueRef={queueRef}
               />
           </div>
           <div className='chat-window'>     

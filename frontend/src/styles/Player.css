@@ -11,14 +11,10 @@
     margin-bottom: 1em;
 }
 
-.now-playing__img {
-    margin-right: .6em;
-    width: 300px;
-}
-
 .now-playing__img img {
     max-width: 30vmin;
     max-height: 30vmin;
+    border-radius: 1em;
 }
 
 .now-playing__side {
@@ -37,3 +33,24 @@
     background-color: #eee;
     height: 4px;
 }
+
+.pause-play-btn {
+    border-radius: 2em;
+    background-color: transparent;
+    color: #1ecd97;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 999;
+  }
+
+.skip-btn {
+    cursor: pointer;
+    color: #eee;
+}
+
+.player-controls {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+  }
+

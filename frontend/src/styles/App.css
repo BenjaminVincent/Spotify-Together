@@ -62,18 +62,6 @@ body {
   }
 }
 
-.pause-play-btn {
-  display: flex;
-  justify-content: center;
-  border-radius: 2em;
-  background-color: transparent;
-  color: #1ecd97;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  z-index: 999;
-  margin: 4em;
-}
-
 .above {
   z-index: 9999;
 }
