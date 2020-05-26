@@ -6,6 +6,7 @@ import Home from './Home';
 import Host from './Host';
 import Session from './Session';
 import HandleError from './HandleError';
+import ErrorMessage from './ErrorMessage';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
@@ -70,6 +71,7 @@ const App = () => {
       :
         <div>
           <div className='App-auth'>
+          <ErrorMessage message={'This application is in development. Expect bugs, unfinished functionality and visual glitches.'}/>
             <ul className='App-preface'>To use Listen Together you must: <br/>
               <div className='auth-bullets'>
                 <li>have spotify open</li>
