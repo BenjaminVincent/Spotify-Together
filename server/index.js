@@ -24,10 +24,10 @@ io.on('connection', (socket)=> {
       if (error) return callback(error); 
       
       // goes to Host
-      socket.emit('message', { user: 'admin', text: `${user.name} has joined!` });
+      socket.emit('messageData', { user: 'admin', text: `${user.name} has joined!` });
       
       // goes to Listeners
-      socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
+      socket.broadcast.to(user.room).emit('messageData', { user: 'admin', text: `${user.name} has joined!` });
   
       socket.join(user.room);
   
@@ -39,25 +39,30 @@ io.on('connection', (socket)=> {
   
       if (callback) callback();
     });
+
+    socket.on('skipData', (data, callback) => {
+      const user = getUser(socket.id);
+      io.to(user.room).emit('skipData', data);
+
+      callback();
+    });
   
     socket.on('sendMessage', (message, callback) => {
       const user = getUser(socket.id);
-      io.to(user.room).emit('message', { user: user.name, text: message });
+      io.to(user.room).emit('messageData', { user: user.name, text: message });
   
       callback();
     });
   
     socket.on('sendSongData', (data, callback) => {
       const user = getUser(socket.id);
-      // io.to(user.room).emit('message', { user: 'admin', text: `${user.name} ${data.is_playing ? 'resumed playing' : 'has paused'} ${data.item.name}.` });
-      io.to(user.room).emit('data', data);
+      io.to(user.room).emit('songData', { songData: data.songData, action: data.action });
   
       callback();
     });
 
     socket.on('queueData', (data, callback) => {
       const user = getUser(socket.id);
-      // io.to(user.room).emit('message', { user: 'admin', text: `${user.name} ${data.is_playing ? 'resumed playing' : 'has paused'} ${data.item.name}.` });
       io.to(user.room).emit('queueData', data);
   
       callback();
@@ -83,7 +88,7 @@ io.on('connection', (socket)=> {
       // logUsers();
   
       if (user) {
-        io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` })
+        io.to(user.room).emit('messageData', { user: 'admin', text: `${user.name} has left.` })
         io.to(user.room).emit('roomData', { 
           room: user.room, 
           hostName: getHostName(user.room), 

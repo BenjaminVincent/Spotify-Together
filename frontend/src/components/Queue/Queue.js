@@ -12,7 +12,7 @@ import Search from './Search';
 
 */
 
-const Queue = ({token, song, artist, image, queue, addToQueue, queueData, setQueueData, removeFromQueue, host}) => {
+const Queue = ({token, queue, addToQueue, removeFromQueue, host}) => {
 
   const upNext = queue.slice(1).map(track => (
     <QueueItem
@@ -32,8 +32,6 @@ const Queue = ({token, song, artist, image, queue, addToQueue, queueData, setQue
     <Search
       token={token}
       addToQueue={addToQueue}
-      // queueData={queueData}
-      // setQueueData={setQueueData}
     />
     : null}
     <div className='queue-title'>Up Next: </div>

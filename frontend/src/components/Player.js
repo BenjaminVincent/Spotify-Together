@@ -7,7 +7,6 @@ import { BsFillSkipEndFill } from "react-icons/bs";
 const Player = ({
   playing,
   item,
-  song,
   progress,
   duration,
   artist,
@@ -15,28 +14,23 @@ const Player = ({
   fetchDate,
   handlePausePlay,
   host,
-  songData,
-  sendSongData,
-  sendQueueData,
+  song,
   handlePlayNext,
-  songDataRef,
-  queueRef,
+  handleSkip,
 }) => {
 
   const backgroundStyles = {
     backgroundImage: `url(${image})`,
   };
 
-  console.log('songDataRef', songDataRef);
-  console.log('QRef', queueRef);
-
   return (
       <div className='main-wrapper'>
+        <div className='song-info'>
         <div className='now-playing__img'>
           <img src={image} alt='not found'/>
         </div>
         <div className='now-playing__side'>
-          <div className='now-playing__name'>{songData.item.name}</div>
+          <div className='now-playing__name'>{song.item.name}</div>
           <div className='now-playing__artist'>{artist}<br/></div>
           <ProgressBar
             fetchDate={fetchDate}
@@ -47,6 +41,7 @@ const Player = ({
             handlePlayNext={handlePlayNext}
           />
           <div className='background' style={backgroundStyles} />
+          </div>
         </div>
         {
         host ?
@@ -63,9 +58,7 @@ const Player = ({
         <BsFillSkipEndFill
           size='2em'
           onClick={() => {
-            handlePlayNext();
-            sendSongData(songDataRef.current);
-            sendQueueData(queueRef.current);
+            handleSkip();
           }}  
         />
       </div>
