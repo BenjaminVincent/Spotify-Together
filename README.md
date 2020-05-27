@@ -14,7 +14,7 @@ Listen Together is a project that allows friends to listen to spotify together!
 
 ## Screenshots
 
-!["Hosted Session"](https://github.com/BenjaminVincent/Listen-Together/blob/master/wireframes/Listen-Together-insession.png?raw=true)
+!["Hosted Session"](https://github.com/BenjaminVincent/Listen-Together/blob/master/wireframes/listen-together-insession.png?raw=true)
 
 
 
