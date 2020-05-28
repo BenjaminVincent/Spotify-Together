@@ -70,11 +70,7 @@ const App = () => {
 
   useEffect(() => {
     let _token = hash.access_token;
-    if (_token) {
-      window.opener.spotifySuccess(_token);
-    } else {
-      window.close();
-    }
+    _token ? window.opener.spotifySuccess(_token) : window.close();
   }, []);
 
   return (
