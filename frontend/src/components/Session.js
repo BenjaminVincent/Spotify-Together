@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
 import Queue from './Queue/Queue';
+import RoomInvite from './RoomInvite';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import io from 'socket.io-client';
@@ -277,6 +278,7 @@ const Session = ({ token }) => {
               <a className='session-info-spacing-leave' href='/'><FaAngleLeft color='white' size='2em'/></a>
               <div className='session-info-spacing'>Host: {hostName}</div>
               <div className='session-info-spacing'>Room: {room}</div>
+              <RoomInvite room={room}/>
             </div>
             <div className='session-queue'>
             <Queue 

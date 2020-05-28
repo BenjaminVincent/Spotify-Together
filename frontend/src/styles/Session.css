@@ -59,3 +59,12 @@
     z-index: 9999;
     width: 30%
 }
+
+.room-invite {
+    cursor: pointer;
+    color: #eee;
+}
+
+.room-copied {
+    font-size: 0.5em;
+}

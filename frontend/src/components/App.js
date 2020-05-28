@@ -23,9 +23,6 @@ const App = () => {
   const [token, setToken] = useState('');
   const [device, setDevice] = useState('');
 
-
-  // if the user clicks cancel we get error='access_denied'
-
   const authenticate = () => {
     let popup = window.open(
       `${auth}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`,
@@ -44,7 +41,7 @@ const App = () => {
       popup.close();
       setToken(payload);
       updateDevice(payload);
-    };
+    }
   };
 
   const updateDevice = async (_token) => {
