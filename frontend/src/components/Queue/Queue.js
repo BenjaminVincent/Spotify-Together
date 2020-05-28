@@ -17,10 +17,7 @@ const Queue = ({token, host, queue, addToQueue, removeFromQueue}) => {
   const upNext = queue.slice(1).map(track => (
     <QueueItem
       key={track.id}
-      song={track.name}
-      artist={track.artists[0].name}
-      image={track.album.images[0].url}
-      uri={track.uri}
+      track={track}
       removeFromQueue={removeFromQueue}
       host={host}
       isRequest={false}
@@ -32,8 +29,8 @@ const Queue = ({token, host, queue, addToQueue, removeFromQueue}) => {
     {host ? 
       <Search
       token={token}
-      addToQueue={addToQueue}
       host={host}
+      addToQueue={addToQueue}
       />
     : null}
     <div className='queue-title'>Up Next:</div>

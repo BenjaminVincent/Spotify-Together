@@ -1,48 +1,35 @@
 import React from 'react';
 import '../../styles/Queue.css';
-import { FaRegWindowClose, FaRegCheckSquare } from 'react-icons/fa';
+import { FaRegWindowClose } from 'react-icons/fa';
 /*
     A single song added to the queue
     
     Props:
-        - song
-        - artist
-        - image
+        - track: song data object from search
 
 */
 
-const QueueItem = ({track, song, artist, image, uri, addToQueue, removeFromQueue, removeFromRequestQueue, host, isRequest}) => {
+const QueueItem = ({track, removeFromQueue, host}) => {
   return (
-  <div>
-  <div className='queue-item'>
-    <img className='queue-item-image' src={image} alt='not found'/>
-    <div className='queue-item-info'>
-      <div className='queue-item-song'>{song}</div>
-      <div className='queue-item-artist'>{artist}</div>
-    </div>
-    
-  </div>
-  {host ?
     <div>
-    {isRequest ? 
-        <div className='queue-item-approve'
-          onClick={() => {
-            addToQueue(track);
-            removeFromRequestQueue(uri);
-          }}
-        >
-          <FaRegCheckSquare color='white' size='0.8em'/>
-        </div> : null}
-        <div className='queue-item-delete'
-          onClick={() => {
-            isRequest ? removeFromRequestQueue(uri) : removeFromQueue(uri);
-          }}
-          >
-          <FaRegWindowClose color='white' size='0.8em'/>
+      <div className='queue-item'>
+        <img className='queue-item-image' src={track.album.images[0].url} alt='not found'/>
+        <div className='queue-item-info'>
+          <div className='queue-item-song'>{track.name}</div>
+          <div className='queue-item-artist'>{track.artists[0].name}</div>
         </div>
       </div>
-      : null}
-  </div>
+      {host
+        ? <div className='queue-item-delete'
+            onClick={() => {
+              removeFromQueue(track.uri);
+            }}
+          >
+            <FaRegWindowClose color='white' size='0.8em'/>
+          </div>
+        : null
+      }
+    </div>
   );
 }
 

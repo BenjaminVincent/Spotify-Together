@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
 import Queue from './Queue/Queue';
-import RequestQueue from './RequestQueue';
+import RequestQueue from './Queue/RequestQueue';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import io from 'socket.io-client';
@@ -75,8 +75,7 @@ const Session = ({ token }) => {
     queueRef.current = queueRef.current.filter((track) => track.uri !== uri);
     _setQueue(queue => queue.filter((track) => track.uri !== uri));
     if (host) sendQueueData(queueRef.current);
-};
-
+  };
 
   const removeFirstInQueue = () => {
     queueRef.current = queueRef.current.filter((_, i) => i !== 0);

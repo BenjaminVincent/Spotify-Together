@@ -11,17 +11,14 @@ import '../../styles/Search.css';
         - Type in a song (track) and search spotify database for result
 */
 
-const Search = ({ token, addToQueue, host, sendSongRequest, addToRequestQueue}) => {
+const Search = ({ token, host, addToQueue, sendSongRequest, addToRequestQueue}) => {
 
-  // const [q, setQ] = useState('');
-  // const [typing, setTyping] = useState(true);
   const [typingTimeout, setTypingTimeout] = useState(0);
   const [searchResults, setSearchResults] = useState('');
 
   const handleSearch = async (q) => {
     if (q) {
       const data = await getSearch(token, q);
-      console.log('search data', data);
       setSearchResults(data);
     }
   }
@@ -56,7 +53,6 @@ const Search = ({ token, addToQueue, host, sendSongRequest, addToRequestQueue}) 
         placeholder='Search...' 
         type='text'
         onChange={event => {
-          // handleSearch(event.target.value);
           const q = event.target.value;
           clearTimeout(typingTimeout);
           setTypingTimeout(setTimeout(() => handleSearch(q), 800));
