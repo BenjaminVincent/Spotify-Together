@@ -9,7 +9,7 @@ import HandleError from './HandleError';
 import ErrorMessage from './ErrorMessage';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
-import { auth, clientId, redirectUri, scopes } from '../helpers/authConfig';
+import { auth, clientId, redirectUri, redirectInviteUri, scopes } from '../helpers/authConfig';
 import { getDevices, filterDevices } from '../helpers/player-helper';
 
 
@@ -42,15 +42,9 @@ const App = () => {
 
     window.spotifySuccess = (payload) => {
       popup.close();
-
       setToken(payload);
       updateDevice(payload);
-    }
-
-
-    window.spotifyError = () => {
-      popup.close();
-    }
+    };
   };
 
   const updateDevice = async (_token) => {
