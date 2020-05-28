@@ -10,17 +10,20 @@ import Search from './Queue/Search';
 
 */
 
-const RequestQueue = ({token, requestQueue, addToRequestQueue, removeFromRequestQueue, host, sendSongRequest}) => {
+const RequestQueue = ({token, host, requestQueue, addToQueue, addToRequestQueue, removeFromRequestQueue, sendSongRequest}) => {
 
   const upNext = requestQueue.map(track => (
     <QueueItem
       key={track.id}
+      track={track}
       song={track.name}
       artist={track.artists[0].name}
       image={track.album.images[0].url}
       uri={track.uri}
       removeFromRequestQueue={removeFromRequestQueue}
+      addToQueue={addToQueue}
       host={host}
+      isRequest={true}
     />
   ));
 

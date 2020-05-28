@@ -303,17 +303,18 @@ const Session = ({ token }) => {
             <div className='session-queue'>
             <Queue 
               token={token}
+              host={host}
               queue={queue}
               addToQueue={addToQueue}
               removeFromQueue={removeFromQueue}
-              host={host}
             />
             <RequestQueue
               token={token}
+              host={host}
               requestQueue={requestQueue}
+              addToQueue={addToQueue}
               addToRequestQueue={addToRequestQueue}
               removeFromRequestQueue={removeFromRequestQueue}
-              host={host}
               sendSongRequest={sendSongRequest}
             />
             </div>

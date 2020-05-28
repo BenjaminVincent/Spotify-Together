@@ -12,7 +12,7 @@ import Search from './Search';
 
 */
 
-const Queue = ({token, queue, addToQueue, removeFromQueue, host}) => {
+const Queue = ({token, host, queue, addToQueue, removeFromQueue}) => {
 
   const upNext = queue.slice(1).map(track => (
     <QueueItem
@@ -23,6 +23,7 @@ const Queue = ({token, queue, addToQueue, removeFromQueue, host}) => {
       uri={track.uri}
       removeFromQueue={removeFromQueue}
       host={host}
+      isRequest={false}
     />
   ));
 

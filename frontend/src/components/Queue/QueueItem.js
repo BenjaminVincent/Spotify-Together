@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/Queue.css';
-import { FaRegWindowClose } from 'react-icons/fa';
+import { FaRegWindowClose, FaRegCheckSquare } from 'react-icons/fa';
 /*
     A single song added to the queue
     
@@ -11,7 +11,7 @@ import { FaRegWindowClose } from 'react-icons/fa';
 
 */
 
-const QueueItem = ({song, artist, image, uri, removeFromQueue, host}) => {
+const QueueItem = ({track, song, artist, image, uri, addToQueue, removeFromQueue, removeFromRequestQueue, host, isRequest}) => {
   return (
   <div>
   <div className='queue-item'>
@@ -23,12 +23,23 @@ const QueueItem = ({song, artist, image, uri, removeFromQueue, host}) => {
     
   </div>
   {host ?
-      <div className='queue-item-delete'
-        onClick={() => {
-          removeFromQueue(uri);
-        }}
+    <div>
+    {isRequest ? 
+        <div className='queue-item-approve'
+          onClick={() => {
+            addToQueue(track);
+            removeFromRequestQueue(uri);
+          }}
         >
-        <FaRegWindowClose color='white' size='0.8em'/>
+          <FaRegCheckSquare color='white' size='0.8em'/>
+        </div> : null}
+        <div className='queue-item-delete'
+          onClick={() => {
+            isRequest ? removeFromRequestQueue(uri) : removeFromQueue(uri);
+          }}
+          >
+          <FaRegWindowClose color='white' size='0.8em'/>
+        </div>
       </div>
       : null}
   </div>
