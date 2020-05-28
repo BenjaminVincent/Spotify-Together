@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useDebugValue } from 'react';
 import Player from './Player';
 import Chat from './Chat';
 import Queue from './Queue/Queue';
+import RequestQueue from './RequestQueue';
 import queryString from 'query-string';
 import { FaAngleLeft } from 'react-icons/fa';
 import io from 'socket.io-client';
@@ -35,11 +36,13 @@ const Session = ({ token }) => {
   const [userProfile, setUserProfile] = useState('');
   const [end, setEnd] = useState(false);
   const [queue, _setQueue] = useState([]);
+  const [requestQueue, _setRequestQueue] = useState([]);
 
   const songRef = useRef(song);
   const hostNameRef = useRef(hostName);
   const playingRef = useRef(playing);
   const queueRef = useRef(queue);
+  const requestQueueRef = useRef(requestQueue);
  
   const setSong = (data) => {
     songRef.current = data;
@@ -80,11 +83,21 @@ const Session = ({ token }) => {
     _setQueue(queue => queue.filter((_, i) => i !== 0));
   }
 
+  const addToRequestQueue = (data) => {
+    requestQueueRef.current = [...requestQueueRef.current, data];
+    _setRequestQueue(requestQueue => [...requestQueue, data]);
+  };
+
+  const removeFromRequestQueue = (uri) => {
+    requestQueueRef.current = requestQueueRef.current.filter((track) => track.uri !== uri);
+    _setRequestQueue(requestQueue => requestQueue.filter((track) => track.uri !== uri));
+  };
 
 
-  // const ENDPOINT = 'http://localhost:5000';
 
-  const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
+  const ENDPOINT = 'http://localhost:5000';
+
+  // const ENDPOINT = 'https://listen-together-music.herokuapp.com/';
 
 
   const host = !window.location.href.includes('join');
@@ -107,7 +120,7 @@ const Session = ({ token }) => {
     } else {
       res.ok ? setPlaying(!playingRef.current) : console.log('Pause/play error', res.status);
     }
-    console.log('playing', playingRef.current);
+    // console.log('playing', playingRef.current);
   };
 
   const handleSkip = async () => {
@@ -121,7 +134,7 @@ const Session = ({ token }) => {
         await removeFirstInQueue();
 
       if (!host) {
-        console.log('in HandlePlayNext listener:', queueRef.current);
+        // console.log('in HandlePlayNext listener:', queueRef.current);
       }
       const res = await (playCurrent(token, queueRef.current[0].uri, 0));
 
@@ -155,7 +168,7 @@ const Session = ({ token }) => {
   };
 
   const handleNewUser = async () => {
-    console.log('handleNewUser is called');
+    // console.log('handleNewUser is called');
     const data = await getCurrentlyPlaying(token);
     // data.is_playing = !data.is_playing;
     sendSongData(data, 0);
@@ -173,15 +186,21 @@ const Session = ({ token }) => {
 
   const sendSongData = (songData, action) => {
     socket.emit('sendSongData', { songData, action }, () => {
-      console.log('songData initial send', songData);
+      // console.log('songData initial send', songData);
     });
   };
 
   const sendQueueData = (d) => {
     socket.emit('queueData', d, () => {
-      console.log('queueData', d);
+      // console.log('queueData', d);
     });
   };
+
+  const sendSongRequest = (track) => {
+    socket.emit('requestData', track, () => {
+      console.log('Send requestData', track);
+    })
+  }
 
   useEffect(() => {
     const { name, room } = queryString.parse(window.location.search);
@@ -207,7 +226,7 @@ const Session = ({ token }) => {
     });
 
     socket.on('messageData', (message) => {
-        console.log('messageData', message);
+        // console.log('messageData', message);
 
         if (message.user === 'admin' && message.text.includes('has joined!') && host) {
           handleNewUser();
@@ -226,21 +245,21 @@ const Session = ({ token }) => {
 
         if (action === 0) { // new user
           
-          console.log('0', songData);
+          // console.log('0', songData);
           updateSong(songData);
           if (!queueRef.current.length) addToQueue(songData.item);
           songData.is_playing ? playCurrent(token, songData.item.uri, songData.progress_ms) : pauseCurrent(token);
         }
 
         if (action === 1) { // pause/play
-          console.log('1', songData);
+          // console.log('1', songData);
           updateSong(songData);
           console.log('listener songData', songData);
           handlePausePlay();
         } 
         
         if (action === 2) { // skip
-          console.log('2', songData);
+          // console.log('2', songData);
           updateSong(songData);
           playCurrent(token, songData.item.uri, songData.progress_ms);
         }
@@ -253,12 +272,15 @@ const Session = ({ token }) => {
       setHostName(hostName);
     });
 
-
+    socket.on('requestData', (data) => {
+      addToRequestQueue(data);
+      console.log('request data', data);
+    });
 
     if (!host) {
       socket.on('queueData', (data) => {
         setQueue(data);
-        console.log('listener queueData', data);
+        // console.log('listener queueData', data);
       });
 
       socket.on('skipData', (data) => {
@@ -281,14 +303,18 @@ const Session = ({ token }) => {
             <div className='session-queue'>
             <Queue 
               token={token}
-              song={song.item.name}
-              artist={song.item.artists[0].name}
-              image={song.item.album.images[0].url}
-              uri={song.item.uri}
               queue={queue}
               addToQueue={addToQueue}
               removeFromQueue={removeFromQueue}
               host={host}
+            />
+            <RequestQueue
+              token={token}
+              requestQueue={requestQueue}
+              addToRequestQueue={addToRequestQueue}
+              removeFromRequestQueue={removeFromRequestQueue}
+              host={host}
+              sendSongRequest={sendSongRequest}
             />
             </div>
           </div>

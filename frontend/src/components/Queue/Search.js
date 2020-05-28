@@ -11,7 +11,7 @@ import '../../styles/Search.css';
         - Type in a song (track) and search spotify database for result
 */
 
-const Search = ({ token, addToQueue, queueData, setQueueData }) => {
+const Search = ({ token, addToQueue, host, sendSongRequest, addToRequestQueue}) => {
 
   // const [q, setQ] = useState('');
   // const [typing, setTyping] = useState(true);
@@ -32,11 +32,16 @@ const Search = ({ token, addToQueue, queueData, setQueueData }) => {
         className='search-results' 
         key={track.id}
         onClick={() => {
-        addToQueue(track);
-        // setQueueData(queueData => [...queueData, track]);
-        setSearchResults('');
-        document.getElementById('search-input').value = ''
-      }}>
+          if (host) {
+            addToQueue(track)
+          } else {
+            sendSongRequest(track); //sends song request from listener to host
+            addToRequestQueue(track); // adds song to listener's personal requested list
+          }
+          setSearchResults('');
+          document.getElementById('search-input').value = ''
+        }}
+      >
       {track.name} - {track.artists[0].name} 
       </li>
     ));

@@ -28,13 +28,14 @@ const Queue = ({token, queue, addToQueue, removeFromQueue, host}) => {
 
   return (
   <div className='queue-container'>
-    {host ?
-    <Search
+    {host ? 
+      <Search
       token={token}
       addToQueue={addToQueue}
-    />
+      host={host}
+      />
     : null}
-    <div className='queue-title'>Up Next: </div>
+    <div className='queue-title'>Up Next:</div>
     {queue.length ? <div className='queued-items'>{upNext}</div> : null}
   </div>
   );
