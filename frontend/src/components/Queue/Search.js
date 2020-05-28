@@ -33,7 +33,6 @@ const Search = ({ token, addToQueue, queueData, setQueueData }) => {
         key={track.id}
         onClick={() => {
         addToQueue(track);
-        // setQueueData(queueData => [...queueData, track]);
         setSearchResults('');
         document.getElementById('search-input').value = ''
       }}>

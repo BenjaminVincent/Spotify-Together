@@ -9,14 +9,49 @@ import HandleError from './HandleError';
 import ErrorMessage from './ErrorMessage';
 import hash from '../helpers/hash';
 import {BrowserRouter, Route } from 'react-router-dom';
-import { authEndpoint, clientId, redirectUri, scopes } from '../helpers/authConfig';
+import { auth, clientId, redirectUri, scopes } from '../helpers/authConfig';
 import { getDevices, filterDevices } from '../helpers/player-helper';
 
 
 const App = () => {
 
+  const width = 450,
+        height = 730,
+        left = window.screen.width / 2 - width / 2,
+        top = window.screen.height / 2 - height / 2;
+
   const [token, setToken] = useState('');
   const [device, setDevice] = useState('');
+
+
+  // if the user clicks cancel we get error='access_denied'
+
+  const authenticate = () => {
+    let popup = window.open(
+      `${auth}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`,
+      'Connect with Spotify',
+      'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' +
+        width +
+        ', height=' +
+        height +
+        ', top=' +
+        top +
+        ', left=' +
+        left
+    );
+
+    window.spotifySuccess = (payload) => {
+      popup.close();
+
+      setToken(payload);
+      updateDevice(payload);
+    }
+
+
+    window.spotifyError = () => {
+      popup.close();
+    }
+  };
 
   const updateDevice = async (_token) => {
     const res = await getDevices(_token);
@@ -36,8 +71,9 @@ const App = () => {
   useEffect(() => {
     let _token = hash.access_token;
     if (_token) {
-      setToken(_token);
-      updateDevice(_token)
+      window.opener.spotifySuccess(_token);
+    } else {
+      window.close();
     }
   }, []);
 
@@ -78,10 +114,11 @@ const App = () => {
                 <li>authenticate and agree</li>
               </div>
             </ul>
-            <a 
-              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+            {/* <a 
+              href={`${auth}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
               <button className='btn' type='submit'>authenticate</button>
-            </a>
+            </a> */}
+            <button onClick={() => authenticate()} className='btn' type='submit'>authenticate</button>
           </div>
         </div>
       }

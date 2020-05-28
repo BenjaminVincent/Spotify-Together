@@ -1,5 +1,4 @@
 import React from 'react';
-import ErrorMessage from './ErrorMessage';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 
