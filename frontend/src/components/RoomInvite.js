@@ -3,6 +3,9 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { RiFileCopy2Line } from 'react-icons/ri';
 import Expire from './Expire';
 
+const websiteURL = 'http://localhost:3000/';
+// const websiteURL = 'https://listen-together.netlify.app/';
+
 
 const RoomInvite = ({ room }) => {
     const [copied, setCopied] = useState(false);
@@ -12,7 +15,7 @@ const RoomInvite = ({ room }) => {
     return (
         <div className='room-invite'>
             <CopyToClipboard
-                text={room}
+                text={`${websiteURL}join?roominvite=${room}`}
                 onCopy={() => {
                     setCopied(true)
                     resetCopied()
@@ -26,3 +29,13 @@ const RoomInvite = ({ room }) => {
 }
 
 export default RoomInvite;
+
+
+
+/*
+    - clicking copy => listen-together.netlify.app/invite?room=room
+    - when you click the link => auth but with invite in the URL
+    - after auth => redirectURL => '/join' with roomID filled in from queryparams
+
+
+*/

@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { FaAngleLeft } from 'react-icons/fa';
 import '../styles/Listener.css';
 import { Redirect } from 'react-router-dom';
-import ErrorMessage from './ErrorMessage'; 
+import ErrorMessage from './ErrorMessage';
+import queryString from 'query-string';
+
+let roominvite;
 
 const Join = () => {
 
@@ -11,6 +14,16 @@ const Join = () => {
   const [room, setRoom] = useState('');
   const [allowed, setAllowed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (/invite/.test(window.location.href)) {
+      const { roominvite } = queryString.parse(window.location.search);
+      setRoom(roominvite);
+    }
+  }, []);
+
+
+  
 
   const getUsers = async () => {
     // const response = await fetch('https://listen-together-music.herokuapp.com/users');
@@ -49,7 +62,7 @@ const Join = () => {
         <ErrorMessage message={errorMessage}/>
         <div>
           <div><input placeholder='Display Name' className='joinInput' type='text' onChange={(event) => setName(event.target.value)}/></div><br/>
-          <div><input placeholder='Room ID' className="joinInput" type="text" onChange={(event) => setRoom(event.target.value)}/></div><br/>
+          <div><input placeholder='Room ID' className="joinInput" value={room || null} type="text" onChange={(event) => setRoom(event.target.value)}/></div><br/>
           <button className='btn' type='submit' onClick={(event) => handleClick(event)}>join</button>
       </div>
       </div>}
