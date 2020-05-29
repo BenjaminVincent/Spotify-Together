@@ -3,8 +3,8 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { RiFileCopy2Line } from 'react-icons/ri';
 import Expire from './Expire';
 
-const websiteURL = 'http://localhost:3000/';
-// const websiteURL = 'https://listen-together.netlify.app/';
+// const websiteURL = 'http://localhost:3000/';
+const websiteURL = 'https://listen-together.netlify.app';
 
 
 const RoomInvite = ({ room }) => {
@@ -15,7 +15,7 @@ const RoomInvite = ({ room }) => {
     return (
         <div className='room-invite'>
             <CopyToClipboard
-                text={`${websiteURL}join?roominvite=${room}`}
+                text={`${websiteURL}/join?roominvite=${room}`}
                 onCopy={() => {
                     setCopied(true);
                     resetCopied();

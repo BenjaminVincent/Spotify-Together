@@ -2,6 +2,9 @@
 # Listen together
 Listen Together is a project that allows friends to listen to spotify together!
 
+## Check out the live site
+https://listen-together.netlify.app/
+
 ## Stack
 - React
 - Spotify API
