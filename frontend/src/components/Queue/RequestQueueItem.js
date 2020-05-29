@@ -6,7 +6,66 @@ import { FaRegWindowClose, FaRegCheckSquare } from 'react-icons/fa';
 
 */
 
-const RequestQueueItem = ({host, track, addToQueue, removeFromRequestQueue, sendRequestStatus}) => {
+const RequestQueueItem = ({
+  host,
+  track,
+  addToQueue,
+  removeFromRequestQueue,
+  sendRequestStatus,
+}) => {
+
+
+  /* 
+    Only shown for host; allows host to accept requested song.
+    On click adds song to play queue, removes song from request queue,
+    and sends new status ('Accepted') of request to the listener
+    who requested the song.
+
+  */
+  const AcceptRequestButton = () => {
+    if (host) {
+      return (
+        <div className='queue-item-accept'
+          onClick={() => {
+            addToQueue(track);
+            removeFromRequestQueue(track.uri);
+            sendRequestStatus(track, 'Accepted');
+        }}
+        >
+          <FaRegCheckSquare color='white' size='0.8em'/>
+        </div>
+      )
+    } else {
+      return null;
+    }
+  }
+
+  /* 
+    For host: allows host to remove song from request queue.
+    On click removes song from request queue and sends new status
+    ('Denied') of request to listener who requested the song.
+
+    For listener: allows listener to remove song from personal
+    request queue only after song had been accepted/denied.
+
+  */
+  const RemoveRequestButton = () => {
+    if (host || track.status !== 'Pending') {
+      return (
+        <div className='queue-item-deny'
+          onClick={() => {
+            removeFromRequestQueue(track.uri);
+            if (host) sendRequestStatus(track, 'Denied');
+          }}
+        >
+          <FaRegWindowClose color='white' size='0.8em'/>
+        </div>
+      )
+    } else {
+      return null;
+    }
+  }
+
   return (
     <div>
       <div className='queue-item'>
@@ -16,39 +75,14 @@ const RequestQueueItem = ({host, track, addToQueue, removeFromRequestQueue, send
           <div className='queue-item-artist'>{track.artists[0].name}</div>
           {host 
             ? <div className='queue-item-artist'>{track.listenerName}</div>
-            : <div className='queue-item-artist'>{track.status}</div>}
+            : <div className='queue-item-artist'>{track.status}</div>
+          }
        </div>
       </div>
-        {host 
-          ? <div>
-              <div className='queue-item-accept'
-                onClick={() => {
-                  addToQueue(track);
-                  removeFromRequestQueue(track.uri);
-                  sendRequestStatus(track, 'Accepted');
-                }}
-              >
-                <FaRegCheckSquare color='white' size='0.8em'/>
-              </div>
-              <div className='queue-item-deny'
-                onClick={() => {
-                  removeFromRequestQueue(track.uri);
-                  sendRequestStatus(track, 'Denied');
-                }}
-              >
-                <FaRegWindowClose color='white' size='0.8em'/>
-              </div>
-            </div>
-          : track.status !== 'Pending'
-              ? <div className='queue-item-deny'
-                  onClick={() => {
-                    removeFromRequestQueue(track.uri);
-                  }}
-                >
-                  <FaRegWindowClose color='white' size='0.8em'/>
-                </div>
-              : null
-        }
+      <div>
+        <AcceptRequestButton/>
+        <RemoveRequestButton/>
+      </div>
     </div>
   );
 }

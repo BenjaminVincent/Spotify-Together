@@ -88,6 +88,7 @@ const Session = ({ token }) => {
     _setRequestQueue(requestQueue => [...requestQueue, request]);
   };
 
+  // Update status of a specific track in the request queue
   const updateRequestStatus = (uri, status) => {
     const updatedRequestQueue =  requestQueueRef.current.map(track => {
       return track.uri === uri ? { ...track, status } : track;
@@ -128,7 +129,6 @@ const Session = ({ token }) => {
     } else {
       res.ok ? setPlaying(!playingRef.current) : console.log('Pause/play error', res.status);
     }
-    // console.log('playing', playingRef.current);
   };
 
   const handleSkip = async () => {
@@ -139,13 +139,8 @@ const Session = ({ token }) => {
   const handlePlayNext = async () => {
 
     if (queueRef.current.length > 1) {
-        await removeFirstInQueue();
-
-      if (!host) {
-        // console.log('in HandlePlayNext listener:', queueRef.current);
-      }
+      await removeFirstInQueue();
       const res = await (playCurrent(token, queueRef.current[0].uri, 0));
-
       if (res instanceof Error) {
         console.log('Play error', res);
       } else {
@@ -157,7 +152,6 @@ const Session = ({ token }) => {
   const getAndUpdateSong = async () => {
     const data = await getCurrentlyPlaying(token);
     updateSong(data);
-    // sendSongData(data, 2); // calls a skip
   };
 
   const handleEnterRoom = async () => {
@@ -170,15 +164,12 @@ const Session = ({ token }) => {
     const res = await getUserInfo(token);
     if (res.ok) {
       const data = await res.json();
-      // console.log('userinfo', data);
       if (!data.images.length) setUserProfile(data.images[0].url);
     }
   };
 
   const handleNewUser = async () => {
-    // console.log('handleNewUser is called');
     const data = await getCurrentlyPlaying(token);
-    // data.is_playing = !data.is_playing;
     sendSongData(data, 0);
     sendQueueData(queueRef.current);
   };
@@ -194,13 +185,11 @@ const Session = ({ token }) => {
 
   const sendSongData = (songData, action) => {
     socket.emit('sendSongData', { songData, action }, () => {
-      // console.log('songData initial send', songData);
     });
   };
 
   const sendQueueData = (d) => {
     socket.emit('queueData', d, () => {
-      // console.log('queueData', d);
     });
   };
 
@@ -209,6 +198,7 @@ const Session = ({ token }) => {
     })
   }
 
+  // Sends new status of request to listener when host accepts/denies request
   const sendRequestStatus = (track, status) => {
     socket.emit('requestStatusData', { track, status }, () => {
     })
@@ -238,7 +228,6 @@ const Session = ({ token }) => {
     });
 
     socket.on('messageData', (message) => {
-        // console.log('messageData', message);
 
         if (message.user === 'admin' && message.text.includes('has joined!') && host) {
           handleNewUser();
@@ -256,26 +245,16 @@ const Session = ({ token }) => {
       socket.on('songData', ({ songData, action }) => {
 
         if (action === 0) { // new user
-          
-          // console.log('0', songData);
           updateSong(songData);
           if (!queueRef.current.length) addToQueue(songData.item);
           songData.is_playing ? playCurrent(token, songData.item.uri, songData.progress_ms) : pauseCurrent(token);
         }
 
         if (action === 1) { // pause/play
-          // console.log('1', songData);
           updateSong(songData);
           console.log('listener songData', songData);
           handlePausePlay();
         } 
-        
-        if (action === 2) { // skip
-          // console.log('2', songData);
-          updateSong(songData);
-          playCurrent(token, songData.item.uri, songData.progress_ms);
-        }
-
       });
     }
 
@@ -295,7 +274,6 @@ const Session = ({ token }) => {
     if (!host) {
       socket.on('queueData', (data) => {
         setQueue(data);
-        // console.log('listener queueData', data);
       });
 
       socket.on('skipData', (data) => {
