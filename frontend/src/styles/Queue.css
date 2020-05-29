@@ -41,6 +41,15 @@
     cursor: pointer;
 }
 
+.queue-item-accept {
+    cursor: pointer;
+}
+
+.queue-item-deny {
+    cursor: pointer;
+}
+
+
 .queued-items {
     display: flex;
     flex-direction: column;

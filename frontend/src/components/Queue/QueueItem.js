@@ -5,33 +5,31 @@ import { FaRegWindowClose } from 'react-icons/fa';
     A single song added to the queue
     
     Props:
-        - song
-        - artist
-        - image
+        - track: song data object from search
 
 */
 
-const QueueItem = ({song, artist, image, uri, removeFromQueue, host}) => {
+const QueueItem = ({track, removeFromQueue, host}) => {
   return (
-  <div>
-  <div className='queue-item'>
-    <img className='queue-item-image' src={image} alt='not found'/>
-    <div className='queue-item-info'>
-      <div className='queue-item-song'>{song}</div>
-      <div className='queue-item-artist'>{artist}</div>
-    </div>
-    
-  </div>
-  {host ?
-      <div className='queue-item-delete'
-        onClick={() => {
-          removeFromQueue(uri);
-        }}
-        >
-        <FaRegWindowClose color='white' size='0.8em'/>
+    <div>
+      <div className='queue-item'>
+        <img className='queue-item-image' src={track.album.images[0].url} alt='not found'/>
+        <div className='queue-item-info'>
+          <div className='queue-item-song'>{track.name}</div>
+          <div className='queue-item-artist'>{track.artists[0].name}</div>
+        </div>
       </div>
-      : null}
-  </div>
+      {host
+        ? <div className='queue-item-delete'
+            onClick={() => {
+              removeFromQueue(track.uri);
+            }}
+          >
+            <FaRegWindowClose color='white' size='0.8em'/>
+          </div>
+        : null
+      }
+    </div>
   );
 }
 
