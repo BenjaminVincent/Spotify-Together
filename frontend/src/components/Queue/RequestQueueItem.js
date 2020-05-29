@@ -45,12 +45,9 @@ const RequestQueueItem = ({
     On click removes song from request queue and sends new status
     ('Denied') of request to listener who requested the song.
 
-    For listener: allows listener to remove song from personal
-    request queue only after song had been accepted/denied.
-
   */
   const RemoveRequestButton = () => {
-    if (host || track.status !== 'Pending') {
+    if (host) {
       return (
         <div className='queue-item-deny'
           onClick={() => {

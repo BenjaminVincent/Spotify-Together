@@ -270,6 +270,7 @@ const Session = ({ token }) => {
 
     socket.on('requestStatusData', ({ track, status }) => {
       updateRequestStatus(track.uri, status);
+      setTimeout(() => removeFromRequestQueue(track.uri), 1000);
     });
 
     if (!host) {

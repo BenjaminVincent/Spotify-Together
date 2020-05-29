@@ -17,8 +17,8 @@ const RoomInvite = ({ room }) => {
             <CopyToClipboard
                 text={`${websiteURL}join?roominvite=${room}`}
                 onCopy={() => {
-                    setCopied(true)
-                    resetCopied()
+                    setCopied(true);
+                    resetCopied();
                 }}
             >
             <RiFileCopy2Line/>
@@ -29,13 +29,3 @@ const RoomInvite = ({ room }) => {
 }
 
 export default RoomInvite;
-
-
-
-/*
-    - clicking copy => listen-together.netlify.app/invite?room=room
-    - when you click the link => auth but with invite in the URL
-    - after auth => redirectURL => '/join' with roomID filled in from queryparams
-
-
-*/

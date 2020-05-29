@@ -1,13 +1,6 @@
 import React from 'react';
 import '../../styles/Queue.css';
 import { FaRegWindowClose } from 'react-icons/fa';
-/*
-    A single song added to the queue
-    
-    Props:
-        - track: song data object from search
-
-*/
 
 const QueueItem = ({track, removeFromQueue, host}) => {
   return (
