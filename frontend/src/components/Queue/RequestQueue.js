@@ -19,7 +19,8 @@ const RequestQueue = ({
   addToQueue,
   addToRequestQueue,
   removeFromRequestQueue,
-  sendSongRequest
+  sendSongRequest,
+  sendRequestStatus,
 }) => {
 
   const upNext = requestQueue.map(track => (
@@ -29,6 +30,7 @@ const RequestQueue = ({
       track={track}
       removeFromRequestQueue={removeFromRequestQueue}
       addToQueue={addToQueue}
+      sendRequestStatus={sendRequestStatus}
     />
   ));
 

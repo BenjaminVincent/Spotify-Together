@@ -51,6 +51,11 @@ const getHostID = (room) => {
   }
 }
 
+const getUserID = (name, room) => {
+  const user = getUsersInRoom(room).filter((user) => user.name === name);
+  if (user.length) return user[0].id;
+}
+
 const logUsers = () => console.log('users', users);
 
 module.exports = { 
@@ -61,5 +66,6 @@ module.exports = {
     getHostName,
     getHostID,
     logUsers,
+    getUserID,
     usersRouter,
 };

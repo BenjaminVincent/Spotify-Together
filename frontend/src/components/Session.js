@@ -82,9 +82,18 @@ const Session = ({ token }) => {
     _setQueue(queue => queue.filter((_, i) => i !== 0));
   }
 
-  const addToRequestQueue = (data) => {
-    requestQueueRef.current = [...requestQueueRef.current, data];
-    _setRequestQueue(requestQueue => [...requestQueue, data]);
+  const addToRequestQueue = (data, listenerName) => {
+    const request = { ...data, status: 'Pending', listenerName };
+    requestQueueRef.current = [...requestQueueRef.current, request];
+    _setRequestQueue(requestQueue => [...requestQueue, request]);
+  };
+
+  const updateRequestStatus = (uri, status) => {
+    const updatedRequestQueue =  requestQueueRef.current.map(track => {
+      return track.uri === uri ? { ...track, status } : track;
+    })
+    requestQueueRef.current = updatedRequestQueue;
+    _setRequestQueue(updatedRequestQueue);
   };
 
   const removeFromRequestQueue = (uri) => {
@@ -197,7 +206,11 @@ const Session = ({ token }) => {
 
   const sendSongRequest = (track) => {
     socket.emit('requestData', track, () => {
-      console.log('Send requestData', track);
+    })
+  }
+
+  const sendRequestStatus = (track, status) => {
+    socket.emit('requestStatusData', { track, status }, () => {
     })
   }
 
@@ -271,9 +284,12 @@ const Session = ({ token }) => {
       setHostName(hostName);
     });
 
-    socket.on('requestData', (data) => {
-      addToRequestQueue(data);
-      console.log('request data', data);
+    socket.on('requestData', ({ track, listenerName }) => {
+      addToRequestQueue(track, listenerName);
+    });
+
+    socket.on('requestStatusData', ({ track, status }) => {
+      updateRequestStatus(track.uri, status);
     });
 
     if (!host) {
@@ -315,6 +331,7 @@ const Session = ({ token }) => {
               addToRequestQueue={addToRequestQueue}
               removeFromRequestQueue={removeFromRequestQueue}
               sendSongRequest={sendSongRequest}
+              sendRequestStatus={sendRequestStatus}
             />
             </div>
           </div>

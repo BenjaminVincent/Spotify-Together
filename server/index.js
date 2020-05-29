@@ -3,7 +3,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
 
-const { addUser, removeUser, getUser, getUsersInRoom, getHostName, getHostID } = require('./users');
+const { addUser, removeUser, getUser, getUsersInRoom, getHostName, getHostID, getUserID } = require('./users');
 
 const router = require('./router');
 const { usersRouter } = require('./users');
@@ -71,7 +71,15 @@ io.on('connection', (socket)=> {
     socket.on('requestData', (track, callback) => {
       const user = getUser(socket.id);
       const hostID = getHostID(user.room);
-      io.to(hostID).emit('requestData', track);
+      io.to(hostID).emit('requestData', { track, listenerName: user.name });
+  
+      callback();
+    });
+
+    socket.on('requestStatusData', ({ track, status }, callback) => {
+      const user = getUser(socket.id);
+      const listenerID = getUserID(track.listenerName, user.room);
+      io.to(listenerID).emit('requestStatusData', { track, status });
   
       callback();
     });

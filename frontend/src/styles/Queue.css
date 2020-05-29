@@ -41,7 +41,11 @@
     cursor: pointer;
 }
 
-.queue-item-approve {
+.queue-item-accept {
+    cursor: pointer;
+}
+
+.queue-item-deny {
     cursor: pointer;
 }
 
