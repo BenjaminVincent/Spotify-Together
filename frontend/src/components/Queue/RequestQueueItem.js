@@ -39,7 +39,15 @@ const RequestQueueItem = ({host, track, addToQueue, removeFromRequestQueue, send
                 <FaRegWindowClose color='white' size='0.8em'/>
               </div>
             </div>
-          : null
+          : track.status !== 'Pending'
+              ? <div className='queue-item-deny'
+                  onClick={() => {
+                    removeFromRequestQueue(track.uri);
+                  }}
+                >
+                  <FaRegWindowClose color='white' size='0.8em'/>
+                </div>
+              : null
         }
     </div>
   );
