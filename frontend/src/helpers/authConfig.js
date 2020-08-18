@@ -1,7 +1,12 @@
 export const auth = 'https://accounts.spotify.com/authorize';
 export const clientId = '5c2e565bf4f448e395b0062ec854dd1b';
-export const redirectUri = 'https://listen-together.netlify.app';
-// export const redirectUri = 'http://localhost:3000/';
+
+/* NETLIFY */
+// export const redirectUri = 'https://listen-together.netlify.app';
+
+/* LOCAL */
+export const redirectUri = 'http://localhost:3000/';
+
 export const scopes = [
   'user-read-currently-playing',
   'user-read-playback-state',

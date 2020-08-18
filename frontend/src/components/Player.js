@@ -52,7 +52,7 @@ const Player = ({
           handlePausePlay();
         }}
         >
-        {playing ? <FaPauseCircle size='3em'/> : <FaPlayCircle size='3em'/>}
+        {playing ? <FaPauseCircle size='80px'/> : <FaPlayCircle size='80px'/>}
       </div>
       <div className='skip-btn'>
         <BsFillSkipEndFill

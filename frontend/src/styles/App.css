@@ -41,8 +41,6 @@ body {
   font-size: 3vmin;
 }
 
-/** Buttons **/
-
 .btn {
   background-color: transparent;
   border-radius: 2em;
@@ -75,8 +73,6 @@ body {
   background: #1ecd97;
   color: #333;
 }
-
-/** Background **/
 
 .background {
   z-index: -1;
