@@ -13,7 +13,6 @@ const Input = ({ message, setMessage, sendMessage }) => (
             onChange={event => setMessage(event.target.value)}
             onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}
         />
-        {/* <button className='sendButton' onClick={event => sendMessage(event)}>Send</button> */}
         <MdSend size="28px" style={{ cursor: 'pointer', fill: '#1ecd97'}} onClick={event => sendMessage(event)} />
     </form>
 );
