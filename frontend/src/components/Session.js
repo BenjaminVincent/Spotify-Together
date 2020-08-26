@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useDebugValue } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Player from './Player';
 import Chat from './Chat';
 import Queue from './Queue/Queue';
@@ -48,6 +48,7 @@ const Session = ({ token }) => {
   const setSong = (data) => {
     songRef.current = data;
     _setSong(data);
+    console.log("setSong data", data);
   };
 
   const setHostName = (data) => {

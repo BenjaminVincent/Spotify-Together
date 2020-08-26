@@ -7,7 +7,7 @@
   color: #fff;
   border: none;
   border-radius: 0;
-  width: 70%;
+  width: 200px;
   height: 3em;
   font-size: .5em;
   background-color: transparent;
@@ -30,5 +30,5 @@ input:focus, textarea:focus, select:focus{
   display: inline-block;
   border: none;
   border-radius: 2em;
-  width: 23%;
+  width: 75px;
 }
