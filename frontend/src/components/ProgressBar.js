@@ -27,13 +27,13 @@ const ProgressBar = ({ fetchDate, progress, duration, playing, handlePlayNext })
   if (playing) {
     return (
     <div className='progress'>
-      <div className='progress__bar' style={progressBarStylesPlaying} />
+      <div className='progress-bar' style={progressBarStylesPlaying} />
     </div>
     )
   } else {
     return (
     <div className='progress'>
-      <div className='progress__bar' style={progressBarStylesPaused} />
+      <div className='progress-bar' style={progressBarStylesPaused} />
     </div>
     )
   }

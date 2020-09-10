@@ -48,7 +48,6 @@ const Session = ({ token }) => {
   const setSong = (data) => {
     songRef.current = data;
     _setSong(data);
-    console.log("setSong data", data);
   };
 
   const setHostName = (data) => {

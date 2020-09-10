@@ -1,35 +1,47 @@
-.now-playing__name {
-    font-size: 1.5em;
-    margin-bottom: 0.2em;
+.play-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
 }
 
-.now-playing__artist {
-    margin-bottom: 1em;
+.info-container {
+    display: flex;
+    width: 100%;
 }
 
-.now-playing__status {
-    margin-bottom: 1em;
+.title-container {
+    margin-left: 5px;
+    width: 200px;
 }
 
-.now-playing__img img {
-    max-width: 33vmin;
-    max-height: 33vmin;
-    border-radius: 1em;
+.song-name {
+    font-size: 16px;
+    margin-bottom: 4px;
 }
 
-.now-playing__side {
-    margin-left: 5%;
-    width: 45%;
+.artist-name {
+    font-size: 14px;
+    margin-bottom: 14px;
 }
+
+.album-cover {
+    max-width: 80px;
+    max-height: 80px;
+}
+
+
 
 .progress {
     border: 1px solid #eee;
     height: 6px;
     border-radius: 3px;
     overflow: hidden;
+    margin-top: 10px;
 }
 
-.progress__bar {
+.progress-bar {
     background-color: #eee;
     height: 4px;
 }
@@ -53,9 +65,4 @@
       display: flex;
       justify-content: space-evenly;
       align-items: center;
-}
-
-.song-info {
-    display: flex;
-    align-items: center;
 }

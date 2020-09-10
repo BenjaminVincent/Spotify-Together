@@ -38,9 +38,7 @@
 }
 
 .player-window {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    bottom: 0;
 }
 
 .song-details {
@@ -57,7 +55,7 @@
 
 .thing {
     z-index: 9999;
-    width: 30%
+    width: 33%;
 }
 
 .room-invite {
