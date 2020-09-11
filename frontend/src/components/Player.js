@@ -43,7 +43,7 @@ const Player = ({
             handlePausePlay();
           }}
           >
-          {playing ? <FaPauseCircle size='50px'/> : <FaPlayCircle size='50px'/>}
+          {playing ? <FaPauseCircle size='52px'/> : <FaPlayCircle size='52px'/>}
         </div>
         <div className='skip-btn'>
           <BsFillSkipEndFill
@@ -57,6 +57,7 @@ const Player = ({
       :
       null
       }
+      <div className="progress-bar">
         <ProgressBar
           fetchDate={fetchDate}
           progress={progress}
@@ -65,6 +66,7 @@ const Player = ({
           playing={playing}
           handlePlayNext={handlePlayNext}
         />
+      </div>
     </div>
   );
 }

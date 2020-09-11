@@ -16,17 +16,19 @@
 
 .text-container {
     margin: 5px;
+    width: 400px;
 }
 
 .song-name {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 4px;
+    width: 350px;
 }
 
 .artist-name {
     font-size: 14px;
-    margin-bottom: 14px;
+    width: 350px;
 }
 
 .album-cover {
@@ -34,14 +36,11 @@
     max-height: 80px;
 }
 
-
-
 .progress {
     border: 1px solid #eee;
     height: 6px;
     border-radius: 3px;
     overflow: hidden;
-    margin-top: 10px;
 }
 
 .progress-bar {
@@ -49,9 +48,11 @@
     height: 4px;
 }
 
+
+
 .pause-play-btn {
-    height: 50px;
-    border-radius: 50px;
+    height: 52px;
+    border-radius: 52px;
     background-color: transparent;
     color: #1ecd97;
     cursor: pointer;
@@ -59,7 +60,14 @@
     z-index: 999;
   }
 
+  .pause-play-btn:hover {
+    background: #1ecd97;
+    color: #333;
+  }
+  
+
 .skip-btn {
+    margin-top: 7px;
     cursor: pointer;
     color: #eee;
 }
