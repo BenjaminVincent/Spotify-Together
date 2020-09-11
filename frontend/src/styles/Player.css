@@ -1,12 +1,5 @@
-.play-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
 
-.info-container {
+.player-container {
     display: flex;
     width: 100%;
 }
@@ -18,6 +11,7 @@
 
 .song-name {
     font-size: 16px;
+    font-weight: bold;
     margin-bottom: 4px;
 }
 
@@ -47,8 +41,8 @@
 }
 
 .pause-play-btn {
-    height: 80px;
-    border-radius: 80px;
+    height: 50px;
+    border-radius: 50px;
     background-color: transparent;
     color: #1ecd97;
     cursor: pointer;

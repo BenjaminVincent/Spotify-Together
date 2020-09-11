@@ -24,15 +24,14 @@ const Player = ({
   };
 
   return (
-      <div className='player-wrapper'>
-        <div className='song-info-container'>
+        <div className='player-container'>
           <img className='album-cover' src={image} alt='not found'/>
         <div className='title-container'>
           <div className='song-name'>{song.item.name}</div>
           <div className='artist-name'>{artist}<br/></div>
           <div className='background' style={backgroundStyles} />
           </div>
-        </div>
+
         {
         host ?
         <div className='player-controls'>
@@ -42,7 +41,7 @@ const Player = ({
             handlePausePlay();
           }}
           >
-          {playing ? <FaPauseCircle size='80px'/> : <FaPlayCircle size='80px'/>}
+          {playing ? <FaPauseCircle size='50px'/> : <FaPlayCircle size='50px'/>}
         </div>
         <div className='skip-btn'>
           <BsFillSkipEndFill
@@ -56,16 +55,14 @@ const Player = ({
       :
       null
       }
-    <div className='progress'>
-      <ProgressBar
-        fetchDate={fetchDate}
-        progress={progress}
-        duration={duration}
-        item={item}
-        playing={playing}
-        handlePlayNext={handlePlayNext}
-      />
-    </div>
+        <ProgressBar
+          fetchDate={fetchDate}
+          progress={progress}
+          duration={duration}
+          item={item}
+          playing={playing}
+          handlePlayNext={handlePlayNext}
+        />
       </div>
   );
 }
