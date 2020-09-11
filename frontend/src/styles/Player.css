@@ -2,11 +2,20 @@
 .player-container {
     display: flex;
     width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    justify-content: space-between;
 }
 
 .title-container {
-    margin-left: 5px;
+    display: flex;
+    margin: 5px;
     width: 200px;
+}
+
+.text-container {
+    margin: 5px;
 }
 
 .song-name {

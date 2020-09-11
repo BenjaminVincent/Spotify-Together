@@ -24,13 +24,15 @@ const Player = ({
   };
 
   return (
-        <div className='player-container'>
-          <img className='album-cover' src={image} alt='not found'/>
-        <div className='title-container'>
+    <div className='player-container'>
+      <div className='title-container'>
+        <img className='album-cover' src={image} alt='not found'/>
+        <div className="text-container">
           <div className='song-name'>{song.item.name}</div>
           <div className='artist-name'>{artist}<br/></div>
-          <div className='background' style={backgroundStyles} />
-          </div>
+        </div>
+        <div className='background' style={backgroundStyles} />
+        </div>
 
         {
         host ?
@@ -63,7 +65,7 @@ const Player = ({
           playing={playing}
           handlePlayNext={handlePlayNext}
         />
-      </div>
+    </div>
   );
 }
 
