@@ -284,11 +284,17 @@ const Session = ({ token }) => {
     }
   }, []);
 
+  const backgroundStyles = {
+    backgroundImage: `url(${song.item.album.images[0].url})`,
+  };
+
+
   return (
     <div className='entire-session'>
       {end ? 
         <Redirect to='/end'/>
       : <div className='session-container'>
+          <div className='background' style={backgroundStyles} />
           <div className='thing'>
             <div className='session-info'>
               <a className='session-info-spacing-leave' href='/'><FaAngleLeft color='white' size='2em'/></a>

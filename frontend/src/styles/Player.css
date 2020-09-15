@@ -1,12 +1,25 @@
 
 .player-container {
     display: flex;
+    background-color: #282c34;
+    z-index: 999;
     width: 100%;
     position: absolute;
     bottom: 0;
     left: 0;
     justify-content: space-between;
 }
+
+.background {
+    z-index: 999;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-size: cover;
+    filter: blur(8em) opacity(0.6);
+    position: absolute;
+  }
 
 .title-container {
     display: flex;
@@ -41,14 +54,13 @@
     height: 6px;
     border-radius: 3px;
     overflow: hidden;
+    color: BLUE;
 }
 
 .progress-bar {
     background-color: #eee;
     height: 4px;
 }
-
-
 
 .pause-play-btn {
     height: 52px;

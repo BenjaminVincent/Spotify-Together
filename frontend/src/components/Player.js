@@ -19,10 +19,6 @@ const Player = ({
   handleSkip,
 }) => {
 
-  const backgroundStyles = {
-    backgroundImage: `url(${image})`,
-  };
-
   return (
     <div className='player-container'>
       <div className='title-container'>
@@ -31,7 +27,6 @@ const Player = ({
           <div className='song-name'>{song.item.name}</div>
           <div className='artist-name'>{artist}<br/></div>
         </div>
-        <div className='background' style={backgroundStyles} />
         </div>
 
         {
@@ -57,7 +52,6 @@ const Player = ({
       :
       null
       }
-      <div className="progress-bar">
         <ProgressBar
           fetchDate={fetchDate}
           progress={progress}
@@ -66,7 +60,6 @@ const Player = ({
           playing={playing}
           handlePlayNext={handlePlayNext}
         />
-      </div>
     </div>
   );
 }

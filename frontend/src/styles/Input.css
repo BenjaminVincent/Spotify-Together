@@ -9,11 +9,10 @@
   border: none;
   border-radius: 0;
   width: 230px;
-  height: 3em;
   font-size: 14px;
   background-color: transparent;
-  padding-left: .5em;
-  margin-right: .5em;
+  margin: 5px;
+  padding-bottom: 2px;
   border-bottom: 2px solid #fff;
 }
 
