@@ -96,3 +96,11 @@
     margin: 10px 0px;
     margin-left: 99px;
 }
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    width: 125px;
+    margin: 10px;
+    margin-right: 35px;
+}

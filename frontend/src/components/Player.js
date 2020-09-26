@@ -3,6 +3,7 @@ import ProgressBar from './ProgressBar';
 import '../styles/Player.css';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 import { BsFillSkipEndFill } from "react-icons/bs";
+import VolumeControl from './VolumeControl';
 
 const Player = ({
   playing,
@@ -70,7 +71,7 @@ const Player = ({
     //   handlePlayNext={handlePlayNext}
     // />
       }
-
+    <VolumeControl/>
     </div>
   );
 }
