@@ -6,6 +6,7 @@ import { BsFillSkipEndFill } from "react-icons/bs";
 import VolumeControl from './VolumeControl';
 
 const Player = ({
+  token,
   playing,
   item,
   progress,
@@ -71,7 +72,7 @@ const Player = ({
     //   handlePlayNext={handlePlayNext}
     // />
       }
-    <VolumeControl/>
+    <VolumeControl token={token} />
     </div>
   );
 }

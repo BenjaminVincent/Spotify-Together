@@ -325,6 +325,7 @@ const Session = ({ token }) => {
           </div>
           <div className='player-window'>
             <Player
+              token={token}
               playing={playing}
               item={song.item}
               song={song.item.name}

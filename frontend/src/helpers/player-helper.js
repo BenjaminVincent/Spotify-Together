@@ -95,3 +95,19 @@ export const getSearch = async (token, q) => {
   const data = await res.json();
   return data;
 }
+
+export const updateVolume = async (token, vol) => {
+  const res = await fetch(`https://api.spotify.com/v1/me/player/volume?volume_percent=${vol}`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    }
+  }).catch((error) => {
+    return error;
+  });
+  console.log("res", res);
+  return res;
+
+}
