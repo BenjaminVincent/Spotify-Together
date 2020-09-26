@@ -87,7 +87,6 @@
 }
 
 .player-controls {
-    margin-right: 40%;
 }
 
 .inner-player-controls {
@@ -102,5 +101,5 @@
     align-items: center;
     width: 125px;
     margin: 10px;
-    margin-right: 35px;
+    margin-right: 80px;
 }

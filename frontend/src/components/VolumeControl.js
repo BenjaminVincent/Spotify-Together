@@ -12,8 +12,7 @@ const VolumeControl = ({ token }) => {
             <Slider style={{ width: "125px" }} color="#eee" defaultValue={vol} onChangeComplete={(event) => {
                 setVol(event);
                 updateVolume(token, event);
-                }}/>
-            {console.log("Volume", vol)}
+            }}/>
         </div>
     );
 };
