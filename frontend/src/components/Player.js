@@ -32,26 +32,24 @@ const Player = ({
         {
         host ?
         <div className='player-controls'>
-          <div 
-          className='pause-play-btn'
-          onClick={() => {
-            handlePausePlay();
-          }}
-          >
-          {playing ? <FaPauseCircle size='52px'/> : <FaPlayCircle size='52px'/>}
-        </div>
-        <div className='skip-btn'>
-          <BsFillSkipEndFill
-            size='35px'
+          <div className='inner-player-controls'>
+            <div 
+            className='pause-play-btn'
             onClick={() => {
-              handleSkip();
-            }}  
-          />
+              handlePausePlay();
+            }}
+            >
+            {playing ? <FaPauseCircle size='52px'/> : <FaPlayCircle size='52px'/>}
+          </div>
+          <div className='skip-btn'>
+            <BsFillSkipEndFill
+              size='35px'
+              onClick={() => {
+                handleSkip();
+              }}  
+            />
+          </div>
         </div>
-      </div>
-      :
-      null
-      }
         <ProgressBar
           fetchDate={fetchDate}
           progress={progress}
@@ -60,6 +58,19 @@ const Player = ({
           playing={playing}
           handlePlayNext={handlePlayNext}
         />
+      </div>
+      :
+      null
+    //   <ProgressBar
+    //   fetchDate={fetchDate}
+    //   progress={progress}
+    //   duration={duration}
+    //   item={item}
+    //   playing={playing}
+    //   handlePlayNext={handlePlayNext}
+    // />
+      }
+
     </div>
   );
 }

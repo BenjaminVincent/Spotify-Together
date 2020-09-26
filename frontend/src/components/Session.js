@@ -9,6 +9,7 @@ import { FaAngleLeft } from 'react-icons/fa';
 import io from 'socket.io-client';
 import '../styles/Session.css';
 import { Redirect } from 'react-router-dom';
+import ProgressBar from './ProgressBar';
 import { getCurrentlyPlaying, playCurrent, pauseCurrent, getUserInfo } from '../helpers/player-helper';
 
 let socket;

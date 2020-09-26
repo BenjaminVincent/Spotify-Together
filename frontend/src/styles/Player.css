@@ -55,6 +55,7 @@
     border-radius: 3px;
     overflow: hidden;
     color: BLUE;
+    width: 250px;
 }
 
 .progress-bar {
@@ -85,7 +86,12 @@
 }
 
 .player-controls {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
+    margin-right: 590px;
+}
+
+.inner-player-controls {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0px;
+    margin-left: 99px;
 }
