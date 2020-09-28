@@ -1,6 +1,7 @@
 
 # Listen together
 Listen Together is a project that allows friends to listen to spotify together!
+THE UI IS CURRENTLY BEING COMPLETELY REDONE! ALL SCREENSHOTS ARE OF AN OLD BUILD!
 
 ## Check out the live site
 https://listen-together.netlify.app/
