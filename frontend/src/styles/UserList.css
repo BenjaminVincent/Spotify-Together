@@ -1,8 +1,9 @@
 .user-list {
   list-style-type: none;
   margin: 0;
-  padding-top: 50px;
-  padding-left: 10px;
+
+  padding-top: 20px;
+  padding-left: 14px;
   overflow: hidden;
   position: relative;
 }
@@ -10,12 +11,13 @@
 .user-image {
   float: left;
   position: relative;
+  margin-right: 4px;
   
 }
 
 .user-image .user-name {
   visibility: hidden;
-  width: 80px;
+  width: 65px;
   background-color: #fff;
   color: black;
   text-align: center;
@@ -24,11 +26,12 @@
   position: absolute;
   z-index: 1;
   bottom: 100%;
-  left: 50%; 
-  margin-left: -60px;
+  left: 50%;
+  margin-left: -30px;
 }
 
 .user-image:hover .user-name {
   visibility: visible;
+  font-size: 12px;
   z-index: 99;
 }
