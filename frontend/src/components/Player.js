@@ -62,15 +62,17 @@ const Player = ({
         />
       </div>
       :
-      null
-    //   <ProgressBar
-    //   fetchDate={fetchDate}
-    //   progress={progress}
-    //   duration={duration}
-    //   item={item}
-    //   playing={playing}
-    //   handlePlayNext={handlePlayNext}
-    // />
+      <div className='player-controls'>
+        <ProgressBar
+          style={{bottom: '0'}}
+          fetchDate={fetchDate}
+          progress={progress}
+          duration={duration}
+          item={item}
+          playing={playing}
+          handlePlayNext={handlePlayNext}
+        />
+    </div>
       }
     <VolumeControl token={token} />
     </div>
