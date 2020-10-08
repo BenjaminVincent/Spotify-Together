@@ -89,6 +89,11 @@
 .player-controls {
 }
 
+.listener-controls {
+    display: flex;
+    align-items: center;
+}
+
 .inner-player-controls {
     display: flex;
     flex-direction: row;

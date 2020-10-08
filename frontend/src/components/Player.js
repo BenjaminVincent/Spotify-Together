@@ -62,9 +62,8 @@ const Player = ({
         />
       </div>
       :
-      <div className='player-controls'>
+      <div className='listener-controls'>
         <ProgressBar
-          style={{bottom: '0'}}
           fetchDate={fetchDate}
           progress={progress}
           duration={duration}
