@@ -147,6 +147,7 @@ const Session = ({ token }) => {
         console.log('Play error', res);
       } else {
         res.ok ? setPlaying(true) : console.log('Play error', res.status);
+        console.log('HandlePlayNext called');
       }
       await setTimeout(() => getAndUpdateSong(), 500);
   }};
